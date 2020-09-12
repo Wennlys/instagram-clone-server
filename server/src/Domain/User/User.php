@@ -7,70 +7,40 @@ use JsonSerializable;
 
 class User implements JsonSerializable
 {
-    /**
-     * @var int|null
-     */
-    private $id;
+    private ?string $username;
+    
+    private ?string $email;
+    
+    private ?string $name;
 
-    /**
-     * @var string
-     */
-    private $username;
+    private ?string $password;
 
-    /**
-     * @var string
-     */
-    private $firstName;
-
-    /**
-     * @var string
-     */
-    private $lastName;
-
-    /**
-     * @param int|null  $id
-     * @param string    $username
-     * @param string    $firstName
-     * @param string    $lastName
-     */
-    public function __construct(?int $id, string $username, string $firstName, string $lastName)
+    public function __construct(string $username, string $email, string $name, string $password)
     {
-        $this->id = $id;
         $this->username = strtolower($username);
-        $this->firstName = ucfirst($firstName);
-        $this->lastName = ucfirst($lastName);
+        $this->email = filter_var($email, FILTER_VALIDATE_EMAIL);
+        $this->name = $name;
+        $this->password = password_hash($password, PASSWORD_DEFAULT);
     }
 
-    /**
-     * @return int|null
-     */
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    /**
-     * @return string
-     */
     public function getUsername(): string
     {
         return $this->username;
     }
 
-    /**
-     * @return string
-     */
-    public function getFirstName(): string
+    public function getEmail(): string
     {
-        return $this->firstName;
+        return $this->email;
     }
 
-    /**
-     * @return string
-     */
-    public function getLastName(): string
+    public function getName(): string
     {
-        return $this->lastName;
+        return $this->name;
+    }
+
+    public function getPassword(): string
+    {
+        return $this->password;
     }
 
     /**
@@ -79,10 +49,9 @@ class User implements JsonSerializable
     public function jsonSerialize()
     {
         return [
-            'id' => $this->id,
             'username' => $this->username,
-            'firstName' => $this->firstName,
-            'lastName' => $this->lastName,
+            'email' => $this->email,
+            'name' => $this->name,
         ];
     }
 }
