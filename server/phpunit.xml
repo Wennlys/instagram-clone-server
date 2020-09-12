@@ -22,6 +22,15 @@
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">./src/</directory>
+            <exclude>
+                <file>./src/Infrastructure/Connection.php</file>
+            </exclude>
         </whitelist>
     </filter>
+    <php>
+        <env name="HOST" value="sqlite:"/>
+        <env name="NAME" value=":memory:"/>
+        <env name="USER" value=""/>
+        <env name="PASSWORD" value=""/>
+    </php>
 </phpunit>
