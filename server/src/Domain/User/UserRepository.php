@@ -5,15 +5,9 @@ namespace App\Domain\User;
 
 interface UserRepository
 {
-    /**
-     * @return User[]
-     */
+    /** @return User[] */
     public function findAll(): array;
 
-    /**
-     * @param int $id
-     * @return User
-     * @throws UserNotFoundException
-     */
+    /** @throws UserNotFoundException */
     public function findUserOfId(int $id): User;
 }
