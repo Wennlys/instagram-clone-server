@@ -11,47 +11,34 @@ class UserTest extends TestCase
     public function userProvider()
     {
         return [
-            [1, 'bill.gates', 'Bill', 'Gates'],
-            [2, 'steve.jobs', 'Steve', 'Jobs'],
-            [3, 'mark.zuckerberg', 'Mark', 'Zuckerberg'],
-            [4, 'evan.spiegel', 'Evan', 'Spiegel'],
-            [5, 'jack.dorsey', 'Jack', 'Dorsey'],
+            ['bill.gates', 'bill.gates@mail.com', 'Bill Gates', 'Gates123'],
+            ['steve.jobs', 'steve.jobs@mail.com', 'Steve Jobs', 'Jobs123'],
+            ['mark.zuckerberg', 'mark.zuckerberg@mail.com', 'Mark Zuckerberg', 'Zuckerberg123'],
+            ['evan.spiegel', 'evan.spiegel@mail.com', 'Evan Spiegel', 'Spiegel123'],
+            ['jack.dorsey', 'jack.dorsey@mail.com', 'Jack Dorsey', 'Dorsey123'],
         ];
     }
 
-    /**
-     * @dataProvider userProvider
-     * @param $id
-     * @param $username
-     * @param $firstName
-     * @param $lastName
-     */
-    public function testGetters($id, $username, $firstName, $lastName)
+    /** @dataProvider userProvider */
+    public function testGetters($username, $email, $name, $password)
     {
-        $user = new User($id, $username, $firstName, $lastName);
+        $user = new User($username, $email, $name, $password);
 
-        $this->assertEquals($id, $user->getId());
         $this->assertEquals($username, $user->getUsername());
-        $this->assertEquals($firstName, $user->getFirstName());
-        $this->assertEquals($lastName, $user->getLastName());
+        $this->assertEquals($email, $user->getEmail());
+        $this->assertEquals($name, $user->getName());
+        $this->assertTrue(password_verify($password, $user->getPassword()));
     }
 
-    /**
-     * @dataProvider userProvider
-     * @param $id
-     * @param $username
-     * @param $firstName
-     * @param $lastName
-     */
-    public function testJsonSerialize($id, $username, $firstName, $lastName)
+    /** @dataProvider userProvider */
+    public function testJsonSerialize($username, $email, $name, $password)
     {
-        $user = new User($id, $username, $firstName, $lastName);
+        $user = new User($username, $email, $name, $password);
 
         $expectedPayload = json_encode([
-            'id' => $id,
             'username' => $username,
-            'firstName' => $firstName,
-            'lastName' => $lastName,
+            'email' => $email,
+            'name' => $name,
         ]);
 
         $this->assertEquals($expectedPayload, json_encode($user));
