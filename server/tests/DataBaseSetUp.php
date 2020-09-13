@@ -9,19 +9,12 @@ use PDO;
 
 class DataBaseSetUp
 {
-    private PDO $database;
-
-    private function __construct()
-    {
-        $this->database = Connection::getInstance()->getConnection();
-    }
-
     public static function up(): void
     {
         $password1 = password_hash('password1', PASSWORD_DEFAULT);
         $password2 = password_hash('password2', PASSWORD_DEFAULT);
 
-        self::$database->exec("
+        Connection::getInstance()->getConnection()->exec("
                 DROP TABLE IF EXISTS users;
 
                 CREATE TABLE IF NOT EXISTS users (
@@ -32,11 +25,10 @@ class DataBaseSetUp
                 password VARCHAR(255) NOT NULL,
                 created_at DATETIME,
                 updated_at DATETIME,
-                UNIQUE (email, username)
+                UNIQUE (email, username));
 
-                INSERT INTO users (username, email, name, password, created_at, updated_at) VALUES ('user1', 'user1@mail.com', 'User One', {$password1}, now(), now());
-                INSERT INTO users (username, email, name, password, created_at, updated_at) VALUES ('user2', 'user2@mail.com', 'User Two', {$password2}, now(), now());
-            );"
-        );
+                INSERT INTO users (username, email, name, password, created_at, updated_at) VALUES ('user1', 'user1@mail.com', 'User One', '{$password1}', date('now'), date('now'));
+                INSERT INTO users (username, email, name, password, created_at, updated_at) VALUES ('user2', 'user2@mail.com', 'User Two', '{$password2}', date('now'), date('now'));
+        ");
     }
 }
