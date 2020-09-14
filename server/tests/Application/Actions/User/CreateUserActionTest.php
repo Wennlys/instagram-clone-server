@@ -88,8 +88,8 @@ class CreateUserActionTest extends TestCase
         $response = $app->handle($request);
 
         $payload = (string) $response->getBody();
-        $expectedError = new ActionError(ActionError::SERVER_ERROR, 'User already exists.');
-        $expectedPayload = new ActionPayload(500, null, $expectedError);
+        $expectedError = new ActionError(ActionError::BAD_REQUEST, 'User already exists.');
+        $expectedPayload = new ActionPayload(400, null, $expectedError);
         $serializedPayload = json_encode($expectedPayload, JSON_PRETTY_PRINT);
 
         $this->assertEquals($serializedPayload, $payload);

@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace App\Domain\User;
 
-use App\Domain\DomainException\DomainException;
+use App\Domain\DomainException\DomainRecordNotCreatedException;
 
-class UserCouldNotBeCreatedException extends DomainException
+class UserCouldNotBeCreatedException extends DomainRecordNotCreatedException
 {
 }
