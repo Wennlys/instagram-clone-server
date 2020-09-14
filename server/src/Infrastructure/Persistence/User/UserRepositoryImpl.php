@@ -39,4 +39,10 @@ class UserRepositoryImpl implements UserRepository
 
         return new User($user['username'], $user['email'], $user['name'], 'placeholderpassword');
     }
+
+    /** {@inheritdoc} */
+    public function store(User $user): User
+    {
+        return $user;
+    }
 }
