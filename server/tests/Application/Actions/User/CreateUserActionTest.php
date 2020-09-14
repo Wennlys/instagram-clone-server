@@ -6,7 +6,6 @@ namespace Tests\Application\Actions\User;
 use App\Application\Actions\ActionPayload;
 use App\Domain\User\UserRepository;
 use App\Domain\User\User;
-use App\Infrastructure\Persistence\User\UserRepositoryImpl;
 use DI\Container;
 use Tests\TestCase;
 

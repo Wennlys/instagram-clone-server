@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Tests\Infrastructure\Persistence\User;
 
-use App\Domain\User\User;
 use App\Domain\User\UserNotFoundException;
 use App\Domain\User\UserRepository;
 use App\Infrastructure\Persistence\User\UserRepositoryImpl;
