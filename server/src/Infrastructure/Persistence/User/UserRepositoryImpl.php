@@ -21,13 +21,15 @@ class UserRepositoryImpl implements UserRepository
     /** {@inheritdoc} */
     public function findAll(): array
     {
-        return $this->db->query(
+        $users = $this->db->query(
             "SELECT id, username, email, name FROM users"
         )->fetch(PDO::FETCH_ASSOC);
+
+        return false !== $users ? $users : [];
     }
 
     /** {@inheritdoc} */
-    public function findUserOfId(int $id): User
+    public function findUserOfId(int $id): array
     {
         $user = $this->db->query(
             "SELECT username, name, email FROM users WHERE id = {$id}"
@@ -37,13 +39,13 @@ class UserRepositoryImpl implements UserRepository
             throw new UserNotFoundException();
         }
 
-        return new User($user['username'], $user['email'], $user['name'], 'placeholderpassword');
+        return $user;
     }
 
     /** {@inheritdoc} */
-    public function store(User $user): User
+    public function store(User $user): array
     {
-        return new User('bill.gates', 'bill.gates@mail.com', 'Bill Gates', 'Gates123');
+        return [$user];
     }
 
     private function hash(string $string): string

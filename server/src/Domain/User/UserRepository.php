@@ -5,12 +5,11 @@ namespace App\Domain\User;
 
 interface UserRepository
 {
-    /** @return User[] */
     public function findAll(): array;
 
     /** @throws UserNotFoundException */
-    public function findUserOfId(int $id): User;
+    public function findUserOfId(int $id): array;
 
     /** @throws UserCouldNotBeCreatedException */
-    public function store(User $user): User;
+    public function store(User $user): array;
 }

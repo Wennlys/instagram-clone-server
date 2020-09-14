@@ -60,7 +60,7 @@ class User implements JsonSerializable
 
     public function setPassword(string $password): void
     {
-        if (!(strlen($password) > 6)) {
+        if (strlen($password) < 6) {
             throw new InvalidPasswordException();
         } 
 

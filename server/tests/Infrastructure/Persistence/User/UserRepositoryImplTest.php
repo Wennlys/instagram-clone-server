@@ -40,8 +40,8 @@ class UserRepositoryImplTest extends TestCase
     public function testFindUserOfId()
     {
         $userFound = $this->userRepository->findUserOfId(1);
-        $user = new User('user1', 'user1@mail.com', 'User One', 'placeholderpassword');
-        $this->assertEquals(json_encode($user), json_encode($userFound));
+        $user = ['username' => 'user1', 'email' => 'user1@mail.com', 'name' => 'User One'];
+        $this->assertEquals($user, $userFound);
     }
 
     public function testFindUserOfIdThrowsNotFoundException()

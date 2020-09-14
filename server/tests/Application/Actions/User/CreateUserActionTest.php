@@ -23,15 +23,15 @@ class CreateUserActionTest extends TestCase
             'username' => 'bill.gates',
             'email' => 'bill.gates@mail.com',
             'name' => 'Bill Gates',
-            'password' => 'Gates123',
+            'password' => 'Gates123'
         ];
-        
+
         $user = new User($userArray['username'], $userArray['email'], $userArray['name'], $userArray['password']);
 
         $userRepositoryProphecy = $this->prophesize(UserRepository::class);
         $userRepositoryProphecy
             ->store($user)
-            ->willReturn($user)
+            ->willReturn($userArray)
             ->shouldBeCalledOnce();
 
         $container->set(UserRepository::class, $userRepositoryProphecy->reveal());
