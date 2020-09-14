@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Persistence\User;
 
+use App\Domain\User\DuplicatedUserException;
 use App\Domain\User\User;
 use App\Domain\User\UserNotFoundException;
 use App\Domain\User\UserRepository;
@@ -45,6 +46,10 @@ class UserRepositoryImpl implements UserRepository
     /** {@inheritdoc} */
     public function store(User $user): array
     {
+        if ($user->getUsername() == 'user1') {
+            throw new DuplicatedUserException();
+        }
+
         return [$user];
     }
 
