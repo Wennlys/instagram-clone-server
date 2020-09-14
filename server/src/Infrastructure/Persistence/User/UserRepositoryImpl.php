@@ -23,7 +23,7 @@ class UserRepositoryImpl implements UserRepository
     {
         $users = $this->db->query(
             "SELECT id, username, email, name FROM users"
-        )->fetch(PDO::FETCH_ASSOC);
+        )->fetchAll(PDO::FETCH_ASSOC);
 
         return false !== $users ? $users : [];
     }
