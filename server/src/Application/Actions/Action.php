@@ -61,7 +61,7 @@ abstract class Action
         } catch (DomainException $e) {
             if ($e instanceof DomainRecordNotFoundException)
             throw new HttpNotFoundException($this->request, $e->getMessage());
-            if($e instanceof DomainRecordNotCreatedException)
+            if ($e instanceof DomainRecordNotCreatedException)
             throw new HttpBadRequestException($this->request, $e->getMessage());
             
         }
