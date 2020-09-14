@@ -43,6 +43,11 @@ class UserRepositoryImpl implements UserRepository
     /** {@inheritdoc} */
     public function store(User $user): User
     {
-        return $user;
+        return new User('bill.gates', 'bill.gates@mail.com', 'Bill Gates', 'Gates123');
+    }
+
+    private function hash(string $string): string
+    {
+        return password_hash($string, PASSWORD_DEFAULT);
     }
 }

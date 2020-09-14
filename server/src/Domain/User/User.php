@@ -64,7 +64,7 @@ class User implements JsonSerializable
             throw new InvalidPasswordException();
         } 
 
-        $this->password = password_hash($password, PASSWORD_DEFAULT);
+        $this->password = $password;
     }
     
     public function getPassword(): string
@@ -81,6 +81,7 @@ class User implements JsonSerializable
             'username' => $this->username,
             'email' => $this->email,
             'name' => $this->name,
+            'password' => $this->password
         ];
     }
 }

@@ -45,7 +45,7 @@ class UserTest extends TestCase
         $this->assertEquals($provided['username'], $user->getUsername());
         $this->assertEquals($provided['email'], $user->getEmail());
         $this->assertEquals($provided['name'], $user->getName());
-        $this->assertTrue(password_verify($provided['password'], $user->getPassword()));
+        $this->assertEquals($provided['password'], $user->getPassword());
     }
 
     public function testUsernameLowCasing()
@@ -72,6 +72,7 @@ class UserTest extends TestCase
             'username' => $provided['username'],
             'email' => $provided['email'],
             'name' => $provided['name'],
+            'password' => $provided['password']
         ]);
 
         $this->assertEquals($expectedPayload, json_encode($user));

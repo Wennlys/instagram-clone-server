@@ -23,23 +23,18 @@ class CreateUserActionTest extends TestCase
             'username' => 'bill.gates',
             'email' => 'bill.gates@mail.com',
             'name' => 'Bill Gates',
-            'password' => 'Gates123'
+            'password' => 'Gates123',
         ];
         
         $user = new User($userArray['username'], $userArray['email'], $userArray['name'], $userArray['password']);
 
-        // -----------------------------
+        $userRepositoryProphecy = $this->prophesize(UserRepository::class);
+        $userRepositoryProphecy
+            ->store($user)
+            ->willReturn($user)
+            ->shouldBeCalledOnce();
 
-        // $userRepositoryProphecy = $this->prophesize(UserRepository::class);
-        // $userRepositoryProphecy
-        //     ->store($user)
-        //     ->willReturn('1987410934017923948')
-        //     ->shouldBeCalledOnce();
-
-        // $container->set(UserRepository::class, $userRepositoryProphecy->reveal());
-        $container->set(UserRepository::class, new UserRepositoryImpl());
-
-        // -----------------------------
+        $container->set(UserRepository::class, $userRepositoryProphecy->reveal());
 
         $request = $this->createRequest('POST', '/users');
         $request->getBody()->write(json_encode($userArray));
