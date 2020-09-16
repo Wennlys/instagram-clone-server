@@ -29,7 +29,7 @@ class CreateUserActionTest extends TestCase
             'password' => 'Gates123'
         ];
 
-        $user = new User($userArray['username'], $userArray['email'], $userArray['name'], $userArray['password']);
+        $user = $this->createUser($userArray);
 
         $userRepositoryProphecy = $this->prophesize(UserRepository::class);
         $userRepositoryProphecy
