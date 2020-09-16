@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Tests\Domain\User;
 
+use App\Domain\User\InvalidPasswordException;
 use App\Domain\User\User;
 use PharIo\Manifest\InvalidEmailException;
 use Tests\TestCase;
@@ -19,21 +20,14 @@ class UserTest extends TestCase
                 'password' =>'Gates123'
             ],
             'uppercase username'=> [
-                'username' => 'EVAN.SPIEGEL', 
-                'email' => 'evan.spiegel@mail.com', 
-                'name' => 'Evan Spiegel', 
-                'password' => 'Spiegel123'
+                'username' => 'EVAN.SPIEGEL'
             ],
             'invalid email' => [
-                'username' => 'steve.jobs', 
-                'email' => 'steve.jobsmail.com', 
-                'name' => 'Steve Jobs', 
-                'password' => 'Jobs123'
+                'email' => 'steve.jobsmail.com'
+            ],
+            'invalid password' => [
+                'password' => ''
             ]
-            // ['steve.jobs', 'steve.jobs@mail.com', 'Steve Jobs', 'Jobs123'],
-            // ['mark.zuckerberg', 'mark.zuckerberg@mail.com', 'Mark Zuckerberg', 'Zuckerberg123'],
-            // ['evan.spiegel', 'evan.spiegel@mail.com', 'Evan Spiegel', 'Spiegel123'],
-            // ['jack.dorsey', 'jack.dorsey@mail.com', 'Jack Dorsey', 'Dorsey123'],
         ];
     }
 
@@ -62,6 +56,13 @@ class UserTest extends TestCase
         $this->expectException(InvalidEmailException::class);
         $this->createUser($provided);
     }
+    
+    public function testPasswordValidation()
+    {
+        $provided = $this->userProvider()['invalid password'];
+        $this->expectException(InvalidPasswordException::class);
+        $this->createUser($provided);
+    }
 
     public function testJsonSerialize()
     {
@@ -80,6 +81,11 @@ class UserTest extends TestCase
 
     public function createUser(array $userProvided): User
     {
-        return new User($userProvided['username'], $userProvided['email'], $userProvided['name'], $userProvided['password']);
+        return new User(
+            $userProvided['username'] ?? null, 
+            $userProvided['email'] ?? null, 
+            $userProvided['name'] ?? null, 
+            $userProvided['password'] ?? null
+        );
     }
 }

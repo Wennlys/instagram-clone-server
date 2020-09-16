@@ -8,20 +8,17 @@ use PharIo\Manifest\InvalidEmailException;
 
 class User implements JsonSerializable
 {
-    private string $username;
-    
-    private string $email;
-    
-    private string $name;
+    private ?string $username;
+    private ?string $email;
+    private ?string $name;
+    private ?string $password;
 
-    private string $password;
-
-    public function __construct(string $username, string $email, string $name, string $password)
+    public function __construct(?string $username = null, ?string $email = null, ?string $name = null, ?string $password = null)
     {
-        $this->setUsername($username);
-        $this->setEmail($email);
-        $this->setName($name);
-        $this->setPassword($password);
+        isset($username) ? $this->setUsername($username) : $this->username = $username;
+        isset($email) ? $this->setEmail($email) : $this->email = $email;
+        isset($name) ? $this->setName($name) : $this->name = $name;
+        isset($password) ? $this->setPassword($password) : $this->password = $password;
     }
 
     public function setUsername(string $username): void
@@ -29,7 +26,7 @@ class User implements JsonSerializable
        $this->username = strtolower($username);
     }
 
-    public function getUsername(): string
+    public function getUsername(): ?string
     {
         return $this->username;
     }
@@ -43,7 +40,7 @@ class User implements JsonSerializable
         $this->email = $email;
     }
 
-    public function getEmail(): string
+    public function getEmail(): ?string
     {
         return $this->email;
     }
@@ -53,7 +50,7 @@ class User implements JsonSerializable
         $this->name = $name;
     }
 
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -67,7 +64,7 @@ class User implements JsonSerializable
         $this->password = $password;
     }
     
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return $this->password;
     }
@@ -77,11 +74,11 @@ class User implements JsonSerializable
      */
     public function jsonSerialize()
     {
-        return [
+        return array_filter([
             'username' => $this->username,
             'email' => $this->email,
             'name' => $this->name,
             'password' => $this->password
-        ];
+        ]);
     }
 }
