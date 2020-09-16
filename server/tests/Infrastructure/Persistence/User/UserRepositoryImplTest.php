@@ -44,11 +44,6 @@ class UserRepositoryImplTest extends TestCase
                 'email' => 'user3@mail.com',
                 'name' => 'New User'
             ],
-            'a' => [
-                'username' => ';DROP TABLE IF EXISTS users;',
-                'email' => 'user4@mail.com',
-                'name' => 'New User'
-            ]
         ];
     }
 
@@ -102,7 +97,7 @@ class UserRepositoryImplTest extends TestCase
     public function testStoreThrowsUserCouldNotBeCreatedException()
     {
 
-        $providedUser = $this->userProvider()['a'];
+        $providedUser = $this->userProvider()['New User'];
         $user = new User($providedUser['username'], $providedUser['email'], $providedUser['name'], 'password');
         $class = new UserRepositoryImpl();
 
