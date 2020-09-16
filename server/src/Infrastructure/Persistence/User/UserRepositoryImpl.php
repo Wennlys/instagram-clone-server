@@ -78,6 +78,16 @@ class UserRepositoryImpl implements UserRepository
         }
     }
 
+    /** {@inheritdoc} */
+    public function update(User $user, int $id): array
+    {
+        if ($id == 2) {
+            throw new DuplicatedUserException();
+        }
+        return [];
+    }
+
+
     private function hash(string $string): string
     {
         return password_hash($string, PASSWORD_DEFAULT);

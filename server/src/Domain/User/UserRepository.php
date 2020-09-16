@@ -12,4 +12,7 @@ interface UserRepository
 
     /** @throws UserCouldNotBeCreatedException */
     public function store(User $user): array;
+
+    /** @throws UserCouldNotBeUpdatedException */
+    public function update(User $user, int $id): array;
 }
