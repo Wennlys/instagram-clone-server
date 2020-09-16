@@ -5,6 +5,6 @@ namespace App\Domain\DomainException;
 
 use App\Domain\DomainException\DomainException;
 
-abstract class DomainRecordNotCreatedException extends DomainException
+abstract class DomainRecordNotPersistedException extends DomainException
 {
 }

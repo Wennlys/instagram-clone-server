@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Application\Actions;
 
 use App\Domain\DomainException\DomainException;
-use App\Domain\DomainException\DomainRecordNotCreatedException;
+use App\Domain\DomainException\DomainRecordNotPersistedException;
 use App\Domain\DomainException\DomainRecordNotFoundException;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -61,9 +61,8 @@ abstract class Action
         } catch (DomainException $e) {
             if ($e instanceof DomainRecordNotFoundException)
             throw new HttpNotFoundException($this->request, $e->getMessage());
-            if ($e instanceof DomainRecordNotCreatedException)
+            if ($e instanceof DomainRecordNotPersistedException)
             throw new HttpBadRequestException($this->request, $e->getMessage());
-            
         }
     }
 
