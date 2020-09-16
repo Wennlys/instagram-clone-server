@@ -10,7 +10,6 @@ use App\Domain\User\UserNotFoundException;
 use App\Domain\User\UserRepository;
 use App\Infrastructure\Persistence\User\UserRepositoryImpl;
 use PDO;
-use Reflection;
 use ReflectionClass;
 use Tests\DataBaseSetUp;
 use Tests\TestCase;
