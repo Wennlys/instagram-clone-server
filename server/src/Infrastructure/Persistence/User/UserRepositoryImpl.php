@@ -6,6 +6,7 @@ namespace App\Infrastructure\Persistence\User;
 use App\Domain\User\DuplicatedUserException;
 use App\Domain\User\User;
 use App\Domain\User\UserCouldNotBeCreatedException;
+use App\Domain\User\UserCouldNotBeUpdatedException;
 use App\Domain\User\UserNotFoundException;
 use App\Domain\User\UserRepository;
 use App\Infrastructure\Connection;
@@ -52,13 +53,7 @@ class UserRepositoryImpl implements UserRepository
     public function store(User $user): array
     {
         try {
-            $findUserQuery = $this->db->query('SELECT id FROM users WHERE email = :e OR username = :u');
-            $findUserQuery->execute([':e' => $user->getEmail(), ':u' => $user->getUsername()]);
-            $isDuplicated = (bool) $findUserQuery->fetch();
-    
-            if ($isDuplicated !== false) {
-                throw new DuplicatedUserException();
-            }
+            $this->findByEmailAndUsername($user->getEmail(), $user->getUsername());
 
             $createUserQuery = $this->db->prepare("
                     INSERT INTO users (username, email, name, password, created_at, updated_at)
@@ -81,12 +76,55 @@ class UserRepositoryImpl implements UserRepository
     /** {@inheritdoc} */
     public function update(User $user, int $id): array
     {
-        if ($id == 2) {
-            throw new DuplicatedUserException();
+        try {
+            $this->findByEmailAndUsername($user->getEmail(), $user->getUsername());
+
+            $fields = [
+                'username' => $user->getUsername(),
+                'email' => $user->getEmail(),
+                'name' => $user->getName()
+            ];
+
+            array_filter($fields, fn ($value) => null !== $value && '' !== $value);
+
+            $params = [];
+            $setStr = '';
+
+            foreach ($fields as $key => $value) {
+                if (isset($value) && 'id' !== $key) {
+                    $setStr .= "{$key} = :{$key},";
+                    $params[$key] = $value;
+                }
+            }
+
+            $query = rtrim($setStr, ',');
+
+            $params['id'] = $id;
+
+            $updateUserQuery = $this->db->prepare("UPDATE users SET $query WHERE id = :id");
+            
+            if (!$updateUserQuery->execute($params)) {
+                throw new UserCouldNotBeCreatedException();
+            }
+
+        return $this->findUserOfId($id);
+        } catch (PDOException $e) {
+            throw new UserCouldNotBeUpdatedException($e->getMessage());
         }
-        return [];
+
     }
 
+    /** @throws DuplicatedUserException */
+    private function findByEmailAndUsername(?string $email, ?string $username = null): void
+    {
+        $findUserQuery = $this->db->query('SELECT id FROM users WHERE email = :e OR username = :u');
+        $findUserQuery->execute([':e' => $email ?? '', ':u' => $username ?? '']);
+        $isDuplicated = (bool) $findUserQuery->fetch();
+
+        if ($isDuplicated !== false) {
+            throw new DuplicatedUserException();
+        }
+    }
 
     private function hash(string $string): string
     {
