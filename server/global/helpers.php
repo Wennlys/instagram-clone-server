@@ -6,3 +6,9 @@ function now(): string
 
     return $date->format('Y-m-d\TH:i:sT');
 }
+
+function copyArray(array $array): array
+{
+    $arrObj = new ArrayObject($array);
+    return $arrObj->getArrayCopy();
+}
