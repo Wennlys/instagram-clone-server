@@ -20,6 +20,6 @@ return function (App $app) {
         $group->get('', ListUsersAction::class);
         $group->get('/{id}', ViewUserAction::class);
         $group->post('', CreateUserAction::class);
-        $group->put('', UpdateUserAction::class);
+        $group->put('/{id}', UpdateUserAction::class);
     });
 };
