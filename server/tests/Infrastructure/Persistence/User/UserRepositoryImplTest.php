@@ -30,8 +30,8 @@ class UserRepositoryImplTest extends TestCase
     {
         return [
             'User One' => [
-                'username' => 'user1', 
-                'email' => 'user1@mail.com', 
+                'username' => 'user1',
+                'email' => 'user1@mail.com',
                 'name' => 'User One',
             ],
             'User Two' => [
@@ -39,7 +39,7 @@ class UserRepositoryImplTest extends TestCase
                 'email' => 'user2@mail.com',
                 'name' => 'User Two',
                 'password' => 'newpassword'
-            ],            
+            ],
             'New User' => [
                 'username' => 'user3',
                 'email' => 'user3@mail.com',
@@ -49,7 +49,7 @@ class UserRepositoryImplTest extends TestCase
             'User to update' => [
                 'username' => 'updateduser',
                 'email' => 'updated@mail.com',
-                'name' => 'Updated User' 
+                'name' => 'Updated User'
             ]
         ];
     }
@@ -100,7 +100,7 @@ class UserRepositoryImplTest extends TestCase
         $this->expectException(DuplicatedUserException::class);
         $this->userRepository->store($user);
     }
-    
+
     public function testStoreThrowsUserCouldNotBeCreatedException()
     {
         $providedUser = $this->userProvider()['New User'];
@@ -108,7 +108,7 @@ class UserRepositoryImplTest extends TestCase
         $class = new UserRepositoryImpl();
 
         $this->expectException(UserCouldNotBeCreatedException::class);
-        
+
         $userRepository = new ReflectionClass($class);
         $property = $userRepository->getProperty("db");
         $property->setAccessible(true);
