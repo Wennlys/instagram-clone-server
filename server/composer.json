@@ -1,37 +1,17 @@
 {
-    "name": "slim/slim-skeleton",
-    "description": "A Slim Framework skeleton application for rapid development",
-    "keywords": [
-        "microframework",
-        "rest",
-        "router",
-        "psr7"
-    ],
-    "homepage": "http://github.com/slimphp/Slim-Skeleton",
     "license": "MIT",
-    "authors": [
-        {
-            "name": "Josh Lockhart",
-            "email": "info@joshlockhart.com",
-            "homepage": "http://www.joshlockhart.com/"
-        },
-        {
-            "name": "Pierre Berube",
-            "email": "pierre@lgse.com",
-            "homepage": "http://www.lgse.com/"
-        }
-    ],
     "require": {
         "php": "^7.2",
         "ext-json": "*",
-        "firebase/php-jwt": "^5.2",
         "monolog/monolog": "^2.0",
         "php-di/php-di": "^6.1",
+        "rbdwllr/reallysimplejwt": "^3.1",
         "slim/psr7": "^1.1",
         "slim/slim": "^4.5"
     },
     "require-dev": {
-        "phpunit/phpunit": "^8.5"
+        "phpunit/phpunit": "^8.5",
+        "spatie/phpunit-watcher": "^1.22"
     },
     "config": {
         "process-timeout": 0,
@@ -50,6 +30,9 @@
     },
     "scripts": {
         "start": "php -S localhost:8080 -t public",
-        "test": "phpunit"
+        "test": "./vendor/bin/phpunit --colors=always",
+        "watch": "./vendor/bin/phpunit-watcher watch",
+        "cov-xml": "php -d pcov.enabled=1 ./vendor/bin/phpunit --coverage-clover cov.xml",
+        "cov-html": "php -d pcov.enabled=1 vendor/bin/phpunit --coverage-html coverage"
     }
 }

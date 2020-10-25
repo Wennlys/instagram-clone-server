@@ -32,5 +32,7 @@
         <env name="NAME" value=":memory:"/>
         <env name="USER" value=""/>
         <env name="PASSWORD" value=""/>
-    </php>
+        <env name="ISSUER" value="instagram.clone" />
+        <env name="SECRET" value="sec!ReT423*@"/>
+       </php>
 </phpunit>
