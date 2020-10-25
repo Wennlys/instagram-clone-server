@@ -17,7 +17,7 @@ class UserRepositoryImpl implements UserRepository
 {
     private ?PDO $db = null;
 
-    private ?string $dateNow = null;  
+    private ?string $dateNow = null;
 
     public function __construct()
     {
@@ -36,16 +36,16 @@ class UserRepositoryImpl implements UserRepository
     }
 
     /** {@inheritdoc} */
-    public function findUserOfId(int $id): array
+    public function findUserOfId(int $id, $enablePassword = false): array
     {
+        $password = $enablePassword ? ", password" : "";
         $user = $this->db->query(
-            "SELECT username, name, email FROM users WHERE id = {$id}"
+            "SELECT username, name, email {$password} FROM users WHERE id = {$id}"
         )->fetch(PDO::FETCH_ASSOC);
 
         if (false == $user) {
             throw new UserNotFoundException();
         }
-
         return $user;
     }
 
@@ -102,7 +102,7 @@ class UserRepositoryImpl implements UserRepository
             $params['id'] = $id;
 
             $updateUserQuery = $this->db->prepare("UPDATE users SET $query WHERE id = :id");
-            
+
             if (!$updateUserQuery->execute($params)) {
                 throw new UserCouldNotBeCreatedException();
             }
