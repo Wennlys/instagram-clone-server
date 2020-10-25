@@ -27,6 +27,6 @@ return function (App $app) {
     
     $app->group('/users', function (Group $group) {
         $group->get('', ListUsersAction::class);
-        $group->put('/{id}', UpdateUserAction::class);
+        $group->put('', UpdateUserAction::class);
     })->add(SessionMiddleware::class);
 };
