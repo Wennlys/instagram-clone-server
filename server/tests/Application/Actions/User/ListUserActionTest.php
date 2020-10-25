@@ -7,6 +7,7 @@ use App\Application\Actions\ActionPayload;
 use App\Domain\User\UserRepository;
 use App\Domain\User\User;
 use DI\Container;
+use ReallySimpleJWT\Token;
 use Tests\TestCase;
 
 class ListUserActionTest extends TestCase
@@ -28,7 +29,8 @@ class ListUserActionTest extends TestCase
 
         $container->set(UserRepository::class, $userRepositoryProphecy->reveal());
 
-        $request = $this->createRequest('GET', '/users');
+        $token = Token::create(1, $_ENV['SECRET'], time() + 3600, $_ENV['ISSUER']);
+        $request = $this->createRequest('GET', '/users', ['HTTP_ACCEPT' => 'application/json', 'AUTHORIZATION' => "Bearer {$token}"]);
         $response = $app->handle($request);
 
         $payload = (string) $response->getBody();

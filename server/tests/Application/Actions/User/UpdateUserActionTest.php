@@ -10,6 +10,7 @@ use App\Domain\User\DuplicatedUserException;
 use App\Domain\User\UserRepository;
 use App\Domain\User\User;
 use DI\Container;
+use ReallySimpleJWT\Token;
 use Slim\Middleware\ErrorMiddleware;
 use Tests\TestCase;
 
@@ -41,7 +42,8 @@ class UpdateUserActionTest extends TestCase
         $container->set(UserRepository::class, $userRepositoryProphecy->reveal());
 
         $userArray['id'] = $id;
-        $request = $this->createRequest('PUT', '/users');
+        $token = Token::create($id, $_ENV['SECRET'], time() + 3600, $_ENV['ISSUER']);
+        $request = $this->createRequest('PUT', '/users', ['HTTP_ACCEPT' => 'application/json', 'AUTHORIZATION' => "Bearer {$token}"]);
         $request->getBody()->write(json_encode($userArray));
         $response = $app->handle($request);
 
@@ -87,7 +89,8 @@ class UpdateUserActionTest extends TestCase
         $container->set(UserRepository::class, $userRepositoryProphecy->reveal());
 
         $userArray['id'] = $id;
-        $request = $this->createRequest('PUT', '/users');
+        $token = Token::create($id, $_ENV['SECRET'], time() + 3600, $_ENV['ISSUER']);
+        $request = $this->createRequest('PUT', '/users', ['HTTP_ACCEPT' => 'application/json', 'AUTHORIZATION' => "Bearer {$token}"]);
         $request->getBody()->write(json_encode($userArray));
         $response = $app->handle($request);
 
