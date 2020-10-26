@@ -10,7 +10,7 @@ use DI\Container;
 use ReallySimpleJWT\Token;
 use Tests\TestCase;
 
-class ListUserActionTest extends TestCase
+class ListUsersActionTest extends TestCase
 {
     public function testAction()
     {
