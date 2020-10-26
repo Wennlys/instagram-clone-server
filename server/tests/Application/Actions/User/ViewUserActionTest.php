@@ -21,17 +21,21 @@ class ViewUserActionTest extends TestCase
         /** @var Container $container */
         $container = $app->getContainer();
 
-        $user = ['bill.gates', 'bill.gates@mail.com', 'Bill Gates'];
+        $user = [
+            'username' => 'bill.gates', 
+            'email' => 'bill.gates@mail.com', 
+            'name' => 'Bill Gates'
+        ];
 
         $userRepositoryProphecy = $this->prophesize(UserRepository::class);
         $userRepositoryProphecy
-            ->findUserOfId(1)
+            ->findUserOfUsername($user['username'])
             ->willReturn($user)
             ->shouldBeCalledOnce();
 
         $container->set(UserRepository::class, $userRepositoryProphecy->reveal());
 
-        $request = $this->createRequest('GET', '/users/1');
+        $request = $this->createRequest('GET', "/{$user['username']}");
         $response = $app->handle($request);
 
         $payload = (string) $response->getBody();
@@ -57,15 +61,17 @@ class ViewUserActionTest extends TestCase
         /** @var Container $container */
         $container = $app->getContainer();
 
+        $username = 'notfounduser';
+        
         $userRepositoryProphecy = $this->prophesize(UserRepository::class);
         $userRepositoryProphecy
-            ->findUserOfId(1)
+            ->findUserOfUsername($username)
             ->willThrow(new UserNotFoundException())
             ->shouldBeCalledOnce();
 
         $container->set(UserRepository::class, $userRepositoryProphecy->reveal());
 
-        $request = $this->createRequest('GET', '/users/1');
+        $request = $this->createRequest('GET', "/{$username}");
         $response = $app->handle($request);
 
         $payload = (string) $response->getBody();

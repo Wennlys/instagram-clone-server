@@ -10,6 +10,9 @@ interface UserRepository
     /** @throws UserNotFoundException */
     public function findUserOfId(int $id): array;
 
+    /** @throws UserNotFoundException */
+    public function findUserOfUsername(string $username): array;
+
     /** @throws UserCouldNotBeCreatedException */
     public function store(User $user): array;
 

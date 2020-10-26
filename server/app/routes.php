@@ -18,7 +18,6 @@ return function (App $app) {
         return $response;
     });
 
-    $app->get('/users/{id}', ViewUserAction::class);
     $app->post('/users', CreateUserAction::class);
     
     $app->group('/sessions', function (Group $group) {
@@ -29,4 +28,6 @@ return function (App $app) {
         $group->get('', ListUsersAction::class);
         $group->put('', UpdateUserAction::class);
     })->add(SessionMiddleware::class);
+    
+    $app->get('/{username}', ViewUserAction::class);
 };

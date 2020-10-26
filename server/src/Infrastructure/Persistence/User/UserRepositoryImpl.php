@@ -50,6 +50,12 @@ class UserRepositoryImpl implements UserRepository
     }
 
     /** {@inheritdoc} */
+    public function findUserOfUsername(string $username): array
+    {
+        return [];
+    }
+    
+    /** {@inheritdoc} */
     public function store(User $user): array
     {
         try {

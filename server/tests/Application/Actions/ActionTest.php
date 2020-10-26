@@ -38,8 +38,8 @@ class ActionTest extends TestCase
             }
         };
 
-        $app->get('/test-action-response-code', $testAction);
-        $request = $this->createRequest('GET', '/test-action-response-code');
+        $app->get('/test-action-response-code/test', $testAction);
+        $request = $this->createRequest('GET', '/test-action-response-code/test');
         $response = $app->handle($request);
 
         $this->assertEquals(202, $response->getStatusCode());
@@ -69,8 +69,8 @@ class ActionTest extends TestCase
             }
         };
 
-        $app->get('/test-action-response-code', $testAction);
-        $request = $this->createRequest('GET', '/test-action-response-code');
+        $app->get('/test-action-response-code/test', $testAction);
+        $request = $this->createRequest('GET', '/test-action-response-code/test');
         $response = $app->handle($request);
 
         $this->assertEquals(202, $response->getStatusCode());
