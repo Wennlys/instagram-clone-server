@@ -52,7 +52,14 @@ class UserRepositoryImpl implements UserRepository
     /** {@inheritdoc} */
     public function findUserOfUsername(string $username): array
     {
-        return [];
+        $user = $this->db->query(
+            "SELECT username, name, email FROM users WHERE username = '{$username}'"
+        )->fetch(PDO::FETCH_ASSOC);
+
+        if (false == $user) {
+            throw new UserNotFoundException();
+        }
+        return $user;
     }
     
     /** {@inheritdoc} */

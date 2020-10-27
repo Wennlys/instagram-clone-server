@@ -82,6 +82,19 @@ class UserRepositoryImplTest extends TestCase
         $this->userRepository->findUserOfId(9999999);
     }
 
+    public function testFindUserOfUsername()
+    {
+        $userFound = $this->userRepository->findUserOfUsername('user1');
+        $userArray = $this->userProvider()['User One'];
+        $this->assertEquals($userArray, $userFound);
+    }
+
+    public function testFindUserOfUsernameThrowsNotFoundException()
+    {
+        $this->expectException(UserNotFoundException::class);
+        $this->userRepository->findUserOfUsername('notfoundeduser');
+    }
+
     public function testStore()
     {
         $providedUser = $this->userProvider()['New User'];
