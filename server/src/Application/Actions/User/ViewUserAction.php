@@ -15,7 +15,7 @@ class ViewUserAction extends UserAction
         $username = (string) $this->resolveArg('username');
         $user = $this->userRepository->findUserOfUsername($username);
 
-        $this->logger->info("User of id `${username}` was viewed.");
+        $this->logger->info("User @`${username}` was viewed.");
 
         return $this->respondWithData($user);
     }
