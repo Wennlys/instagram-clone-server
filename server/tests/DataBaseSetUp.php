@@ -10,9 +10,9 @@ class DataBaseSetUp
 {
     public static function up(): void
     {
-        $password1 = password_hash('password1', PASSWORD_DEFAULT);
-        $password2 = password_hash('password2', PASSWORD_DEFAULT);
-        $actualDate = now();
+        $password1 = '$2y$10$OMMj4VRsyovweGTmDJmDy.T4gCK7LW.pLXk6IY7psR9B.dsxpHJaG';
+        $password2 = '$2y$10$jXJDu3/ZrbueY2wYl2kb8Owvv.BkXKNipHs2wmtdemUVCNzv1Pcja';
+        $dateNow = now();
 
         Connection::getInstance()->getConnection()->exec("
                 DROP TABLE IF EXISTS users;
@@ -27,8 +27,8 @@ class DataBaseSetUp
                 updated_at DATETIME,
                 UNIQUE (email, username));
 
-                INSERT INTO users (username, email, name, password, created_at, updated_at) VALUES ('user1', 'user1@mail.com', 'User One', '{$password1}', '{$actualDate}', '{$actualDate}');
-                INSERT INTO users (username, email, name, password, created_at, updated_at) VALUES ('user2', 'user2@mail.com', 'User Two', '{$password2}', '{$actualDate}', '{$actualDate}');
+                INSERT INTO users (username, email, name, password, created_at, updated_at) VALUES ('user1', 'user1@mail.com', 'User One', '{$password1}', '{$dateNow}', '{$dateNow}');
+                INSERT INTO users (username, email, name, password, created_at, updated_at) VALUES ('user2', 'user2@mail.com', 'User Two', '{$password2}', '{$dateNow}', '{$dateNow}');
         ");
     }
 }
