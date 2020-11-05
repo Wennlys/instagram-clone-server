@@ -1,8 +1,6 @@
 # Instagram Clone
 
-A clone of Facebook's Instagram app where you can login/register, create new posts, follow other users and see other people you follows posts
-
-You should create a MVP (Minimum Viable Product) using a Full stack approach such as the MEAN, MERN or VENM Stack to store images to the server and display them to the client.
+A clone of Facebook's Instagram app where you can login/register, create new posts, follow other users and see other people you follows posts.
 
 ## User Stories
 
