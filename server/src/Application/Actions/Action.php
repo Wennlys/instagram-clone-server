@@ -59,10 +59,8 @@ abstract class Action
         try {
             return $this->action();
         } catch (DomainException $e) {
-            if ($e instanceof DomainRecordNotFoundException)
-            throw new HttpNotFoundException($this->request, $e->getMessage());
-            if ($e instanceof DomainRecordNotPersistedException)
-            throw new HttpBadRequestException($this->request, $e->getMessage());
+            $httpErrorType = $e->getHttpErrorType();
+            throw new $httpErrorType($this->request, $e->getMessage());
         }
     }
 
