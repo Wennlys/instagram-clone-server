@@ -3,6 +3,8 @@
 /coverage/
 /vendor/
 /logs/*
+*/tmp/*
+!*/tmp/avatar.jpg
 !/logs/README.md
 .phpunit.result.cache
 cov.xml
