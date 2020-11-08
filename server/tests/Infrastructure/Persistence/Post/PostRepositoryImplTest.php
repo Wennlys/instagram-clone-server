@@ -27,7 +27,7 @@ class PostRepositoryImplTest extends TestCase
     {
         return [
             'Post One' => [
-                'imageUrl' => '/public/tmp/avatar.jpg',
+                'imageUrl' => '/tmp/avatar.jpg',
                 'description' => 'Nothing to see arround here :P',
                 'userId' => 1
             ]
