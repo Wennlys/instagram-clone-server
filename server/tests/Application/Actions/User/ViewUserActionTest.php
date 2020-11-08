@@ -22,8 +22,8 @@ class ViewUserActionTest extends TestCase
         $container = $app->getContainer();
 
         $user = [
-            'username' => 'bill.gates', 
-            'email' => 'bill.gates@mail.com', 
+            'username' => 'bill.gates',
+            'email' => 'bill.gates@mail.com',
             'name' => 'Bill Gates'
         ];
 
@@ -62,7 +62,7 @@ class ViewUserActionTest extends TestCase
         $container = $app->getContainer();
 
         $username = 'notfounduser';
-        
+
         $userRepositoryProphecy = $this->prophesize(UserRepository::class);
         $userRepositoryProphecy
             ->findUserOfUsername($username)
@@ -75,7 +75,7 @@ class ViewUserActionTest extends TestCase
         $response = $app->handle($request);
 
         $payload = (string) $response->getBody();
-        $expectedError = new ActionError(ActionError::RESOURCE_NOT_FOUND, 'The user you requested does not exist.');
+        $expectedError = new ActionError(ActionError::RESOURCE_NOT_FOUND, 'User not found.');
         $expectedPayload = new ActionPayload(404, null, $expectedError);
         $serializedPayload = json_encode($expectedPayload, JSON_PRETTY_PRINT);
 

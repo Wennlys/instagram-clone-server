@@ -14,12 +14,12 @@ class CreateUserAction extends UserAction
     protected function action(): Response
     {
         [
-            'username' => $username, 
-            'email' => $email, 
-            'name' => $name, 
+            'username' => $username,
+            'email' => $email,
+            'name' => $name,
             'password' => $password
         ] = json_decode((string) $this->request->getBody(), true);
-        
+
         $user = new User($username, $email, $name, $password);
         $createdUser = $this->userRepository->store($user);
 
