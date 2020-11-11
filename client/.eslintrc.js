@@ -2,7 +2,6 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   env: {
     browser: true,
-    'cypress/globals': true,
     es6: true,
     'jest/globals': true,
   },
@@ -24,7 +23,6 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'prettier/@typescript-eslint',
     'plugin:prettier/recommended',
-    'plugin:cypress/recommended',
     'plugin:jest-dom/recommended',
     'plugin:jest/recommended',
   ],
