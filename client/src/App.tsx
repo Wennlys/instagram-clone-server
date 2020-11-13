@@ -1,27 +1,24 @@
-import React, { useEffect, useState } from 'react';
-import Homepage from './pages/Homepage';
+import React, { useState } from 'react';
+import { Route } from 'react-router-dom';
+import Home from './pages/Home';
 import Login from './pages/Login';
 import api from './services/api';
 
-function App(): JSX.Element {
-  const [isLogged, setIsLogged] = useState(false);
-  useEffect(() => {
-    async function handleIsLogged() {
-      const { data } = await api.post('/sessions', {
-        user_id: 1,
-        password: 12345678,
-      });
-      console.log(data);
-      if (data[0].statusCode == 200) {
-        return true;
-      }
-      return false;
-    }
+const App: React.FC = () => {
+  const [isSigned, setIsSigned] = useState(false);
+  api
+    .post('/sessions', {
+      user_id: 1,
+      password: '123456',
+    })
+    .then(res => setIsSigned(res.data[0].statusCode == 200 ? true : false));
 
-    handleIsLogged().then(res => setIsLogged(res));
-  }, [isLogged]);
-
-  return <div className="App">{isLogged ? <Homepage /> : <Login />}</div>;
-}
+  return (
+    <>
+      {isSigned ? <Route path="/" component={Home} /> : <Route path="/" component={Login} />}
+      <Route component={() => <div>Not Found</div>} />
+    </>
+  );
+};
 
 export default App;

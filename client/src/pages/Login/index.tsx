@@ -1,7 +1,7 @@
 import React from 'react';
 
-function Login(): JSX.Element {
-  return <div className="Login">Login</div>;
-}
+const Login: React.FC = () => {
+  return <button type="submit">Log In</button>;
+};
 
 export default Login;
