@@ -7,25 +7,31 @@ import { MemoryRouter, Router } from 'react-router-dom';
 import App from './App';
 import api from './services/api';
 
-const mockedApi = jest.spyOn(api, 'post');
-afterEach(cleanup);
+jest.mock('./services/api');
+const mockedApi = api as jest.Mocked<typeof api>;
+afterEach(() => {
+  cleanup();
+  jest.resetAllMocks();
+});
 
 const token =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2MDUxMzQyNDQsImlzcyI6Imluc3RhZ3JhbS5jbG9uZSIsImlhdCI6MTYwNTA0Nzg0NH0.Rg1iGzoCiAl14BPUJQYjm7n941WNlYBmOqGsaruRPBo';
 
 describe('App rendering & routes', () => {
   it('renders Login component', () => {
-    mockedApi.mockResolvedValue({
-      data: [
-        {
-          statusCode: 404,
-          error: {
-            type: 'RESOURCE_NOT_FOUND',
-            description: 'Wrong password, try again.',
+    mockedApi.post.mockImplementation(() =>
+      Promise.resolve({
+        data: [
+          {
+            statusCode: 404,
+            error: {
+              type: 'RESOURCE_NOT_FOUND',
+              description: 'Wrong password, try again.',
+            },
           },
-        },
-      ],
-    });
+        ],
+      }),
+    );
     const { getByText } = render(
       <MemoryRouter>
         <App />
@@ -35,16 +41,16 @@ describe('App rendering & routes', () => {
   });
 
   it('renders Homepage component', async () => {
-    mockedApi.mockResolvedValue({
-      data: [
-        {
-          statusCode: 200,
-          data: {
+    mockedApi.post.mockImplementation(() =>
+      Promise.resolve({
+        data: [
+          {
+            statusCode: 200,
             token: token,
           },
-        },
-      ],
-    });
+        ],
+      }),
+    );
     await act(async () => {
       const { getByText } = await render(
         <MemoryRouter>
@@ -56,6 +62,19 @@ describe('App rendering & routes', () => {
   });
 
   it('renders 404 component', async () => {
+    mockedApi.post.mockImplementation(() =>
+      Promise.resolve({
+        data: [
+          {
+            statusCode: 404,
+            error: {
+              type: 'RESOURCE_NOT_FOUND',
+              description: 'Wrong password, try again.',
+            },
+          },
+        ],
+      }),
+    );
     const history = createMemoryHistory();
     history.push('/404');
     await act(async () => {
@@ -70,19 +89,43 @@ describe('App rendering & routes', () => {
   });
 
   it('renders Explore component', async () => {
-    mockedApi.mockResolvedValue({
-      data: [
-        {
-          statusCode: 200,
-          data: {
+    mockedApi.post.mockImplementation(() =>
+      Promise.resolve({
+        data: [
+          {
+            statusCode: 200,
             token: token,
           },
-        },
-      ],
-    });
+        ],
+      }),
+    );
+    const history = createMemoryHistory();
+    history.push('/explore');
     await act(async () => {
-      const history = createMemoryHistory();
-      history.push('/explore');
+      const { getByText } = await render(
+        <Router history={history}>
+          <App />
+        </Router>,
+      );
+
+      expect(getByText(/Explore/i)).toBeInTheDocument();
+    });
+  });
+
+  test('hability to authenticate', async () => {
+    mockedApi.post.mockImplementation(() =>
+      Promise.resolve({
+        data: [
+          {
+            statusCode: 200,
+            token: token,
+          },
+        ],
+      }),
+    );
+    const history = createMemoryHistory();
+    history.push('/explore');
+    await act(async () => {
       const { getByText } = await render(
         <Router history={history}>
           <App />

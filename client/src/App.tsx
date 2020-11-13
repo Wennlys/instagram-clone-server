@@ -10,7 +10,9 @@ const App: React.FC = () => {
       user_id: 1,
       password: '123456',
     })
-    .then(res => setIsSigned(res.data[0].statusCode == 200 ? true : false));
+    .then(res => {
+      setIsSigned(res.data[0].statusCode == 200 ? true : false);
+    });
 
   return <>{isSigned ? <AuthenticatedRoutes /> : <NotAutheticatedRoutes />}</>;
 };
