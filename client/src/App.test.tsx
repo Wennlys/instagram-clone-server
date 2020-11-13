@@ -8,9 +8,7 @@ import App from './App';
 import api from './services/api';
 
 const mockedApi = jest.spyOn(api, 'post');
-afterEach(() => {
-  cleanup();
-});
+afterEach(cleanup);
 
 const token =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2MDUxMzQyNDQsImlzcyI6Imluc3RhZ3JhbS5jbG9uZSIsImlhdCI6MTYwNTA0Nzg0NH0.Rg1iGzoCiAl14BPUJQYjm7n941WNlYBmOqGsaruRPBo';
@@ -59,6 +57,7 @@ describe('App rendering & routes', () => {
 
   it('renders 404 component', async () => {
     const history = createMemoryHistory();
+    history.push('/404');
     await act(async () => {
       const { getByText } = await render(
         <Router history={history}>
@@ -66,8 +65,31 @@ describe('App rendering & routes', () => {
         </Router>,
       );
 
-      history.push('/404');
       expect(getByText(/Not Found/i)).toBeInTheDocument();
+    });
+  });
+
+  it('renders Explore component', async () => {
+    mockedApi.mockResolvedValue({
+      data: [
+        {
+          statusCode: 200,
+          data: {
+            token: token,
+          },
+        },
+      ],
+    });
+    await act(async () => {
+      const history = createMemoryHistory();
+      history.push('/explore');
+      const { getByText } = await render(
+        <Router history={history}>
+          <App />
+        </Router>,
+      );
+
+      expect(getByText(/Explore/i)).toBeInTheDocument();
     });
   });
 });

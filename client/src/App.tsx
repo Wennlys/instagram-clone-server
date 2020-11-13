@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { Route } from 'react-router-dom';
-import Home from './pages/Home';
-import Login from './pages/Login';
+import AuthenticatedRoutes from './routes/AuthenticatedRoutes';
+import NotAutheticatedRoutes from './routes/NotAuthenticatedRoutes';
 import api from './services/api';
 
 const App: React.FC = () => {
@@ -13,12 +12,7 @@ const App: React.FC = () => {
     })
     .then(res => setIsSigned(res.data[0].statusCode == 200 ? true : false));
 
-  return (
-    <>
-      {isSigned ? <Route path="/" component={Home} /> : <Route path="/" component={Login} />}
-      <Route component={() => <div>Not Found</div>} />
-    </>
-  );
+  return <>{isSigned ? <AuthenticatedRoutes /> : <NotAutheticatedRoutes />}</>;
 };
 
 export default App;
