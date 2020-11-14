@@ -13,5 +13,6 @@ describe('Login rendering', () => {
       </AuthContext.Provider>,
     );
     screen.getByText(/Log In/).click();
+    expect(handleLogin).toBeCalled();
   });
 });
