@@ -9,7 +9,7 @@ export interface IUser {
 
 export interface IAuthContext {
   isSigned: boolean;
-  Login(user: IUser): Promise<void>;
+  handleLogin(user: IUser): Promise<void>;
 }
 
 const AuthContext = createContext<IAuthContext>({} as IAuthContext);
