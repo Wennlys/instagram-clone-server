@@ -8,13 +8,11 @@ import { renderWithRouter } from './utils/test.utils';
 
 jest.mock('./services/api');
 const mockedApi = api as jest.Mocked<typeof api>;
+
 afterEach(() => {
   cleanup();
   jest.resetAllMocks();
 });
-
-const token =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2MDUxMzQyNDQsImlzcyI6Imluc3RhZ3JhbS5jbG9uZSIsImlhdCI6MTYwNTA0Nzg0NH0.Rg1iGzoCiAl14BPUJQYjm7n941WNlYBmOqGsaruRPBo';
 
 describe('App rendering & routes', () => {
   it('renders Login component', async () => {
@@ -23,15 +21,11 @@ describe('App rendering & routes', () => {
         data: [
           {
             statusCode: 404,
-            error: {
-              type: 'RESOURCE_NOT_FOUND',
-              description: 'Wrong password, try again.',
-            },
           },
         ],
       }),
     );
-    const { getByText } = await renderWithRouter(<App />);
+    const { getByText } = renderWithRouter(<App />);
     expect(getByText(/Log In/i)).toBeInTheDocument();
   });
 
@@ -41,7 +35,6 @@ describe('App rendering & routes', () => {
         data: [
           {
             statusCode: 200,
-            token: token,
           },
         ],
       }),
@@ -59,17 +52,11 @@ describe('App rendering & routes', () => {
         data: [
           {
             statusCode: 404,
-            error: {
-              type: 'RESOURCE_NOT_FOUND',
-              description: 'Wrong password, try again.',
-            },
           },
         ],
       }),
     );
-    await act(async () => {
-      await renderWithRouter(<App />, '/404');
-    });
+    renderWithRouter(<App />, '/404');
     expect(screen.getByText(/Not Found/i)).toBeInTheDocument();
   });
 
@@ -79,7 +66,6 @@ describe('App rendering & routes', () => {
         data: [
           {
             statusCode: 200,
-            token: token,
           },
         ],
       }),
