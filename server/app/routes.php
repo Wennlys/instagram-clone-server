@@ -12,8 +12,17 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\App;
 use Slim\Interfaces\RouteCollectorProxyInterface as Group;
+use Slim\Psr7\Response as Psr7Response;
 
 return function (App $app) {
+    $app->get('/tmp/{name}', function (Request $request) {
+        $name = $request->getAttribute('name');
+        $image = file_get_contents(getcwd() . "/public/tmp/{$name}");
+        $response = new Psr7Response();
+        $response->getBody()->write($image);
+        return $response->withStatus(200);
+    });
+
     $app->options('/{routes:.*}', function (Request $request, Response $response) {
         // CORS Pre-Flight OPTIONS Request Handler
         return $response;
