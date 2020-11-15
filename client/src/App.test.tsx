@@ -4,7 +4,7 @@ import React from 'react';
 import { act } from 'react-dom/test-utils';
 import App from './App';
 import api from './services/api';
-import { renderWithRouter } from './utils/test.utils';
+import { renderWithRouter, sessionsResponseMock } from './utils/test.utils';
 
 jest.mock('./services/api');
 const mockedApi = api as jest.Mocked<typeof api>;
@@ -16,29 +16,13 @@ afterEach(() => {
 
 describe('App rendering & routes', () => {
   it('renders Login component', async () => {
-    mockedApi.post.mockImplementation(() =>
-      Promise.resolve({
-        data: [
-          {
-            statusCode: 404,
-          },
-        ],
-      }),
-    );
+    mockedApi.post.mockImplementation(() => sessionsResponseMock.post.success);
     const { getByText } = renderWithRouter(<App />);
     expect(getByText(/Log In/i)).toBeInTheDocument();
   });
 
   test("authentication & Homepage's component rendering", async () => {
-    mockedApi.post.mockImplementation(() =>
-      Promise.resolve({
-        data: [
-          {
-            statusCode: 200,
-          },
-        ],
-      }),
-    );
+    mockedApi.post.mockImplementation(() => sessionsResponseMock.post.success);
     await act(async () => {
       await renderWithRouter(<App />);
       (await screen.findByText(/Log In/i)).click();
@@ -47,29 +31,13 @@ describe('App rendering & routes', () => {
   });
 
   it('renders 404 component', async () => {
-    mockedApi.post.mockImplementation(() =>
-      Promise.resolve({
-        data: [
-          {
-            statusCode: 404,
-          },
-        ],
-      }),
-    );
+    mockedApi.post.mockImplementation(() => sessionsResponseMock.post.failure);
     renderWithRouter(<App />, '/404');
     expect(screen.getByText(/Not Found/i)).toBeInTheDocument();
   });
 
   it('renders Explore component', async () => {
-    mockedApi.post.mockImplementation(() =>
-      Promise.resolve({
-        data: [
-          {
-            statusCode: 200,
-          },
-        ],
-      }),
-    );
+    mockedApi.post.mockImplementation(() => sessionsResponseMock.post.success);
     await act(async () => {
       await renderWithRouter(<App />);
       (await screen.findByText(/Log In/i)).click();
