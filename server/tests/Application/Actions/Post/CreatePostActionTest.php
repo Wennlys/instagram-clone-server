@@ -9,6 +9,7 @@ use App\Application\Handlers\HttpErrorHandler;
 use App\Domain\Post\Post;
 use App\Domain\User\UserNotFoundException;
 use App\Domain\User\UserRepository;
+use ReallySimpleJWT\Token;
 use Slim\Middleware\ErrorMiddleware;
 use Slim\Psr7\UploadedFile;
 use Tests\TestCase;
@@ -23,11 +24,13 @@ class CreatePostActionTest extends TestCase
         $file = new UploadedFile(TMP_DIR() . 'avatar.jpg', 'avatar.jpg');
         copy(ASSETS_DIR() . 'avatar.jpg', TMP_DIR() . 'avatar.jpg');
 
-        $request = $this->createRequest('POST', '/posts');
+        $userId = 1;
+        $token = Token::create($userId, $_ENV['SECRET'], time() + 3600, $_ENV['ISSUER']);
+        $request = $this->createRequest('POST', '/posts', ['HTTP_ACCEPT' => 'application/json', 'AUTHORIZATION' => "Bearer {$token}"]);
         $request = $request->withUploadedFiles([
             'image' => $file,
             'description' => 'Nothing to see here. :P',
-            'userId' => 1
+            'userId' => $userId
         ]);
         $response = $app->handle($request);
 
@@ -66,7 +69,8 @@ class CreatePostActionTest extends TestCase
 
         $container->set(UserRepository::class, $userRepositoryProphecy->reveal());
 
-        $request = $this->createRequest('POST', '/posts');
+        $token = Token::create($userId, $_ENV['SECRET'], time() + 3600, $_ENV['ISSUER']);
+        $request = $this->createRequest('POST', '/posts', ['HTTP_ACCEPT' => 'application/json', 'AUTHORIZATION' => "Bearer {$token}"]);
         $request = $request->withUploadedFiles([
             'image' => $file,
             'description' => 'Nothing to see here. :P',

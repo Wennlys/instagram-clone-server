@@ -29,20 +29,20 @@ class UpdateUserActionTest extends TestCase
             'name' => 'Bill Gates',
         ];
 
-        $id = 1;
+        $userId = 1;
 
         $user = $this->createUser($userArray);
 
         $userRepositoryProphecy = $this->prophesize(UserRepository::class);
         $userRepositoryProphecy
-            ->update($user, $id)
-            ->willReturn($userArray)
-            ->shouldBeCalledOnce();
+        ->update($user, $userId)
+        ->willReturn($userArray)
+        ->shouldBeCalledOnce();
 
         $container->set(UserRepository::class, $userRepositoryProphecy->reveal());
 
-        $userArray['id'] = $id;
-        $token = Token::create($id, $_ENV['SECRET'], time() + 3600, $_ENV['ISSUER']);
+        $userArray['userId'] = $userId;
+        $token = Token::create($userId, $_ENV['SECRET'], time() + 3600, $_ENV['ISSUER']);
         $request = $this->createRequest('PUT', '/users', ['HTTP_ACCEPT' => 'application/json', 'AUTHORIZATION' => "Bearer {$token}"]);
         $request->getBody()->write(json_encode($userArray));
         $response = $app->handle($request);
@@ -75,21 +75,21 @@ class UpdateUserActionTest extends TestCase
             'email' => 'user1@mail.com',
             'name' => 'User One',
         ];
-        
-        $id = 2;
+
+        $userId = 2;
 
         $user = $this->createUser($userArray);
 
         $userRepositoryProphecy = $this->prophesize(UserRepository::class);
         $userRepositoryProphecy
-            ->update($user, $id)
+            ->update($user, $userId)
             ->willThrow(new DuplicatedUserException())
             ->shouldBeCalledOnce();
 
         $container->set(UserRepository::class, $userRepositoryProphecy->reveal());
 
-        $userArray['id'] = $id;
-        $token = Token::create($id, $_ENV['SECRET'], time() + 3600, $_ENV['ISSUER']);
+        $userArray['userId'] = $userId;
+        $token = Token::create($userId, $_ENV['SECRET'], time() + 3600, $_ENV['ISSUER']);
         $request = $this->createRequest('PUT', '/users', ['HTTP_ACCEPT' => 'application/json', 'AUTHORIZATION' => "Bearer {$token}"]);
         $request->getBody()->write(json_encode($userArray));
         $response = $app->handle($request);

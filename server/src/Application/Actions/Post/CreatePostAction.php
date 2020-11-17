@@ -19,8 +19,7 @@ class CreatePostAction extends PostAction
             'userId' => $userId
         ] = $this->request->getUploadedFiles();
 
-
-        $user = $this->userRepository->findUserOfId($userId);
+        $this->userRepository->findUserOfId($userId);
 
         $imageUrl = $this->moveUploadedFile(getcwd() . '/public/tmp/', $image);
 

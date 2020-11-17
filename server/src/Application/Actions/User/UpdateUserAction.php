@@ -4,8 +4,6 @@ declare(strict_types=1);
 namespace App\Application\Actions\User;
 
 use App\Domain\User\User;
-use Exception;
-use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface as Response;
 
 class UpdateUserAction extends UserAction
@@ -16,16 +14,15 @@ class UpdateUserAction extends UserAction
     protected function action(): Response
     {
         [
-            'username' => $username, 
-            'email' => $email, 
+            'username' => $username,
+            'email' => $email,
             'name' => $name,
-            'id' => $id 
+            'userId' => $userId
         ] = json_decode((string) $this->request->getBody(), true);
 
         $user = new User($username, $email, $name);
-
-        $createdUser = $this->userRepository->update($user, $id);
-        $this->logger->info("User `{$id}` was updated.");
+        $createdUser = $this->userRepository->update($user, $userId);
+        $this->logger->info("User `{$userId}` was updated.");
 
         return $this->respondWithData($createdUser);
     }
