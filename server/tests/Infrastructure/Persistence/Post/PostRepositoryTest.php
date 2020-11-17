@@ -5,6 +5,7 @@ namespace Tests\Infrastructure\Persistence\Post;
 
 use App\Domain\Post\Post;
 use App\Domain\Post\PostCouldNotBeCreatedException;
+use App\Domain\Post\PostNotFoundException;
 use App\Domain\Post\PostRepository;
 use App\Infrastructure\Persistence\Post\PostRepositoryImpl;
 use PDO;
@@ -27,9 +28,9 @@ class PostRepositoryImplTest extends TestCase
     {
         return [
             'Post One' => [
-                'imageUrl' => '/tmp/avatar.jpg',
-                'description' => 'Nothing to see arround here :P',
-                'userId' => 1
+                'image_url' => '/tmp/avatar.jpg',
+                'description' => 'Nothing to see here :P',
+                'user_id' => 1
             ]
         ];
     }
@@ -55,9 +56,22 @@ class PostRepositoryImplTest extends TestCase
         $this->assertTrue($isStored);
     }
 
+    public function testFindPostOfIdThrowsPostNotFound()
+    {
+        $this->expectException(PostNotFoundException::class);
+        $this->postRepository->findPostOfId(9999999999999);
+    }
+
+    public function testFindPostOfId()
+    {
+        ['Post One' => $expectedPost] = $this->postProvider();
+        $actualPost = $this->postRepository->findPostOfId(1);
+        $this->assertEquals($expectedPost, $actualPost);
+    }
+
     private function createPost(string $postName): Post
     {
         $post = $this->postProvider()[$postName];
-        return new Post($post['imageUrl'], $post['description'], $post['userId']);
+        return new Post($post['image_url'], $post['description'], $post['user_id']);
     }
 }

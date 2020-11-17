@@ -5,6 +5,7 @@ namespace App\Infrastructure\Persistence\Post;
 
 use App\Domain\Post\Post;
 use App\Domain\Post\PostCouldNotBeCreatedException;
+use App\Domain\Post\PostNotFoundException;
 use App\Domain\Post\PostRepository;
 use App\Infrastructure\Connection;
 use PDO;
@@ -30,7 +31,14 @@ class PostRepositoryImpl implements PostRepository
     /** {@inheritdoc} */
     public function findPostOfId(int $id): array
     {
-        return [];
+        $post = $this->db->query(
+            "SELECT image_url, description, user_id FROM posts WHERE id = {$id}"
+        )->fetch(PDO::FETCH_ASSOC);
+
+        if (false == $post) {
+            throw new PostNotFoundException();
+        }
+        return $post;
     }
 
     /** {@inheritdoc} */
