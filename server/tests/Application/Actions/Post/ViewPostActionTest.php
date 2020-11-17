@@ -9,7 +9,6 @@ use App\Application\Handlers\HttpErrorHandler;
 use App\Domain\Post\PostRepository;
 use App\Domain\Post\PostNotFoundException;
 use DI\Container;
-use ReallySimpleJWT\Token;
 use Slim\Middleware\ErrorMiddleware;
 use Tests\TestCase;
 
@@ -38,9 +37,7 @@ class ViewPostActionTest extends TestCase
 
         $container->set(PostRepository::class, $postRepositoryProphecy->reveal());
 
-        $userId = 1;
-        $token = Token::create($userId, $_ENV['SECRET'], time() + 3600, $_ENV['ISSUER']);
-        $request = $this->createRequest('GET', "/posts/{$id}", ['HTTP_ACCEPT' => 'application/json', 'AUTHORIZATION' => "Bearer {$token}"]);
+        $request = $this->createRequest('GET', "/posts/{$id}");
         $response = $app->handle($request);
 
         $payload = (string) $response->getBody();
@@ -76,9 +73,7 @@ class ViewPostActionTest extends TestCase
 
         $container->set(PostRepository::class, $postRepositoryProphecy->reveal());
 
-        $userId = 1;
-        $token = Token::create($userId, $_ENV['SECRET'], time() + 3600, $_ENV['ISSUER']);
-        $request = $this->createRequest('GET', "/posts/{$id}", ['HTTP_ACCEPT' => 'application/json', 'AUTHORIZATION' => "Bearer {$token}"]);
+        $request = $this->createRequest('GET', "/posts/{$id}");
         $response = $app->handle($request);
 
         $payload = (string) $response->getBody();
