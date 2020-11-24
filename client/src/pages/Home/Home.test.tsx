@@ -1,5 +1,4 @@
-import { screen } from '@testing-library/dom';
-import { cleanup } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import React from 'react';
 import Home from '.';
 import api from '../../services/api';
@@ -9,7 +8,6 @@ jest.mock('../../services/api');
 const mockedApi = api as jest.Mocked<typeof api>;
 
 afterEach(() => {
-  cleanup();
   jest.resetAllMocks();
 });
 

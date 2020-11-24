@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/dom';
+import { screen } from '@testing-library/react';
 import React from 'react';
 import Login from '.';
 import AuthContext from '../../contexts/AuthContext';

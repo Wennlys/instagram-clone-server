@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom/extend-expect';
-import { cleanup, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import React from 'react';
 import { act } from 'react-dom/test-utils';
 import App from './App';
@@ -10,7 +10,6 @@ jest.mock('./services/api');
 const mockedApi = api as jest.Mocked<typeof api>;
 
 afterEach(() => {
-  cleanup();
   jest.resetAllMocks();
 });
 
@@ -41,8 +40,8 @@ describe('App rendering & routes', () => {
     await act(async () => {
       await renderWithRouter(<App />);
       (await screen.findByText(/Log In/i)).click();
-      (await screen.findByText(/Explore/i)).click();
     });
+    (await screen.findByText(/Explore/i)).click();
     expect(screen.getByText(/Explore/i)).toBeInTheDocument();
   });
 });
