@@ -15,7 +15,7 @@ use ReflectionClass;
 use Tests\DataBaseSetUp;
 use Tests\TestCase;
 
-class UserRepositoryImplTest extends TestCase
+class UserRepositoryTest extends TestCase
 {
     private UserRepository $userRepository;
 
@@ -41,8 +41,8 @@ class UserRepositoryImplTest extends TestCase
                 'password' => 'newpassword'
             ],
             'New User' => [
-                'username' => 'user3',
-                'email' => 'user3@mail.com',
+                'username' => 'user99999999999999999',
+                'email' => 'user99999999999999999@mail.com',
                 'name' => 'New User',
                 'password' => 'newpassword'
             ],
