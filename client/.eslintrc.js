@@ -17,7 +17,7 @@ module.exports = {
       version: 'detect',
     },
   },
-  plugins: ['jest-dom', 'jest'],
+  plugins: ['jest-dom', 'jest', 'testing-library'],
   extends: [
     'plugin:react/recommended',
     'plugin:@typescript-eslint/recommended',
@@ -25,6 +25,7 @@ module.exports = {
     'plugin:prettier/recommended',
     'plugin:jest-dom/recommended',
     'plugin:jest/recommended',
+    'plugin:testing-library/react',
   ],
   rules: {
     'prettier/prettier': 'warn',
