@@ -43,11 +43,7 @@ class PostRepositoryImpl implements PostRepository
             "SELECT posts.id, posts.image_url, posts.description, posts.user_id, posts.created_at, users.username FROM posts INNER JOIN users ON user_id = users.id WHERE EXISTS (SELECT * FROM followers WHERE followed_user = user_id AND following_user = {$userId});"
         )->fetchAll();
 
-        if (false == $posts) {
-            throw new PostNotFoundException();
-        }
-
-        return $posts;
+        return $posts ? $posts : [];
     }
 
     /** {@inheritdoc} */
