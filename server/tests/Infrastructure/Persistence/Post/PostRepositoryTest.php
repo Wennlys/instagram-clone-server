@@ -13,7 +13,7 @@ use ReflectionClass;
 use Tests\DataBaseSetUp;
 use Tests\TestCase;
 
-class PostRepositoryImplTest extends TestCase
+class PostRepositoryTest extends TestCase
 {
     private PostRepository $postRepository;
 
@@ -76,11 +76,11 @@ class PostRepositoryImplTest extends TestCase
         $this->assertEquals(4, count($actualPosts));
     }
 
-    public function testListPostsFailsWhenUserDoesntFollowAnyOtherUser()
+    public function testListPostsReturnsEmptyArrayWhenUserDoesntFollowAnyOtherUser()
     {
-        $this->expectException(PostNotFoundException::class);
         $userId = 2;
-        $this->postRepository->listPostsBy($userId);
+        $posts = $this->postRepository->listPostsBy($userId);
+        $this->assertEquals([], $posts);
     }
 
     private function createPost(string $postName): Post
