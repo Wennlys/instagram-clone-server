@@ -7,6 +7,7 @@ use App\Application\Actions\User\UpdateUserAction;
 use App\Application\Actions\User\ViewUserAction;
 use App\Application\Actions\Session\SessionCreateAction;
 use App\Application\Actions\Post\CreatePostAction;
+use App\Application\Actions\Post\ListPostsAction;
 use App\Application\Actions\Post\ViewPostAction;
 use App\Application\Middleware\SessionMiddleware;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -37,6 +38,7 @@ return function (App $app) {
 
     $app->group('/posts', function (Group $group) {
         $group->post('', CreatePostAction::class);
+        $group->get('', ListPostsAction::class);
     })->add(SessionMiddleware::class);
 
     $app->get('/posts/{id}', ViewPostAction::class);
