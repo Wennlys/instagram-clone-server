@@ -10,8 +10,7 @@ class DataBaseSetUp
 {
     public static function up(): void
     {
-        $password1 = '$2y$10$OMMj4VRsyovweGTmDJmDy.T4gCK7LW.pLXk6IY7psR9B.dsxpHJaG';
-        $password2 = '$2y$10$jXJDu3/ZrbueY2wYl2kb8Owvv.BkXKNipHs2wmtdemUVCNzv1Pcja';
+        $password = '$2y$10$OMMj4VRsyovweGTmDJmDy.T4gCK7LW.pLXk6IY7psR9B.dsxpHJaG';
         $dateNow = now();
 
         Connection::getInstance()->getConnection()->exec("
@@ -27,8 +26,9 @@ class DataBaseSetUp
                 UNIQUE (email, username)
             );
 
-            INSERT INTO users (username, email, name, password, created_at, updated_at) VALUES ('user1', 'user1@mail.com', 'User One', '{$password1}', '{$dateNow}', '{$dateNow}');
-            INSERT INTO users (username, email, name, password, created_at, updated_at) VALUES ('user2', 'user2@mail.com', 'User Two', '{$password2}', '{$dateNow}', '{$dateNow}');
+            INSERT INTO users (username, email, name, password, created_at, updated_at) VALUES ('user1', 'user1@mail.com', 'User One', '{$password}', '{$dateNow}', '{$dateNow}');
+            INSERT INTO users (username, email, name, password, created_at, updated_at) VALUES ('user2', 'user2@mail.com', 'User Two', '{$password}', '{$dateNow}', '{$dateNow}');
+            INSERT INTO users (username, email, name, password, created_at, updated_at) VALUES ('user3', 'user3@mail.com', 'User Three', '{$password}', '{$dateNow}', '{$dateNow}');
 
             DROP TABLE IF EXISTS posts;
             CREATE TABLE posts (
@@ -43,6 +43,22 @@ class DataBaseSetUp
 
             INSERT INTO posts (image_url, description, user_id, created_at, updated_at) VALUES ('/tmp/avatar.jpg', 'Nothing to see here :P', 1, '{$dateNow}', '{$dateNow}');
             INSERT INTO posts (image_url, description, user_id, created_at, updated_at) VALUES ('/tmp/avatar.jpg', 'Nothing to see here :P', 2, '{$dateNow}', '{$dateNow}');
+            INSERT INTO posts (image_url, description, user_id, created_at, updated_at) VALUES ('/tmp/avatar.jpg', 'Nothing to see here :P', 3, '{$dateNow}', '{$dateNow}');
+            INSERT INTO posts (image_url, description, user_id, created_at, updated_at) VALUES ('/tmp/avatar.jpg', 'Nothing to see here :P', 1, '{$dateNow}', '{$dateNow}');
+            INSERT INTO posts (image_url, description, user_id, created_at, updated_at) VALUES ('/tmp/avatar.jpg', 'Nothing to see here :P', 2, '{$dateNow}', '{$dateNow}');
+            INSERT INTO posts (image_url, description, user_id, created_at, updated_at) VALUES ('/tmp/avatar.jpg', 'Nothing to see here :P', 3, '{$dateNow}', '{$dateNow}');
+
+            DROP TABLE IF EXISTS followers;
+            CREATE TABLE followers (
+                following_user INTEGER NOT NULL,
+                followed_user INTEGER NOT NULL,
+                FOREIGN KEY (following_user) REFERENCES users(id),
+                FOREIGN KEY (followed_user) REFERENCES users(id)
+            );
+
+            INSERT INTO followers (following_user, followed_user) VALUES (1, 2);
+            INSERT INTO followers (following_user, followed_user) VALUES (3, 1);
+            INSERT INTO followers (following_user, followed_user) VALUES (1, 3);
         ");
     }
 }

@@ -69,6 +69,20 @@ class PostRepositoryImplTest extends TestCase
         $this->assertEquals($expectedPost, $actualPost);
     }
 
+    public function testListPosts()
+    {
+        $userId = 1;
+        $actualPosts = $this->postRepository->listPostsBy($userId);
+        $this->assertEquals(4, count($actualPosts));
+    }
+
+    public function testListPostsFailsWhenUserDoesntFollowAnyOtherUser()
+    {
+        $this->expectException(PostNotFoundException::class);
+        $userId = 2;
+        $this->postRepository->listPostsBy($userId);
+    }
+
     private function createPost(string $postName): Post
     {
         $post = $this->postProvider()[$postName];

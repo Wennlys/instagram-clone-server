@@ -5,10 +5,11 @@ namespace App\Domain\Post;
 
 interface PostRepository
 {
-    public function findAll(): array;
-
     /** @throws PostNotFoundException */
     public function findPostOfId(int $id): array;
+
+    /** @throws PostNotFoundException */
+    public function listPostsBy(int $userId): array;
 
     /** @throws PostCouldNotBeCreatedException */
     public function store(Post $post): bool;

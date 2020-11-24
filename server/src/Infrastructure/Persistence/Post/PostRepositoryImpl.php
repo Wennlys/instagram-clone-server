@@ -23,11 +23,6 @@ class PostRepositoryImpl implements PostRepository
         $this->dateNow = now();
     }
 
-    public function findAll(): array
-    {
-        return [];
-    }
-
     /** {@inheritdoc} */
     public function findPostOfId(int $id): array
     {
@@ -39,6 +34,20 @@ class PostRepositoryImpl implements PostRepository
             throw new PostNotFoundException();
         }
         return $post;
+    }
+
+    /** {@inheritdoc} */
+    public function listPostsBy(int $userId): array
+    {
+        $posts = $this->db->query(
+            "SELECT posts.id, posts.image_url, posts.description, posts.user_id, posts.created_at, users.username FROM posts INNER JOIN users ON user_id = users.id WHERE EXISTS (SELECT * FROM followers WHERE followed_user = user_id AND following_user = {$userId});"
+        )->fetchAll();
+
+        if (false == $posts) {
+            throw new PostNotFoundException();
+        }
+
+        return $posts;
     }
 
     /** {@inheritdoc} */
