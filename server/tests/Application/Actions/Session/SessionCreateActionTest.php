@@ -19,13 +19,13 @@ class SessionCreateActionTest extends TestCase
         /** @var Container $container */
         $container = $app->getContainer();
 
-        $user = ['id' => 1, 'password' => (string) 123456];
+        $user = ['username' => 'user1', 'password' => '123456'];
 
         $hashedPassword = $this->hashPassword($user['password']);
 
         $userRepositoryProphecy = $this->prophesize(UserRepository::class);
         $userRepositoryProphecy
-            ->findUserOfId((int) $user['id'], true)
+            ->findUserOfUsername($user['username'])
             ->willReturn([
                 'password' => $hashedPassword
             ])
@@ -40,7 +40,7 @@ class SessionCreateActionTest extends TestCase
         $parsedPayload = json_decode($payload, true);
         $userId = Token::getPayload($parsedPayload['data']['token'], $_ENV['SECRET'])['user_id'];
 
-        $this->assertEquals($user['id'], $userId);
+        $this->assertEquals($user['username'], $userId);
     }
 
     public function testInvalidPasswordException()
@@ -59,14 +59,14 @@ class SessionCreateActionTest extends TestCase
         /** @var Container $container */
         $container = $app->getContainer();
 
-        $user = ['id' => 1, 'password' => 'asdfasdfasdfag34'];
+        $user = ['username' => 'user1', 'password' => 'asdfasdfasdfag34'];
 
         $wrongPassword = '389457349587345';
         $hashedPassword = $this->hashPassword($wrongPassword);
 
         $userRepositoryProphecy = $this->prophesize(UserRepository::class);
         $userRepositoryProphecy
-            ->findUserOfId($user['id'], true)
+            ->findUserOfUsername($user['username'])
             ->willReturn([
                 'password' => $hashedPassword
             ])
@@ -102,11 +102,11 @@ class SessionCreateActionTest extends TestCase
         /** @var Container $container */
         $container = $app->getContainer();
 
-        $user = ['id' => 9999, 'password' => '123456'];
+        $user = ['username' => 'user1', 'password' => '123456'];
 
         $userRepositoryProphecy = $this->prophesize(UserRepository::class);
         $userRepositoryProphecy
-            ->findUserOfId($user['id'], true)
+            ->findUserOfUsername($user['username'])
             ->willThrow(new UserNotFoundException())
             ->shouldBeCalledOnce();
 

@@ -15,10 +15,10 @@ class SessionCreateAction extends UserAction
      */
     protected function action(): Response
     {
-        ['id' => $id, 'password' => $password] = json_decode((string) $this->request->getBody(), true);
+        ['username' => $username, 'password' => $password] = json_decode((string) $this->request->getBody(), true);
 
-        $user = $this->userRepository->findUserOfId((int) $id, true);
-        $token = Token::create($id, $_ENV['SECRET'], time() + 3600 * 24, $_ENV['ISSUER']);
+        $user = $this->userRepository->findUserOfUsername($username);
+        $token = Token::create($username, $_ENV['SECRET'], time() + 3600 * 24, $_ENV['ISSUER']);
 
         if (!password_verify($password, $user['password'])) {
             throw new InvalidPasswordException("Wrong password, try again.");

@@ -36,11 +36,10 @@ class UserRepositoryImpl implements UserRepository
     }
 
     /** {@inheritdoc} */
-    public function findUserOfId(int $id, $enablePassword = false): array
+    public function findUserOfId(int $id): array
     {
-        $password = $enablePassword ? ", password" : "";
         $user = $this->db->query(
-            "SELECT username, name, email {$password} FROM users WHERE id = {$id}"
+            "SELECT username, name, email FROM users WHERE id = {$id}"
         )->fetch(PDO::FETCH_ASSOC);
 
         if (false == $user) {
@@ -53,7 +52,7 @@ class UserRepositoryImpl implements UserRepository
     public function findUserOfUsername(string $username): array
     {
         $user = $this->db->query(
-            "SELECT username, name, email FROM users WHERE username = '{$username}'"
+            "SELECT username, name, email, password FROM users WHERE username = '{$username}'"
         )->fetch(PDO::FETCH_ASSOC);
 
         if (false == $user) {
@@ -61,7 +60,7 @@ class UserRepositoryImpl implements UserRepository
         }
         return $user;
     }
-    
+
     /** {@inheritdoc} */
     public function store(User $user): array
     {

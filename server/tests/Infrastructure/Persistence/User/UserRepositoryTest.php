@@ -86,6 +86,7 @@ class UserRepositoryTest extends TestCase
     {
         $userFound = $this->userRepository->findUserOfUsername('user1');
         $userArray = $this->userProvider()['User One'];
+        unset($userFound['password']);
         $this->assertEquals($userArray, $userFound);
     }
 
