@@ -1,26 +1,29 @@
-import { AxiosResponse } from 'axios';
-import React, { useEffect } from 'react';
+import React from 'react';
 
 // import { Container } from './styles';
 
 export interface IPost {
+  id: number;
   image: string;
   description: string;
   userName: string;
 }
 
-export interface IPosts {
-  loadPosts(): Promise<AxiosResponse<IPost[]>>;
+export interface PostsProps {
+  posts: IPost[];
 }
 
-const Posts: React.FC<IPosts> = ({ loadPosts }: IPosts) => {
-  useEffect(() => {
-    loadPosts();
-  });
+const Posts: React.FC<PostsProps> = ({ posts }: PostsProps) => {
   return (
     <>
       <div>PostList</div>
-      <ul title="postlist"></ul>
+      <ul title="postlist">
+        {posts.map(({ id, image, description, userName }) => (
+          <li key={id} data-testid="post-infos">
+            {id}
+          </li>
+        ))}
+      </ul>
     </>
   );
 };
