@@ -9,15 +9,15 @@ const renderWithRouter = (component: JSX.Element, initialRoute = '/'): RenderRes
 /* ---------- MOCKS ----------- */
 const sessionsResponseMock = {
   post: {
-    success: Promise.resolve({
+    success: {
       data: [
         {
           statusCode: 200,
           token: 'asdfasdfasdfasdfasdfasdfasdf',
         },
       ],
-    }),
-    failure: Promise.resolve({
+    },
+    failure: {
       data: [
         {
           statusCode: 404,
@@ -27,13 +27,13 @@ const sessionsResponseMock = {
           },
         },
       ],
-    }),
+    },
   },
 };
 
 const postsResponseMock = {
   get: {
-    success: Promise.resolve({
+    success: {
       data: [
         {
           id: 1,
@@ -48,7 +48,7 @@ const postsResponseMock = {
           userName: 'user2',
         },
       ],
-    }),
+    },
   },
 };
 
