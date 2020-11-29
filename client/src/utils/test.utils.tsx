@@ -10,17 +10,17 @@ const renderWithRouter = (component: JSX.Element, initialRoute = '/'): RenderRes
 const sessionsResponseMock = {
   post: {
     success: {
+      status: 200,
       data: [
         {
-          statusCode: 200,
           token: 'asdfasdfasdfasdfasdfasdfasdf',
         },
       ],
     },
     failure: {
+      status: 404,
       data: [
         {
-          statusCode: 404,
           error: {
             type: 'RESOURCE_NOT_FOUND',
             description: 'Wrong password, try again.',
@@ -34,6 +34,7 @@ const sessionsResponseMock = {
 const postsResponseMock = {
   get: {
     success: {
+      status: 200,
       data: [
         {
           id: 1,

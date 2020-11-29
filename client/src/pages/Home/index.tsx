@@ -8,8 +8,8 @@ function Home(): JSX.Element {
   const [posts, setPosts] = useState<IPost[] | []>([]);
   useEffect(() => {
     async function fetchPosts() {
-      const loadedPosts: AxiosResponse<IPost[]> = await api.get('/posts');
-      setPosts(loadedPosts.data);
+      const response: AxiosResponse<IPost[]> = await api.get('/posts');
+      setPosts(response.status == 200 ? response.data : []);
     }
 
     fetchPosts();

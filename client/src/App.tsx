@@ -8,7 +8,7 @@ const App: React.FC = () => {
   const [isSigned, setIsSigned] = useState<boolean>(false);
   async function handleLogin(userData: IUser) {
     const response = await api.post('/sessions', userData);
-    setIsSigned(response.data[0].statusCode === 200 ? true : false);
+    setIsSigned(response.status == 200 ? true : false);
   }
 
   return (
