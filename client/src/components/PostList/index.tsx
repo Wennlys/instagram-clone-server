@@ -2,7 +2,7 @@ import React from 'react';
 
 // import { Container } from './styles';
 
-export interface IPost {
+export interface Post {
   id: number;
   image: string;
   description: string;
@@ -10,7 +10,7 @@ export interface IPost {
 }
 
 export interface PostsProps {
-  posts: IPost[];
+  posts: Post[];
 }
 
 const Posts: React.FC<PostsProps> = ({ posts }: PostsProps) => {
@@ -18,9 +18,11 @@ const Posts: React.FC<PostsProps> = ({ posts }: PostsProps) => {
     <>
       <div>PostList</div>
       <ul title="postlist">
-        {posts.map(({ id, image, description, userName }) => (
+        {posts.map(({ id, image, description, userName }: Post) => (
           <li key={id} data-testid="post-infos">
-            {id}
+            <img src={image} alt={description} />
+            <span>{userName}</span>
+            <p>{description}</p>
           </li>
         ))}
       </ul>
