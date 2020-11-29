@@ -7,7 +7,12 @@ import api from './services/api';
 const App: React.FC = () => {
   const [isSigned, setIsSigned] = useState<boolean>(false);
   async function handleLogin(userData: User) {
-    const response = await api.post('/sessions', userData);
+    const response = await api.post('/sessions', userData, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        Accept: 'application/json',
+      },
+    });
     setIsSigned(response.status === 200 ? true : false);
   }
 
