@@ -7,3 +7,5 @@
 !/logs/README.md
 .phpunit.result.cache
 cov.xml
+.env
+database.db

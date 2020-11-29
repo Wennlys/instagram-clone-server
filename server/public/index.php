@@ -3,10 +3,12 @@ declare(strict_types=1);
 
 use App\Application\Handlers\HttpErrorHandler;
 use App\Application\Handlers\ShutdownHandler;
+use App\Application\Middleware\CorsMiddleware;
 use App\Application\ResponseEmitter\ResponseEmitter;
 use DI\ContainerBuilder;
 use Slim\Factory\AppFactory;
 use Slim\Factory\ServerRequestCreatorFactory;
+use Dotenv\Dotenv;
 
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -16,6 +18,9 @@ $containerBuilder = new ContainerBuilder();
 if (false) { // Should be set to true in production
 	$containerBuilder->enableCompilation(__DIR__ . '/../var/cache');
 }
+
+$dotenv = Dotenv::createImmutable(__DIR__, '/../.env');
+$dotenv->load();
 
 // Set up settings
 $settings = require __DIR__ . '/../app/settings.php';
