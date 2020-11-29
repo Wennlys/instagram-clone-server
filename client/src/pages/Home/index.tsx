@@ -7,12 +7,12 @@ import api from '../../services/api';
 function Home(): JSX.Element {
   const [posts, setPosts] = useState<IPost[] | []>([]);
   useEffect(() => {
-    async function fetchPosts(): Promise<AxiosResponse<IPost[]>> {
+    async function fetchPosts() {
       const loadedPosts: AxiosResponse<IPost[]> = await api.get('/posts');
-      return loadedPosts;
+      setPosts(loadedPosts.data);
     }
 
-    fetchPosts().then(res => setPosts(res.data));
+    fetchPosts();
   });
 
   return (
