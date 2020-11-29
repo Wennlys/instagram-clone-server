@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import AuthContext, { IUser } from './contexts/AuthContext';
+import AuthContext, { User } from './contexts/AuthContext';
 import AuthenticatedRoutes from './routes/AuthenticatedRoutes';
 import NotAutheticatedRoutes from './routes/NotAuthenticatedRoutes';
 import api from './services/api';
 
 const App: React.FC = () => {
   const [isSigned, setIsSigned] = useState<boolean>(false);
-  async function handleLogin(userData: IUser) {
+  async function handleLogin(userData: User) {
     const response = await api.post('/sessions', userData);
-    setIsSigned(response.status == 200 ? true : false);
+    setIsSigned(response.status === 200 ? true : false);
   }
 
   return (

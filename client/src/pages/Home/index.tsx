@@ -9,7 +9,7 @@ function Home(): JSX.Element {
   useEffect(() => {
     async function fetchPosts() {
       const response: AxiosResponse<Post[]> = await api.get('/posts');
-      setPosts(response.status == 200 ? response.data : []);
+      setPosts(response.status === 200 ? response.data : []);
     }
 
     fetchPosts();

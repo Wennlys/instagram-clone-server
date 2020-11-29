@@ -2,14 +2,14 @@ import { createContext } from 'react';
 
 // import { Container } from './styles';
 
-export interface IUser {
-  user_id: number;
+export interface User {
+  username: string;
   password: string;
 }
 
 export interface IAuthContext {
   isSigned: boolean;
-  handleLogin(user: IUser): Promise<void>;
+  handleLogin(user: User): Promise<void>;
 }
 
 const AuthContext = createContext<IAuthContext>({} as IAuthContext);

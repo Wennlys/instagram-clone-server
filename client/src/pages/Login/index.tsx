@@ -3,11 +3,9 @@ import AuthContext from '../../contexts/AuthContext';
 
 const Login: React.FC = () => {
   const { handleLogin } = useContext(AuthContext);
-  function handleSubmit(): void {
-    handleLogin({ user_id: 1, password: '' });
-  }
+
   return (
-    <button onClick={() => handleSubmit()} type="submit">
+    <button onClick={() => handleLogin({ username: 'new_user', password: '123456' })} type="submit">
       Log In
     </button>
   );
