@@ -11,22 +11,18 @@ const sessionsResponseMock = {
   post: {
     success: {
       status: 200,
-      data: [
-        {
-          token: 'asdfasdfasdfasdfasdfasdfasdf',
-        },
-      ],
+      data: {
+        token: 'asdfasdfasdfasdfasdfasdfasdf',
+      },
     },
     failure: {
       status: 404,
-      data: [
-        {
-          error: {
-            type: 'RESOURCE_NOT_FOUND',
-            description: 'Wrong password, try again.',
-          },
+      data: {
+        error: {
+          type: 'RESOURCE_NOT_FOUND',
+          description: 'Wrong password, try again.',
         },
-      ],
+      },
     },
   },
 };
