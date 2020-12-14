@@ -26,7 +26,7 @@ class CreatePostActionTest extends TestCase
 
         $userId = 1;
         $token = Token::create($userId, $_ENV['SECRET'], time() + 3600, $_ENV['ISSUER']);
-        $request = $this->createRequest('POST', '/posts', ['HTTP_ACCEPT' => 'application/json', 'AUTHORIZATION' => "Bearer {$token}"]);
+        $request = $this->createRequest('POST', '/posts', ['HTTP_ACCEPT' => 'application/json', 'Authorization' => "Bearer {$token}"]);
         $request = $request->withUploadedFiles([
             'image' => $file,
             'description' => 'Nothing to see here. :P',
@@ -70,7 +70,7 @@ class CreatePostActionTest extends TestCase
         $container->set(UserRepository::class, $userRepositoryProphecy->reveal());
 
         $token = Token::create($userId, $_ENV['SECRET'], time() + 3600, $_ENV['ISSUER']);
-        $request = $this->createRequest('POST', '/posts', ['HTTP_ACCEPT' => 'application/json', 'AUTHORIZATION' => "Bearer {$token}"]);
+        $request = $this->createRequest('POST', '/posts', ['HTTP_ACCEPT' => 'application/json', 'Authorization' => "Bearer {$token}"]);
         $request = $request->withUploadedFiles([
             'image' => $file,
             'description' => 'Nothing to see here. :P',

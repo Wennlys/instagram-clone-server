@@ -15,7 +15,7 @@ class SessionMiddlewareTest extends TestCase
     public function testMiddleware() {
         $middleware = new SessionMiddleware();
         $token = Token::create(1, $_ENV['SECRET'], time() + 3600, $_ENV['ISSUER']);
-        $request = $this->createRequest('PUT', '/users', ['HTTP_ACCEPT' => 'application/json', 'AUTHORIZATION' => "Bearer {$token}"]);
+        $request = $this->createRequest('PUT', '/users', ['HTTP_ACCEPT' => 'application/json', 'Authorization' => "Bearer {$token}"]);
         $handler = $this->prophesize(RequestHandlerInterface::class);
         $handler
             ->handle($request)
@@ -28,7 +28,7 @@ class SessionMiddlewareTest extends TestCase
     public function testInvalidToken() {
         $middleware = new SessionMiddleware();
         $token = 'dfasdfasdfasd.asdfasdf.asdfasdfasdf';
-        $request = $this->createRequest('PUT', '/users', ['HTTP_ACCEPT' => 'application/json', 'AUTHORIZATION' => "Bearer {$token}"]);
+        $request = $this->createRequest('PUT', '/users', ['HTTP_ACCEPT' => 'application/json', 'Authorization' => "Bearer {$token}"]);
         $handler = $this->prophesize(RequestHandlerInterface::class);
         $handler
             ->handle($request)
@@ -41,7 +41,7 @@ class SessionMiddlewareTest extends TestCase
     public function testOutdatedToken() {
         $middleware = new SessionMiddleware();
         $token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2MDM2Njc2NzUsImlzcyI6Imluc3RhZ3JhbS5jbG9uZSIsImlhdCI6MTYwMzY2NzY3NH0.KVZ1Fw80AMh58JyxwJCQcwU3TfBSPBLJZaGdEQzzrhI';
-        $request = $this->createRequest('PUT', '/users', ['HTTP_ACCEPT' => 'application/json', 'AUTHORIZATION' => "Bearer {$token}"]);
+        $request = $this->createRequest('PUT', '/users', ['HTTP_ACCEPT' => 'application/json', 'Authorization' => "Bearer {$token}"]);
         $handler = $this->prophesize(RequestHandlerInterface::class);
         $handler
             ->handle($request)

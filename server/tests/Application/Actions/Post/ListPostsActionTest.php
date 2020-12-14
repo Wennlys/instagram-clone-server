@@ -53,7 +53,7 @@ class ListPostsActionTest extends TestCase
         $container->set(PostRepository::class, $postRepositoryProphecy->reveal());
 
         $token = Token::create($userId, $_ENV['SECRET'], time() + 3600, $_ENV['ISSUER']);
-        $request = $this->createRequest('GET', '/posts', ['HTTP_ACCEPT' => 'application/json', 'AUTHORIZATION' => "Bearer {$token}"]);
+        $request = $this->createRequest('GET', '/posts', ['HTTP_ACCEPT' => 'application/json', 'Authorization' => "Bearer {$token}"]);
         $response = $app->handle($request);
 
         $payload = (string) $response->getBody();
@@ -90,7 +90,7 @@ class ListPostsActionTest extends TestCase
         $container->set(UserRepository::class, $userRepositoryProphecy->reveal());
 
         $token = Token::create($userId, $_ENV['SECRET'], time() + 3600, $_ENV['ISSUER']);
-        $request = $this->createRequest('GET', '/posts', ['HTTP_ACCEPT' => 'application/json', 'AUTHORIZATION' => "Bearer {$token}"]);
+        $request = $this->createRequest('GET', '/posts', ['HTTP_ACCEPT' => 'application/json', 'Authorization' => "Bearer {$token}"]);
         $response = $app->handle($request);
 
         $payload = (string) $response->getBody();
