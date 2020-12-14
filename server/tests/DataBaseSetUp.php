@@ -10,7 +10,7 @@ class DataBaseSetUp
 {
     public static function up(): void
     {
-        $password = '$2y$10$OMMj4VRsyovweGTmDJmDy.T4gCK7LW.pLXk6IY7psR9B.dsxpHJaG';
+        $password = password_hash('123456', PASSWORD_DEFAULT);
         $dateNow = now();
 
         Connection::getInstance()->getConnection()->exec("
