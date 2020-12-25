@@ -10,12 +10,12 @@ use PDOException;
 
 final class Connection
 {
-    private const OPTIONS = [
-        PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
-        PDO::ATTR_CASE => PDO::CASE_NATURAL,
-    ];
+    // private const OPTIONS = [
+    //     PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',
+    //     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+    //     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
+    //     PDO::ATTR_CASE => PDO::CASE_NATURAL,
+    // ];
 
     /** @var Exception|PDOException */
     public static $error;
@@ -31,7 +31,7 @@ final class Connection
                 $_ENV['HOST'] . $_ENV['NAME'],
                 $_ENV['USER'],
                 $_ENV['PASSWORD'],
-                self::OPTIONS
+                // self::OPTIONS
             );
         } catch (PDOException $e) {
             self::$error = $e->getMessage();
