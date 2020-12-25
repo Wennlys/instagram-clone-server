@@ -41,7 +41,7 @@ class PostRepositoryImpl implements PostRepository
     {
         $posts = $this->db->query(
             "SELECT posts.id, posts.image_url, posts.description, posts.user_id, posts.created_at, users.username FROM posts INNER JOIN users ON user_id = users.id WHERE EXISTS (SELECT * FROM followers WHERE followed_user = user_id AND following_user = {$userId});"
-        )->fetchAll();
+        )->fetchAll(PDO::FETCH_ASSOC);
 
         return $posts ? $posts : [];
     }
