@@ -33,7 +33,7 @@ function ASSETS_DIR(): string
 
 function getPayload(ServerRequestInterface $request): ?array
 {
-    [$header] = $request->getHeaders()["Authorization"];
+    [$header] = $request->getHeader('Authorization');
     if (!$header) {
         return null;
     }
