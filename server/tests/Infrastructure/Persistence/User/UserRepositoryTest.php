@@ -30,6 +30,7 @@ class UserRepositoryTest extends TestCase
     {
         return [
             'User One' => [
+                'id' => 1,
                 'username' => 'user1',
                 'email' => 'user1@mail.com',
                 'name' => 'User One',
@@ -73,6 +74,7 @@ class UserRepositoryTest extends TestCase
     {
         $userFound = $this->userRepository->findUserOfId(1);
         $userArray = $this->userProvider()['User One'];
+        unset($userArray['id']);
         $this->assertEquals($userArray, $userFound);
     }
 

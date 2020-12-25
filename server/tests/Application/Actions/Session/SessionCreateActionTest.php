@@ -19,7 +19,7 @@ class SessionCreateActionTest extends TestCase
         /** @var Container $container */
         $container = $app->getContainer();
 
-        $user = ['username' => 'user1', 'password' => '123456'];
+        $user = ['id' => 1, 'username' => 'user1', 'password' => '123456'];
 
         $hashedPassword = $this->hashPassword($user['password']);
 
@@ -27,6 +27,7 @@ class SessionCreateActionTest extends TestCase
         $userRepositoryProphecy
             ->findUserOfUsername($user['username'])
             ->willReturn([
+                'id' => 1,
                 'password' => $hashedPassword
             ])
             ->shouldBeCalledOnce();
@@ -40,7 +41,7 @@ class SessionCreateActionTest extends TestCase
         $parsedPayload = json_decode($payload, true);
         $userId = Token::getPayload($parsedPayload['data']['token'], $_ENV['SECRET'])['user_id'];
 
-        $this->assertEquals($user['username'], $userId);
+        $this->assertEquals($user['id'], $userId);
     }
 
     public function testInvalidPasswordException()
@@ -68,6 +69,7 @@ class SessionCreateActionTest extends TestCase
         $userRepositoryProphecy
             ->findUserOfUsername($user['username'])
             ->willReturn([
+                'id' => 1,
                 'password' => $hashedPassword
             ])
             ->shouldBeCalledOnce();

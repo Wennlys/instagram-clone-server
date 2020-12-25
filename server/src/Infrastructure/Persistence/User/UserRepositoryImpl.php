@@ -52,7 +52,7 @@ class UserRepositoryImpl implements UserRepository
     public function findUserOfUsername(string $username): array
     {
         $user = $this->db->query(
-            "SELECT username, name, email, password FROM users WHERE username = '{$username}'"
+            "SELECT id, username, name, email, password FROM users WHERE username = '{$username}'"
         )->fetch(PDO::FETCH_ASSOC);
 
         if (false == $user) {
