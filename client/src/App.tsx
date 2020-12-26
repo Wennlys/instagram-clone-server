@@ -10,14 +10,22 @@ const App: React.FC = () => {
     const response = await api.post('/sessions', userData, {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
-        Accept: 'application/json',
       },
     });
-    setIsSigned(response.status === 200 ? true : false);
+
+    const token = response.data.data.token;
+    const user = userData?.username;
+    if (response.status === 200 && token && user) {
+      localStorage.setItem('@App:token', token);
+      localStorage.setItem('@App:user', user);
+      api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      api.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+      setIsSigned(true);
+    }
   }
 
   return (
-    <AuthContext.Provider value={{ isSigned, handleLogin }}>
+    <AuthContext.Provider value={{ handleLogin }}>
       {isSigned ? <AuthenticatedRoutes /> : <NotAutheticatedRoutes />}
     </AuthContext.Provider>
   );
