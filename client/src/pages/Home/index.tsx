@@ -8,12 +8,17 @@ function Home(): JSX.Element {
   const [posts, setPosts] = useState<Post[] | []>([]);
   useEffect(() => {
     async function fetchPosts() {
-      const response: AxiosResponse<Post[]> = await api.get('/posts');
-      setPosts(response.status === 200 ? response.data : []);
+      const response: AxiosResponse = await api.get('/posts', {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      const returnedPosts: Post[] | [] = response.data.data ?? [];
+      if (response.status === 200) setPosts(returnedPosts);
     }
 
     fetchPosts();
-  });
+  }, []);
 
   return (
     <>
