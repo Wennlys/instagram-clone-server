@@ -12,7 +12,10 @@ const sessionsResponseMock = {
     success: {
       status: 200,
       data: {
-        token: 'asdfasdfasdfasdfasdfasdfasdf',
+        data: {
+          statusCode: 200,
+          token: 'asdfasdfasdfasdfasdfasdfasdf',
+        },
       },
     },
     failure: {
