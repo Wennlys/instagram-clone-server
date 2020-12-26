@@ -8,7 +8,7 @@ describe('Login rendering', () => {
   test('login component renders correctly', () => {
     const handleLogin = jest.fn();
     renderWithRouter(
-      <AuthContext.Provider value={{ isSigned: true, handleLogin }}>
+      <AuthContext.Provider value={{ handleLogin }}>
         <Login />
       </AuthContext.Provider>,
     );

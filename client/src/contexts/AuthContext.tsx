@@ -8,7 +8,6 @@ export interface User {
 }
 
 export interface IAuthContext {
-  isSigned: boolean;
   handleLogin(user: User): Promise<void>;
 }
 
