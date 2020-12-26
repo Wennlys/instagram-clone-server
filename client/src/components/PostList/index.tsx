@@ -18,13 +18,17 @@ const Posts: React.FC<PostsProps> = ({ posts }: PostsProps) => {
     <>
       <div>PostList</div>
       <ul title="postlist">
-        {posts.map(({ id, image, description, userName }: Post) => (
-          <li key={id} data-testid="post-infos">
-            <img src={image} alt={description} />
-            <span>{userName}</span>
-            <p>{description}</p>
-          </li>
-        ))}
+        {posts === [] ? (
+          <li>Loading...</li>
+        ) : (
+          posts.map(({ id, image, description, userName }: Post) => (
+            <li key={id} data-testid="post-infos">
+              <img src={image} alt={description} />
+              <span>{userName}</span>
+              <p>{description}</p>
+            </li>
+          ))
+        )}
       </ul>
     </>
   );
