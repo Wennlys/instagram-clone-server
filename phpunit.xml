@@ -24,6 +24,11 @@
             <directory suffix=".php">./src/</directory>
             <exclude>
                 <file>./src/Infrastructure/Connection.php</file>
+                <directory>./src/Domain/*</directory>
+                <directory>./src/Data/*</directory>
+                <directory>./src/Presentation/*</directory>
+                <directory>./src/Application/Handlers</directory>
+                <directory>./src/Application/ResponseEmitter</directory>
             </exclude>
         </whitelist>
     </filter>
