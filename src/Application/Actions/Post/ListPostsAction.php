@@ -16,7 +16,7 @@ class ListPostsAction extends PostAction
 
         $this->userRepository->findUserOfId((int)$userId);
 
-        $posts = $this->postRepository->listPostsBy((int)$userId);
+        $posts = $this->postRepository->listPostsById((int)$userId);
         return $this->respondWithData($posts);
     }
 }

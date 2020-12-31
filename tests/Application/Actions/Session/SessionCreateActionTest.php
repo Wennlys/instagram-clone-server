@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 use Tests\TestCase;
 use ReallySimpleJWT\Token;
-use App\Domain\User\UserRepository;
+use App\Infrastructure\Database\SQL\UserRepository;
 use Slim\Middleware\ErrorMiddleware;
 use App\Application\Actions\ActionError;
 use App\Application\Actions\ActionPayload;
 use App\Application\Handlers\HttpErrorHandler;
-use App\Domain\User\UserNotFoundException;
+use App\Presentation\Errors\User\UserNotFoundException;
 
 class SessionCreateActionTest extends TestCase
 {

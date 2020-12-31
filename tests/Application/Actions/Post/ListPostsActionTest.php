@@ -6,10 +6,9 @@ namespace Tests\Application\Actions\User;
 use App\Application\Actions\ActionError;
 use App\Application\Actions\ActionPayload;
 use App\Application\Handlers\HttpErrorHandler;
-use App\Domain\Post\PostRepository;
-use App\Domain\Post\PostNotFoundException;
-use App\Domain\User\UserNotFoundException;
-use App\Domain\User\UserRepository;
+use App\Infrastructure\Database\SQL\PostRepository;
+use App\Presentation\Errors\User\UserNotFoundException;
+use App\Infrastructure\Database\SQL\UserRepository;
 use DI\Container;
 use ReallySimpleJWT\Token;
 use Slim\Middleware\ErrorMiddleware;
@@ -46,7 +45,7 @@ class ListPostsActionTest extends TestCase
 
         $postRepositoryProphecy = $this->prophesize(PostRepository::class);
         $postRepositoryProphecy
-            ->listPostsBy($userId)
+            ->listPostsById($userId)
             ->willReturn($expectedPosts)
             ->shouldBeCalledOnce();
 

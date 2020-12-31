@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Application\Actions\Session;
 
 use App\Application\Actions\User\UserAction;
-use App\Domain\User\InvalidPasswordException;
+use App\Presentation\Errors\User\InvalidPasswordException;
 use Psr\Http\Message\ResponseInterface as Response;
 use ReallySimpleJWT\Token;
 

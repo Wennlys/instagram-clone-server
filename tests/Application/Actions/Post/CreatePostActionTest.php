@@ -6,9 +6,8 @@ namespace Tests\Application\Actions\Post;
 use App\Application\Actions\ActionError;
 use App\Application\Actions\ActionPayload;
 use App\Application\Handlers\HttpErrorHandler;
-use App\Domain\Post\Post;
-use App\Domain\User\UserNotFoundException;
-use App\Domain\User\UserRepository;
+use App\Presentation\Errors\User\UserNotFoundException;
+use App\Infrastructure\Database\SQL\UserRepository;
 use ReallySimpleJWT\Token;
 use Slim\Middleware\ErrorMiddleware;
 use Slim\Psr7\UploadedFile;
@@ -84,10 +83,5 @@ class CreatePostActionTest extends TestCase
         $serializedPayload = json_encode($expectedPayload, JSON_PRETTY_PRINT);
 
         $this->assertEquals($serializedPayload, $payload);
-    }
-
-    private function createPost(array $post): Post
-    {
-        return new Post($post['imageUrl'], $post['description'], $post['userId']);
     }
 }

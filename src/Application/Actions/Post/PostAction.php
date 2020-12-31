@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace App\Application\Actions\Post;
 
 use App\Application\Actions\Action;
-use App\Domain\Post\PostRepository;
-use App\Domain\User\UserRepository;
+use App\Infrastructure\Database\SQL\PostRepository;
+use App\Infrastructure\Database\SQL\UserRepository;
 use Psr\Log\LoggerInterface;
 
 abstract class PostAction extends Action
