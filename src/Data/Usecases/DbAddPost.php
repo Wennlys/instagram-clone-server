@@ -3,11 +3,34 @@ declare(strict_types=1);
 
 namespace App\Data\Usecases;
 
+use App\Data\Protocols\Database\Post\PostStoreRepository;
+use App\Data\Protocols\Database\User\FindUserOfIdRepository;
 use App\Domain\Models\Post;
+use App\Presentation\Errors\Post\PostCouldNotBeCreatedException;
 
 class DbAddPost {
-    public function add(Post $post): bool 
+    private PostStoreRepository $postStoreRepository;
+    private FindUserOfIdRepository $findUserOfIdRepository;
+
+    public function __construct(
+        PostStoreRepository $postStoreRepository,
+        FindUserOfIdRepository $findUserOfIdRepository
+    )
     {
-        return true;
+        $this->postStoreRepository = $postStoreRepository;
+        $this->findUserOfIdRepository = $findUserOfIdRepository;
+    }
+
+    public function add(Post $post): bool
+    {
+        try {
+            $id = $post->getUserId();
+            $user = $this->findUserOfIdRepository->findUserOfId($id);
+            if ((bool) $user) return false;
+
+            return (bool) $this->postStoreRepository->store($post);
+        } catch(PostCouldNotBeCreatedException $e) {
+            throw $e;
+        }
     }
 }
