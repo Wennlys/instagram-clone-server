@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Models;
 
+use App\Presentation\Errors\User\InvalidPasswordException;
 use JsonSerializable;
 use PharIo\Manifest\InvalidEmailException;
 
@@ -15,10 +16,10 @@ class User implements JsonSerializable
 
     public function __construct(?string $username = null, ?string $email = null, ?string $name = null, ?string $password = null)
     {
-        isset($username) ? $this->setUsername($username) : $this->username = $username;
-        isset($email) ? $this->setEmail($email) : $this->email = $email;
-        isset($name) ? $this->setName($name) : $this->name = $name;
-        isset($password) ? $this->setPassword($password) : $this->password = $password;
+        isset($username) && $this->setUsername($username);
+        isset($email) && $this->setEmail($email);
+        isset($name) && $this->setName($name);
+        isset($password) && $this->setPassword($password);
     }
 
     public function setUsername(string $username): void
@@ -59,11 +60,11 @@ class User implements JsonSerializable
     {
         if (strlen($password) < 6) {
             throw new InvalidPasswordException();
-        } 
+        }
 
         $this->password = $password;
     }
-    
+
     public function getPassword(): ?string
     {
         return $this->password;
@@ -78,7 +79,7 @@ class User implements JsonSerializable
             'username' => $this->username,
             'email' => $this->email,
             'name' => $this->name,
-            'password' => $this->password
+            'password' => $this->password ?? null
         ]);
     }
 }

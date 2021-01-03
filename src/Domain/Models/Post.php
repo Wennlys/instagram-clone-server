@@ -7,15 +7,15 @@ use JsonSerializable;
 
 class Post implements JsonSerializable
 {
-    private string $imageUrl;
-    private ?string $description;
-    private int $userId;
+    private ?string $imageUrl = null;
+    private ?string $description = null;
+    private ?int $userId = null;
 
     public function __construct(?string $imageUrl = null, ?string $description = null, ?int $userId = null)
     {
-        isset($imageUrl) ? $this->setImageUrl($imageUrl) : $this->imageUrl = $imageUrl;
-        isset($description) ? $this->setDescription($description) : $this->description = $description;
-        isset($userId) ? $this->setUserId($userId) : $this->userId = $userId;
+        isset($imageUrl) && $this->setImageUrl($imageUrl);
+        isset($description) && $this->setDescription($description);
+        isset($userId) && $this->setUserId($userId);
     }
 
     public function getImageUrl(): string
