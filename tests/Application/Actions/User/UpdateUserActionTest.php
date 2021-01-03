@@ -7,7 +7,7 @@ use App\Application\Actions\ActionError;
 use App\Application\Actions\ActionPayload;
 use App\Application\Handlers\HttpErrorHandler;
 use App\Presentation\Errors\User\DuplicatedUserException;
-use App\Infrastructure\Database\SQL\UserRepository;
+use App\Infrastructure\Db\SQL\UserRepository;
 use App\Domain\Models\User;
 use DI\Container;
 use ReallySimpleJWT\Token;

@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests\Infrastructure\Persistence\Post;
+namespace Tests\Infrastructure\Db\SQL;
 
 use App\Presentation\Errors\Post\PostCouldNotBeCreatedException;
 use App\Presentation\Errors\Post\PostNotFoundException;
-use App\Infrastructure\Database\SQL\PostRepository;
+use App\Infrastructure\Db\SQL\PostRepository;
 use App\Domain\Models\Post;
 use Tests\DataBaseSetUp;
 use Tests\TestCase;

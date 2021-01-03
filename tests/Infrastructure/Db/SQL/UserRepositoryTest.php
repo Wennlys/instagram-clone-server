@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests\Infrastructure\Persistence\User;
+namespace Tests\Infrastructure\Db\SQL;
 
 use App\Presentation\Errors\User\DuplicatedUserException;
 use App\Presentation\Errors\User\UserCouldNotBeCreatedException;
 use App\Presentation\Errors\User\UserCouldNotBeUpdatedException;
-use App\Infrastructure\Database\SQL\UserRepository;
+use App\Infrastructure\Db\SQL\UserRepository;
 use App\Presentation\Errors\User\UserNotFoundException;
 use App\Domain\Models\User;
 use PDO;

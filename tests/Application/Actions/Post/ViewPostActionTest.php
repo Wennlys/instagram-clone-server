@@ -6,7 +6,7 @@ namespace Tests\Application\Actions\User;
 use App\Application\Actions\ActionError;
 use App\Application\Actions\ActionPayload;
 use App\Application\Handlers\HttpErrorHandler;
-use App\Infrastructure\Database\SQL\PostRepository;
+use App\Infrastructure\Db\SQL\PostRepository;
 use App\Presentation\Errors\Post\PostNotFoundException;
 use DI\Container;
 use Slim\Middleware\ErrorMiddleware;

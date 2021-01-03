@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 use Tests\TestCase;
 use ReallySimpleJWT\Token;
-use App\Infrastructure\Database\SQL\UserRepository;
+use App\Infrastructure\Db\SQL\UserRepository;
 use Slim\Middleware\ErrorMiddleware;
 use App\Application\Actions\ActionError;
 use App\Application\Actions\ActionPayload;

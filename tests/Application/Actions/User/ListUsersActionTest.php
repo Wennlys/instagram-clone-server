@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Tests\Application\Actions\User;
 
 use App\Application\Actions\ActionPayload;
-use App\Infrastructure\Database\SQL\UserRepository;
+use App\Infrastructure\Db\SQL\UserRepository;
 use App\Domain\Models\User;
 use DI\Container;
 use ReallySimpleJWT\Token;
