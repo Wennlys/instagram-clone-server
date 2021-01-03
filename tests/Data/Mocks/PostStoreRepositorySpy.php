@@ -9,10 +9,12 @@ use App\Domain\Models\Post;
 class PostStoreRepositorySpy implements PostStoreRepository
 {
     public bool $result = true;
+    public Post $params;
 
     /** {@inheritdoc} */
     public function store(Post $post): bool
     {
+        $this->params = $post;
         return $this->result;
     }
 }

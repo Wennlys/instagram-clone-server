@@ -61,4 +61,13 @@ class DbAddPostTest extends TestCase
         $isAValidPost = $SUT->add($post);
         $this->assertFalse($isAValidPost);
     }
+
+    /** @test */
+    public function calls_AddAccountRepository_using_expected_values(): void
+    {
+        ["SUT" => $SUT, "postRepository" => $postRepository] = $this->SUTFactory();
+        $post = new Post('', '', 1);
+        $SUT->add($post);
+        $this->assertEquals($post, $postRepository->params);
+    }
 }
