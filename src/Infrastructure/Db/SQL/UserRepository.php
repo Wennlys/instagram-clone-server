@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Db\SQL;
 
 use App\Data\Protocols\Db\User\FindAllUsersRepository;
+use App\Data\Protocols\Db\User\FindUserOfEmailRepository;
 use App\Data\Protocols\Db\User\FindUserOfIdRepository;
 use App\Data\Protocols\Db\User\FindUserOfUsernameRepository;
 use App\Data\Protocols\Db\User\UserStoreRepository;
@@ -19,6 +20,7 @@ use PDOException;
 class UserRepository implements FindAllUsersRepository,
                                 FindUserOfIdRepository,
                                 FindUserOfUsernameRepository,
+                                FindUserOfEmailRepository,
                                 UserStoreRepository,
                                 UserUpdateRepository
 {
