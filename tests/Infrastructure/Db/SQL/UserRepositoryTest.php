@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Tests\Infrastructure\Db\SQL;
 
-use App\Presentation\Errors\User\DuplicatedUserException;
 use App\Presentation\Errors\User\UserCouldNotBeCreatedException;
 use App\Presentation\Errors\User\UserCouldNotBeUpdatedException;
 use App\Infrastructure\Db\SQL\UserRepository;
@@ -23,6 +22,11 @@ class UserRepositoryTest extends TestCase
         parent::__construct();
         DataBaseSetUp::up();
         $this->userRepository = new UserRepository();
+    }
+
+    private function createUser(array $user): User
+    {
+        return new User($user['username'], $user['email'], $user['name'], $user['password'] ?? null);
     }
 
     public function userProvider(): array
@@ -91,6 +95,14 @@ class UserRepositoryTest extends TestCase
         $this->assertEquals($userArray, $userFound);
     }
 
+    public function testFindUserOfEmail()
+    {
+        $userFound = $this->userRepository->findUserOfEmail('user1@mail.com');
+        $userArray = $this->userProvider()['User One'];
+        unset($userFound['password']);
+        $this->assertEquals($userArray, $userFound);
+    }
+
     public function testFindUserOfUsernameThrowsNotFoundException()
     {
         $this->expectException(UserNotFoundException::class);
@@ -101,19 +113,9 @@ class UserRepositoryTest extends TestCase
     {
         $providedUser = $this->userProvider()['New User'];
         $user = $this->createUser($providedUser);
+        $userId = $this->userRepository->store($user);
 
-        $expectedUser = copyArray($providedUser);
-        unset($expectedUser['password']);
-        $returnedUser = $this->userRepository->store($user);
-        $this->assertEquals($expectedUser, $returnedUser);
-    }
-
-    public function testStoreThrowsDuplicatedUserException()
-    {
-        $providedUser = $this->userProvider()['User One'];
-        $user = $this->createUser($providedUser);
-        $this->expectException(DuplicatedUserException::class);
-        $this->userRepository->store($user);
+        $this->assertGreaterThan(0, $userId);
     }
 
     public function testStoreThrowsUserCouldNotBeCreatedException()
@@ -135,21 +137,11 @@ class UserRepositoryTest extends TestCase
     {
         $providedUser = $this->userProvider()['User to update'];
         ['username' => $username, 'email' => $email, 'name' => $name] = $providedUser;
-
         $id = 1;
-
         $user = new User($username, $email, $name);
 
-        $returnedUser = $this->userRepository->update($user, $id);
-        $this->assertEquals($providedUser, $returnedUser);
-    }
-
-    public function testUpdateThrowsDuplicatedUserException()
-    {
-        $providedUser = $this->userProvider()['User to update'];
-        $user = $this->createUser($providedUser);
-        $this->expectException(DuplicatedUserException::class);
-        $this->userRepository->update($user, 1);
+        $isUpdated = $this->userRepository->update($user, $id);
+        $this->assertTrue($isUpdated);
     }
 
     public function testUpdateThrowsUserCouldNotBeUpdatedException()
@@ -165,10 +157,5 @@ class UserRepositoryTest extends TestCase
         $property->setAccessible(true);
         $property->setValue($class, new PDO('sqlite:', null, null, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]));
         $userRepository->getMethod("update")->invokeArgs($class, [$user, 1]);
-    }
-
-    private function createUser(array $user): User
-    {
-        return new User($user['username'], $user['email'], $user['name'], $user['password'] ?? null);
     }
 }

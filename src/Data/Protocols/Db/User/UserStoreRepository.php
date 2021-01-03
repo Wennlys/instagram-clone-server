@@ -8,5 +8,5 @@ use App\Domain\Models\User;
 interface UserStoreRepository
 {
     /** @throws UserCouldNotBeCreatedException */
-    public function store(User $user): array;
+    public function store(User $user): int;
 }

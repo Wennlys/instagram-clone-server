@@ -8,5 +8,5 @@ use App\Domain\Models\User;
 interface UserUpdateRepository
 {
     /** @throws UserCouldNotBeUpdatedException */
-    public function update(User $user, int $id): array;
+    public function update(User $user, int $id): bool;
 }

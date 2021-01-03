@@ -10,7 +10,6 @@ use App\Data\Protocols\Db\User\UserStoreRepository;
 use App\Data\Protocols\Db\User\UserUpdateRepository;
 use App\Presentation\Errors\User\UserCouldNotBeCreatedException;
 use App\Presentation\Errors\User\UserCouldNotBeUpdatedException;
-use App\Presentation\Errors\User\DuplicatedUserException;
 use App\Presentation\Errors\User\UserNotFoundException;
 use App\Domain\Models\User;
 use App\Infrastructure\Connection;
@@ -33,6 +32,11 @@ class UserRepository implements FindAllUsersRepository,
         $this->dateNow = now();
     }
 
+    private function hash(string $string): string
+    {
+        return password_hash($string, PASSWORD_DEFAULT);
+    }
+
     /** {@inheritdoc} */
     public function findAll(): array
     {
@@ -46,9 +50,9 @@ class UserRepository implements FindAllUsersRepository,
     /** {@inheritdoc} */
     public function findUserOfId(int $id): array
     {
-        $user = $this->db->query(
-            "SELECT username, name, email FROM users WHERE id = {$id}"
-        )->fetch(PDO::FETCH_ASSOC);
+        $query = $this->db->query('SELECT username, name, email FROM users WHERE id = :id');
+        $query->execute([':id' => $id]);
+        $user = $query->fetch(PDO::FETCH_ASSOC);
 
         if (false == $user) {
             throw new UserNotFoundException();
@@ -59,9 +63,9 @@ class UserRepository implements FindAllUsersRepository,
     /** {@inheritdoc} */
     public function findUserOfUsername(string $username): array
     {
-        $user = $this->db->query(
-            "SELECT id, username, name, email, password FROM users WHERE username = '{$username}'"
-        )->fetch(PDO::FETCH_ASSOC);
+        $query = $this->db->query('SELECT id, username, name, email, password FROM users WHERE username = :u');
+        $query->execute([':u' => $username]);
+        $user = $query->fetch(PDO::FETCH_ASSOC);
 
         if (false == $user) {
             throw new UserNotFoundException();
@@ -70,43 +74,47 @@ class UserRepository implements FindAllUsersRepository,
     }
 
     /** {@inheritdoc} */
-    public function store(User $user): array
+    public function findUserOfEmail(string $email): array
+    {
+        $query = $this->db->query('SELECT id, username, name, email, password FROM users WHERE email = :e');
+        $query->execute([':e' => $email]);
+        $user = $query->fetch(PDO::FETCH_ASSOC);
+        if (false == $user) {
+            throw new UserNotFoundException();
+        }
+        return $user;
+    }
+
+    /** {@inheritdoc} */
+    public function store(User $user): int
     {
         try {
-            $this->findByEmailAndUsername($user->getEmail(), $user->getUsername());
-
-            $createUserQuery = $this->db->prepare("
+            $query = $this->db->prepare("
                     INSERT INTO users (username, email, name, password, created_at, updated_at)
                      VALUES (:u, :e, :n, :p, '{$this->dateNow}', '{$this->dateNow}')
             ");
-            $createUserQuery->bindValue(':u', $user->getUsername());
-            $createUserQuery->bindValue(':e', $user->getEmail());
-            $createUserQuery->bindValue(':n', $user->getName());
-            $createUserQuery->bindValue(':p', $this->hash($user->getPassword()));
-            $createUserQuery->execute();
+            $query->bindValue(':u', $user->getUsername());
+            $query->bindValue(':e', $user->getEmail());
+            $query->bindValue(':n', $user->getName());
+            $query->bindValue(':p', $this->hash($user->getPassword()));
+            $query->execute();
 
-            $lastId = (int) $this->db->lastInsertId();
-
-            return $this->findUserOfId($lastId);
+            return (int) $this->db->lastInsertId();
         } catch (PDOException $e) {
             throw new UserCouldNotBeCreatedException($e->getMessage());
         }
     }
 
     /** {@inheritdoc} */
-    public function update(User $user, int $id): array
+    public function update(User $user, int $id): bool
     {
         try {
-            $this->findByEmailAndUsername($user->getEmail(), $user->getUsername());
-
             $fields = [
                 'username' => $user->getUsername(),
                 'email' => $user->getEmail(),
                 'name' => $user->getName()
             ];
-
             array_filter($fields, fn ($value) => null !== $value && '' !== $value);
-
             $params = [];
             $setStr = '';
 
@@ -118,34 +126,11 @@ class UserRepository implements FindAllUsersRepository,
             }
 
             $query = rtrim($setStr, ',');
-
             $params['id'] = $id;
 
-            $updateUserQuery = $this->db->prepare("UPDATE users SET $query WHERE id = :id");
-
-            $updateUserQuery->execute($params);
-
-            return $this->findUserOfId($id);
+            return $this->db->prepare("UPDATE users SET $query WHERE id = :id")->execute($params);
         } catch (PDOException $e) {
             throw new UserCouldNotBeUpdatedException($e->getMessage());
         }
-
-    }
-
-    /** @throws DuplicatedUserException */
-    private function findByEmailAndUsername(?string $email, ?string $username = null): void
-    {
-        $findUserQuery = $this->db->query('SELECT id FROM users WHERE email = :e OR username = :u');
-        $findUserQuery->execute([':e' => $email ?? '', ':u' => $username ?? '']);
-        $isDuplicated = (bool) $findUserQuery->fetch();
-
-        if ($isDuplicated !== false) {
-            throw new DuplicatedUserException();
-        }
-    }
-
-    private function hash(string $string): string
-    {
-        return password_hash($string, PASSWORD_DEFAULT);
     }
 }
