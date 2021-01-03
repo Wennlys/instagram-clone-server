@@ -8,6 +8,3 @@ insert_final_newline = true
 
 [*.php]
 indent_size = 4
-
-[*.js, *.ts, *.tsx]
-indent_size = 2
