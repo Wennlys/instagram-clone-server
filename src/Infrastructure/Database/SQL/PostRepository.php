@@ -14,7 +14,9 @@ use App\Infrastructure\Connection;
 use PDO;
 use PDOException;
 
-class PostRepository implements FindPostOfIdRepository, ListPostsByIdRepository, PostStoreRepository
+class PostRepository implements FindPostOfIdRepository,
+                                ListPostsByIdRepository,
+                                PostStoreRepository
 {
     private ?PDO $db = null;
 

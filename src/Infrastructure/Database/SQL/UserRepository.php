@@ -17,7 +17,11 @@ use App\Infrastructure\Connection;
 use PDO;
 use PDOException;
 
-class UserRepository implements FindAllUsersRepository, FindUserOfIdRepository, FindUserOfUsernameRepository, UserStoreRepository, UserUpdateRepository
+class UserRepository implements FindAllUsersRepository,
+                                FindUserOfIdRepository,
+                                FindUserOfUsernameRepository,
+                                UserStoreRepository,
+                                UserUpdateRepository
 {
     private ?PDO $db = null;
 
