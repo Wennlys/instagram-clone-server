@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Infrastructure\Database\SQL;
+namespace App\Infrastructure\Db\SQL;
 
-use App\Data\Protocols\Database\User\FindAllUsersRepository;
-use App\Data\Protocols\Database\User\FindUserOfIdRepository;
-use App\Data\Protocols\Database\User\FindUserOfUsernameRepository;
-use App\Data\Protocols\Database\User\UserStoreRepository;
-use App\Data\Protocols\Database\User\UserUpdateRepository;
+use App\Data\Protocols\Db\User\FindAllUsersRepository;
+use App\Data\Protocols\Db\User\FindUserOfIdRepository;
+use App\Data\Protocols\Db\User\FindUserOfUsernameRepository;
+use App\Data\Protocols\Db\User\UserStoreRepository;
+use App\Data\Protocols\Db\User\UserUpdateRepository;
 use App\Presentation\Errors\User\UserCouldNotBeCreatedException;
 use App\Presentation\Errors\User\UserCouldNotBeUpdatedException;
 use App\Presentation\Errors\User\DuplicatedUserException;

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Data\Protocols\Database\User;
+namespace App\Data\Protocols\Db\User;
 
 use App\Domain\Models\User;
 

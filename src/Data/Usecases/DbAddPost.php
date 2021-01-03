@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace App\Data\Usecases;
 
-use App\Data\Protocols\Database\Post\PostStoreRepository;
-use App\Data\Protocols\Database\User\FindUserOfIdRepository;
+use App\Data\Protocols\Db\Post\PostStoreRepository;
+use App\Data\Protocols\Db\User\FindUserOfIdRepository;
 use App\Domain\Models\Post;
 use App\Presentation\Errors\Post\PostCouldNotBeCreatedException;
 

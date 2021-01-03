@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Tests\Data\Mocks;
 
-use App\Data\Protocols\Database\User\FindUserOfIdRepository;
+use App\Data\Protocols\Db\User\FindUserOfIdRepository;
 
 class FindUserOfIdRepositorySpy implements FindUserOfIdRepository
 {

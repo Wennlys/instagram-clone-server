@@ -7,7 +7,7 @@ use App\Application\Actions\ActionError;
 use App\Application\Actions\ActionPayload;
 use App\Application\Handlers\HttpErrorHandler;
 use App\Presentation\Errors\User\UserNotFoundException;
-use App\Infrastructure\Database\SQL\UserRepository;
+use App\Infrastructure\Db\SQL\UserRepository;
 use ReallySimpleJWT\Token;
 use Slim\Middleware\ErrorMiddleware;
 use Slim\Psr7\UploadedFile;

@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Infrastructure\Database\SQL;
+namespace App\Infrastructure\Db\SQL;
 
-use App\Data\Protocols\Database\Post\FindPostOfIdRepository;
-use App\Data\Protocols\Database\Post\ListPostsByIdRepository;
-use App\Data\Protocols\Database\Post\PostDestroyRepository;
-use App\Data\Protocols\Database\Post\PostStoreRepository;
+use App\Data\Protocols\Db\Post\FindPostOfIdRepository;
+use App\Data\Protocols\Db\Post\ListPostsByIdRepository;
+use App\Data\Protocols\Db\Post\PostDestroyRepository;
+use App\Data\Protocols\Db\Post\PostStoreRepository;
 use App\Domain\Models\Post;
 use App\Presentation\Errors\Post\PostCouldNotBeCreatedException;
 use App\Presentation\Errors\Post\PostNotFoundException;
