@@ -35,10 +35,7 @@ class PostRepository implements FindPostOfIdRepository,
             "SELECT image_url, description, user_id FROM posts WHERE id = {$id}"
         )->fetch(PDO::FETCH_ASSOC);
 
-        if (false == $post) {
-            throw new PostNotFoundException();
-        }
-        return $post;
+        return $post ?: [];
     }
 
     /** {@inheritdoc} */
@@ -48,7 +45,7 @@ class PostRepository implements FindPostOfIdRepository,
             "SELECT posts.id, posts.image_url, posts.description, posts.user_id, posts.created_at, users.username FROM posts INNER JOIN users ON user_id = users.id WHERE EXISTS (SELECT * FROM followers WHERE followed_user = user_id AND following_user = {$userId});"
         )->fetchAll(PDO::FETCH_ASSOC);
 
-        return $posts ? $posts : [];
+        return $posts ?: [];
     }
 
     /** {@inheritdoc} */

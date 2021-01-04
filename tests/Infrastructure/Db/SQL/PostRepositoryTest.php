@@ -55,12 +55,6 @@ class PostRepositoryTest extends TestCase
         $this->assertTrue($isStored);
     }
 
-    public function testFindPostOfIdThrowsPostNotFound()
-    {
-        $this->expectException(PostNotFoundException::class);
-        $this->postRepository->findPostOfId(9999999999999);
-    }
-
     public function testFindPostOfId()
     {
         ['Post One' => $expectedPost] = $this->postProvider();
