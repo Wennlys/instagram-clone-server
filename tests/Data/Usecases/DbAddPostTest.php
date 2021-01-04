@@ -46,13 +46,12 @@ class DbAddPostTest extends TestCase
     }
 
     /** @test */
-    public function returns_false_when_PostStoreRepository_returns_false(): void
+    public function calls_PostStoreRepository_with_correct_values(): void
     {
         ["SUT" => $SUT, "postRepository" => $postRepository] = $this->SUTFactory();
         $post = new Post('', '', 1);
-        $postRepository->result = false;
-        $isAValidPost = $SUT->add($post);
-        $this->assertFalse($isAValidPost);
+        $SUT->add($post);
+        $this->assertEquals($post, $postRepository->params);
     }
 
     /** @test */
