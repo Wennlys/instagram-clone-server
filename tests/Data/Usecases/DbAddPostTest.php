@@ -8,12 +8,15 @@ use App\Data\Protocols\Db\User\FindUserOfIdRepository;
 use App\Data\Usecases\DbAddPost;
 use App\Domain\Models\Post;
 use App\Presentation\Errors\Post\PostCouldNotBeCreatedException;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Tests\Data\Mocks\FindUserOfIdRepositorySpy;
 use Tests\Data\Mocks\PostStoreRepositorySpy;
 use Tests\TestCase;
 
 class DbAddPostTest extends TestCase
 {
+    use ProphecyTrait;
+
     private function SUTFactory(
         PostStoreRepository $postStoreRepository = null,
         FindUserOfIdRepository $findUserOfIdRepository = null

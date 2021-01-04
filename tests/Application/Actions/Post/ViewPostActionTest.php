@@ -9,11 +9,14 @@ use App\Application\Handlers\HttpErrorHandler;
 use App\Infrastructure\Db\SQL\PostRepository;
 use App\Presentation\Errors\Post\PostNotFoundException;
 use DI\Container;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Slim\Middleware\ErrorMiddleware;
 use Tests\TestCase;
 
 class ViewPostActionTest extends TestCase
 {
+    use ProphecyTrait;
+
     public function testAction()
     {
         $app = $this->getAppInstance();

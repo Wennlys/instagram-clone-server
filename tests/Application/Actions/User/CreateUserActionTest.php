@@ -10,11 +10,19 @@ use App\Presentation\Errors\User\DuplicatedUserException;
 use App\Infrastructure\Db\SQL\UserRepository;
 use App\Domain\Models\User;
 use DI\Container;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Slim\Middleware\ErrorMiddleware;
 use Tests\TestCase;
 
 class CreateUserActionTest extends TestCase
 {
+    use ProphecyTrait;
+
+    private function createUser(array $user): User
+    {
+        return new User($user['username'], $user['email'], $user['name'], $user['password']);
+    }
+
     public function testAction()
     {
         $app = $this->getAppInstance();
@@ -34,6 +42,10 @@ class CreateUserActionTest extends TestCase
         $userRepositoryProphecy = $this->prophesize(UserRepository::class);
         $userRepositoryProphecy
             ->store($user)
+            ->willReturn(1)
+            ->shouldBeCalledOnce();
+        $userRepositoryProphecy
+            ->findUserOfId(1)
             ->willReturn($userArray)
             ->shouldBeCalledOnce();
 
@@ -93,10 +105,5 @@ class CreateUserActionTest extends TestCase
         $serializedPayload = json_encode($expectedPayload, JSON_PRETTY_PRINT);
 
         $this->assertEquals($serializedPayload, $payload);
-    }
-
-    public function createUser(array $user): User
-    {
-        return new User($user['username'], $user['email'], $user['name'], $user['password']);
     }
 }

@@ -7,11 +7,14 @@ use App\Application\Actions\ActionPayload;
 use App\Infrastructure\Db\SQL\UserRepository;
 use App\Domain\Models\User;
 use DI\Container;
+use Prophecy\PhpUnit\ProphecyTrait;
 use ReallySimpleJWT\Token;
 use Tests\TestCase;
 
 class ListUsersActionTest extends TestCase
 {
+    use ProphecyTrait;
+
     public function testAction()
     {
         $app = $this->getAppInstance();

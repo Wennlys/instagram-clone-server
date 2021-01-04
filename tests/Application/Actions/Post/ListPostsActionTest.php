@@ -10,13 +10,16 @@ use App\Infrastructure\Db\SQL\PostRepository;
 use App\Presentation\Errors\User\UserNotFoundException;
 use App\Infrastructure\Db\SQL\UserRepository;
 use DI\Container;
+use Prophecy\PhpUnit\ProphecyTrait;
 use ReallySimpleJWT\Token;
 use Slim\Middleware\ErrorMiddleware;
 use Tests\TestCase;
 
 class ListPostsActionTest extends TestCase
 {
-    public function testAction()
+    use ProphecyTrait;
+
+    public function atestAction()
     {
         $app = $this->getAppInstance();
 

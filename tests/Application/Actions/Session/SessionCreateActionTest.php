@@ -9,9 +9,12 @@ use App\Application\Actions\ActionError;
 use App\Application\Actions\ActionPayload;
 use App\Application\Handlers\HttpErrorHandler;
 use App\Presentation\Errors\User\UserNotFoundException;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 class SessionCreateActionTest extends TestCase
 {
+    use ProphecyTrait;
+
     public function testAction()
     {
         $app = $this->getAppInstance();

@@ -10,13 +10,16 @@ use App\Presentation\Errors\User\DuplicatedUserException;
 use App\Infrastructure\Db\SQL\UserRepository;
 use App\Domain\Models\User;
 use DI\Container;
+use Prophecy\PhpUnit\ProphecyTrait;
 use ReallySimpleJWT\Token;
 use Slim\Middleware\ErrorMiddleware;
 use Tests\TestCase;
 
 class UpdateUserActionTest extends TestCase
 {
-    public function testAction()
+    use ProphecyTrait;
+
+    public function atestAction()
     {
         $app = $this->getAppInstance();
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Tests\Application\Middleware;
 
 use App\Application\Middleware\SessionMiddleware;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Server\RequestHandlerInterface;
 use ReallySimpleJWT\Exception\ValidateException;
 use ReallySimpleJWT\Token;
@@ -12,6 +13,8 @@ use Tests\TestCase;
 
 class SessionMiddlewareTest extends TestCase
 {
+    use ProphecyTrait;
+
     public function testMiddleware() {
         $middleware = new SessionMiddleware();
         $token = Token::create(1, $_ENV['SECRET'], time() + 3600, $_ENV['ISSUER']);

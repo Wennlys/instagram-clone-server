@@ -8,6 +8,7 @@ use App\Application\Actions\ActionPayload;
 use App\Application\Handlers\HttpErrorHandler;
 use App\Presentation\Errors\User\UserNotFoundException;
 use App\Infrastructure\Db\SQL\UserRepository;
+use Prophecy\PhpUnit\ProphecyTrait;
 use ReallySimpleJWT\Token;
 use Slim\Middleware\ErrorMiddleware;
 use Slim\Psr7\UploadedFile;
@@ -15,10 +16,11 @@ use Tests\TestCase;
 
 class CreatePostActionTest extends TestCase
 {
+    use ProphecyTrait;
+
     public function testAction()
     {
         $app = $this->getAppInstance();
-
         deleteFileFromFolder('/public/tmp/*');
         $file = new UploadedFile(TMP_DIR() . 'avatar.jpg', 'avatar.jpg');
         copy(ASSETS_DIR() . 'avatar.jpg', TMP_DIR() . 'avatar.jpg');
