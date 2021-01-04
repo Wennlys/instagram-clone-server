@@ -33,7 +33,7 @@ class ListUsersActionTest extends TestCase
         $container->set(UserRepository::class, $userRepositoryProphecy->reveal());
 
         $token = Token::create(1, $_ENV['SECRET'], time() + 3600, $_ENV['ISSUER']);
-        $request = $this->createRequest('GET', '/users', ['HTTP_ACCEPT' => 'application/json', 'Authorization' => "Bearer {$token}"]);
+        $request = $this->createRequest('GET', '/users', ['Content-Type' => 'application/json', 'Authorization' => "Bearer {$token}"]);
         $response = $app->handle($request);
 
         $payload = (string) $response->getBody();

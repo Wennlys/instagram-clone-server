@@ -21,7 +21,8 @@ class CreateUserAction extends UserAction
         ] = json_decode((string) $this->request->getBody(), true);
 
         $user = new User($username, $email, $name, $password);
-        $createdUser = $this->userRepository->store($user);
+        $userId = $this->userRepository->store($user);
+        $createdUser = $this->userRepository->findUserOfId($userId);
 
         $this->logger->info("New User was created.");
 

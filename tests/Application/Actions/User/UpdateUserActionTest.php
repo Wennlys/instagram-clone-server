@@ -46,7 +46,7 @@ class UpdateUserActionTest extends TestCase
 
         $userArray['userId'] = $userId;
         $token = Token::create($userId, $_ENV['SECRET'], time() + 3600, $_ENV['ISSUER']);
-        $request = $this->createRequest('PUT', '/users', ['HTTP_ACCEPT' => 'application/json', 'Authorization' => "Bearer {$token}"]);
+        $request = $this->createRequest('PUT', '/users', ['Content-Type' => 'application/json', 'Authorization' => "Bearer {$token}"]);
         $request->getBody()->write(json_encode($userArray));
         $response = $app->handle($request);
 
@@ -93,7 +93,7 @@ class UpdateUserActionTest extends TestCase
 
         $userArray['userId'] = $userId;
         $token = Token::create($userId, $_ENV['SECRET'], time() + 3600, $_ENV['ISSUER']);
-        $request = $this->createRequest('PUT', '/users', ['HTTP_ACCEPT' => 'application/json', 'Authorization' => "Bearer {$token}"]);
+        $request = $this->createRequest('PUT', '/users', ['Content-Type' => 'application/json', 'Authorization' => "Bearer {$token}"]);
         $request->getBody()->write(json_encode($userArray));
         $response = $app->handle($request);
 
