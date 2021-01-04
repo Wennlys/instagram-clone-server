@@ -11,7 +11,9 @@
         "vlucas/phpdotenv": "^5.2"
     },
     "require-dev": {
-        "phpunit/phpunit": "^8.5",
+        "phpspec/prophecy": "^1.12",
+        "phpspec/prophecy-phpunit": "^2.0",
+        "phpunit/phpunit": "9.5.x-dev",
         "spatie/phpunit-watcher": "^1.22"
     },
     "config": {
