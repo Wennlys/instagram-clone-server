@@ -8,7 +8,7 @@ use App\Domain\Models\Post;
 
 class PostStoreRepositorySpy implements PostStoreRepository
 {
-    public bool $result = true;
+    public bool $result = false;
     public Post $params;
 
     /** {@inheritdoc} */
