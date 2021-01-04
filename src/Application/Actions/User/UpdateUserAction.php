@@ -18,7 +18,7 @@ class UpdateUserAction extends UserAction
             'email' => $email,
             'name' => $name,
             'userId' => $userId
-        ] = json_decode((string) $this->request->getBody(), true);
+        ] = $this->request->getParsedBody();
 
         $user = new User($username, $email, $name);
         $createdUser = $this->userRepository->update($user, $userId);

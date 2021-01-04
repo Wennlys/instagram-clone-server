@@ -15,7 +15,7 @@ class SessionCreateAction extends UserAction
      */
     protected function action(): Response
     {
-        ['username' => $username, 'password' => $password] = json_decode((string) $this->request->getBody(), true);
+        ['username' => $username, 'password' => $password] = $this->request->getParsedBody();
 
         $user = $this->userRepository->findUserOfUsername($username);
         $token = Token::create($user['id'], $_ENV['SECRET'], time() + 3600 * 24, $_ENV['ISSUER']);

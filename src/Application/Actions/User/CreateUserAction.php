@@ -18,7 +18,7 @@ class CreateUserAction extends UserAction
             'email' => $email,
             'name' => $name,
             'password' => $password
-        ] = json_decode((string) $this->request->getBody(), true);
+        ] = $this->request->getParsedBody();
 
         $user = new User($username, $email, $name, $password);
         $userId = $this->userRepository->store($user);
