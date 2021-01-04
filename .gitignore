@@ -9,3 +9,4 @@
 cov.xml
 .env
 database.db
+db.db
