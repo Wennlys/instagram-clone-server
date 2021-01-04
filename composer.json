@@ -34,7 +34,7 @@
     "scripts": {
         "start": "php -S localhost:8080 -t public",
         "test": "./vendor/bin/phpunit --colors=always",
-        "watch": "./vendor/bin/phpunit-watcher watch",
+        "test:watch": "./vendor/bin/phpunit-watcher watch",
         "cov-xml": "php -d pcov.enabled=1 ./vendor/bin/phpunit --coverage-clover cov.xml",
         "cov-html": "php -d pcov.enabled=1 vendor/bin/phpunit --coverage-html coverage"
     }
