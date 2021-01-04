@@ -11,7 +11,6 @@ use App\Data\Protocols\Db\User\UserStoreRepository;
 use App\Data\Protocols\Db\User\UserUpdateRepository;
 use App\Presentation\Errors\User\UserCouldNotBeCreatedException;
 use App\Presentation\Errors\User\UserCouldNotBeUpdatedException;
-use App\Presentation\Errors\User\UserNotFoundException;
 use App\Domain\Models\User;
 use App\Infrastructure\Connection;
 use PDO;
@@ -42,11 +41,9 @@ class UserRepository implements FindAllUsersRepository,
     /** {@inheritdoc} */
     public function findAll(): array
     {
-        $users = $this->db->query(
-            'SELECT id, username, email, name FROM users'
-        )->fetchAll(PDO::FETCH_ASSOC);
+        $users = $this->db->query('SELECT id, username, email, name FROM users')->fetchAll(PDO::FETCH_ASSOC);
 
-        return false !== $users ? $users : [];
+        return $users ?: [];
     }
 
     /** {@inheritdoc} */
@@ -56,10 +53,7 @@ class UserRepository implements FindAllUsersRepository,
         $query->execute([':id' => $id]);
         $user = $query->fetch(PDO::FETCH_ASSOC);
 
-        if (false == $user) {
-            throw new UserNotFoundException();
-        }
-        return $user;
+        return $user ?: [];
     }
 
     /** {@inheritdoc} */
@@ -69,10 +63,7 @@ class UserRepository implements FindAllUsersRepository,
         $query->execute([':u' => $username]);
         $user = $query->fetch(PDO::FETCH_ASSOC);
 
-        if (false == $user) {
-            throw new UserNotFoundException();
-        }
-        return $user;
+        return $user ?: [];
     }
 
     /** {@inheritdoc} */
@@ -81,10 +72,8 @@ class UserRepository implements FindAllUsersRepository,
         $query = $this->db->query('SELECT id, username, name, email, password FROM users WHERE email = :e');
         $query->execute([':e' => $email]);
         $user = $query->fetch(PDO::FETCH_ASSOC);
-        if (false == $user) {
-            throw new UserNotFoundException();
-        }
-        return $user;
+
+        return $user ?: [];
     }
 
     /** {@inheritdoc} */

@@ -81,12 +81,6 @@ class UserRepositoryTest extends TestCase
         $this->assertEquals($userArray, $userFound);
     }
 
-    public function testFindUserOfIdThrowsNotFoundException()
-    {
-        $this->expectException(UserNotFoundException::class);
-        $this->userRepository->findUserOfId(9999999);
-    }
-
     public function testFindUserOfUsername()
     {
         $userFound = $this->userRepository->findUserOfUsername('user1');
@@ -101,12 +95,6 @@ class UserRepositoryTest extends TestCase
         $userArray = $this->userProvider()['User One'];
         unset($userFound['password']);
         $this->assertEquals($userArray, $userFound);
-    }
-
-    public function testFindUserOfUsernameThrowsNotFoundException()
-    {
-        $this->expectException(UserNotFoundException::class);
-        $this->userRepository->findUserOfUsername('notfoundeduser');
     }
 
     public function testStore()
