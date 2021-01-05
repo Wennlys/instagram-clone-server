@@ -4,28 +4,28 @@ declare(strict_types=1);
 namespace App\Application\Actions\User;
 
 use App\Domain\Models\User;
-use Psr\Http\Message\ResponseInterface as Response;
+use App\Domain\Usecases\AddUser;
+use App\Presentation\Errors\User\DuplicatedUserException;
+use App\Presentation\Protocols\HttpResponse;
 
-class CreateUserAction extends UserAction
+class CreateUserAction
 {
+    private AddUser $addUser;
+
+    public function __construct(AddUser $addUser)
+    {
+       $this->addUser = $addUser;
+    }
+
     /**
      * {@inheritdoc}
      */
-    protected function action(): Response
+    public function handle(User $user): HttpResponse
     {
-        [
-            'username' => $username,
-            'email' => $email,
-            'name' => $name,
-            'password' => $password
-        ] = $this->request->getParsedBody();
+        $userId = $this->addUser->add($user);
+        if($userId === 0)
+            return new HttpResponse(403, ["error" => new DuplicatedUserException()]);
 
-        $user = new User($username, $email, $name, $password);
-        $userId = $this->userRepository->store($user);
-        $createdUser = $this->userRepository->findUserOfId($userId);
-
-        $this->logger->info("New User was created.");
-
-        return $this->respondWithData($createdUser);
+        return new HttpResponse(200, []);
     }
 }
