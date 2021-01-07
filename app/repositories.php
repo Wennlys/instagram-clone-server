@@ -5,7 +5,6 @@ use App\Data\Protocols\Db\Post\FindPostOfIdRepository;
 use App\Data\Protocols\Db\Post\ListPostsByRepository;
 use App\Data\Protocols\Db\Post\PostDestroyRepository;
 use App\Data\Protocols\Db\Post\PostStoreRepository;
-use App\Data\Protocols\Db\User\FindAllUsersRepository;
 use App\Data\Protocols\Db\User\FindUserOfIdRepository;
 use App\Data\Protocols\Db\User\FindUserOfUsernameRepository;
 use App\Data\Protocols\Db\User\UserDestroyRepository;
@@ -22,7 +21,6 @@ return function (ContainerBuilder $containerBuilder) {
         ListPostsByRepository::class => autowire(PostRepository::class),
         PostDestroyRepository::class => autowire(PostRepository::class),
         PostStoreRepository::class => autowire(PostRepository::class),
-        FindAllUsersRepository::class => autowire(UserRepository::class),
         FindUserOfIdRepository::class => autowire(UserRepository::class),
         FindUserOfUsernameRepository::class => autowire(UserRepository::class),
         UserDestroyRepository::class => autowire(UserRepository::class),

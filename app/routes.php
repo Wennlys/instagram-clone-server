@@ -53,7 +53,6 @@ return function (App $app) {
     $app->get('/posts/{id}', ViewPostAction::class);
 
     $app->group('/users', function (Group $group) {
-        $group->get('', ListUsersAction::class);
         $group->put('', UpdateUserAction::class);
     })->add(SessionMiddleware::class);
 
