@@ -21,9 +21,7 @@ class CreateUserAction
        $this->loadAccountById = $loadAccountById;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    /** {@inheritdoc} */
     public function handle(User $user): HttpResponse
     {
         $userId = $this->addUser->add($user);
