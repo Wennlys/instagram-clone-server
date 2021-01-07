@@ -4,26 +4,22 @@ declare(strict_types=1);
 namespace App\Application\Actions\User;
 
 use App\Domain\Models\User;
-use Psr\Http\Message\ResponseInterface as Response;
+use App\Domain\Usecases\LoadAccountById;
+use App\Presentation\Protocols\HttpResponse;
 
-class UpdateUserAction extends UserAction
+class UpdateUserAction
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function action(): Response
+    private LoadAccountById $loadAccountById;
+
+    public function __construct(LoadAccountById $loadAccountById)
     {
-        [
-            'username' => $username,
-            'email' => $email,
-            'name' => $name,
-            'userId' => $userId
-        ] = $this->request->getParsedBody();
+        $this->loadAccountById = $loadAccountById;
+    }
 
-        $user = new User($username, $email, $name);
-        $createdUser = $this->userRepository->update($user, $userId);
-        $this->logger->info("User `{$userId}` was updated.");
-
-        return $this->respondWithData($createdUser);
+    /** {@inheritdoc} */
+    public function handle(User $user, int $userId): HttpResponse
+    {
+        $this->loadAccountById->load($userId);
+        return new HttpResponse(200, []);
     }
 }
