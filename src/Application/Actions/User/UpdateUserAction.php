@@ -5,6 +5,7 @@ namespace App\Application\Actions\User;
 
 use App\Domain\Models\User;
 use App\Domain\Usecases\LoadAccountById;
+use App\Presentation\Errors\User\UserNotFoundException;
 use App\Presentation\Protocols\HttpResponse;
 
 class UpdateUserAction
@@ -19,7 +20,8 @@ class UpdateUserAction
     /** {@inheritdoc} */
     public function handle(User $user, int $userId): HttpResponse
     {
-        $this->loadAccountById->load($userId);
+        if(!$this->loadAccountById->load($userId))
+            return new HttpResponse(403, ["error" => new UserNotFoundException()]);
         return new HttpResponse(200, []);
     }
 }
