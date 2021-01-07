@@ -7,6 +7,7 @@ use App\Application\Actions\User\UpdateUserAction;
 use App\Domain\Models\User;
 use App\Domain\Usecases\LoadAccountById;
 use App\Domain\Usecases\UpdateAccountInformations;
+use App\Presentation\Errors\User\UserCouldNotBeUpdatedException;
 use App\Presentation\Errors\User\UserNotFoundException;
 use App\Presentation\Protocols\HttpResponse;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -65,5 +66,18 @@ class UpdateUserActionTest extends TestCase
         $updateAccountInformationsProphesize->update($user, $userId)->willThrow(HttpInternalServerErrorException::class)->shouldBeCalledOnce();
         ["SUT" => $SUT] = $this->SUTFactory(null, $updateAccountInformationsProphesize->reveal());
         $SUT->handle($user, $userId);
+    }
+
+    /** @test */
+    public function returns_matching_HttpResponse_object_when_UpdateAccountInformations_returns_false(): void
+    {
+        [
+            "SUT" => $SUT,
+            "updateAccountInformations" => $updateAccountInformations
+        ] = $this->SUTFactory();
+        $updateAccountInformations->result = false;
+        $response = $SUT->handle(new User(), 1);
+        $expectedResponse = new HttpResponse(400, ["error" => new UserCouldNotBeUpdatedException()]);
+        $this->assertEquals($expectedResponse, $response);
     }
 }
