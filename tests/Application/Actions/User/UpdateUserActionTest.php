@@ -26,7 +26,8 @@ class UpdateUserActionTest extends TestCase
         $SUT = new UpdateUserAction($loadAccountById, $updateAccountInformations);
         return [
             "SUT" => $SUT,
-            "loadAccountById" => $loadAccountById
+            "loadAccountById" => $loadAccountById,
+            "updateAccountInformations" => $updateAccountInformations
         ];
     }
 
@@ -52,5 +53,17 @@ class UpdateUserActionTest extends TestCase
         $response = $SUT->handle(new User(), 1);
         $expectedResponse = new HttpResponse(403, ["error" => new UserNotFoundException()]);
         $this->assertEquals($expectedResponse, $response);
+    }
+
+    /** @test */
+    public function returns_500_when_UpdateAccountInformations_throws_exception(): void
+    {
+        $this->expectExceptionMessage('Internal server error.');
+        $updateAccountInformationsProphesize = $this->prophesize(UpdateAccountInformations::class);
+        $user = new User();
+        $userId = 1;
+        $updateAccountInformationsProphesize->update($user, $userId)->willThrow(HttpInternalServerErrorException::class)->shouldBeCalledOnce();
+        ["SUT" => $SUT] = $this->SUTFactory(null, $updateAccountInformationsProphesize->reveal());
+        $SUT->handle($user, $userId);
     }
 }
