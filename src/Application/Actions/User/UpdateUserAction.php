@@ -30,6 +30,6 @@ class UpdateUserAction
         $wasUpdated = $this->updateAccountInformations->update($user, $userId);
         if(!$wasUpdated)
             return new HttpResponse(400, ["error" => new UserCouldNotBeUpdatedException()]);
-        return new HttpResponse(200, []);
+        return new HttpResponse(200, ["data" => $wasUpdated]);
     }
 }
