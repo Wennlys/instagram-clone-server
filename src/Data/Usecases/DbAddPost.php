@@ -23,14 +23,9 @@ class DbAddPost {
 
     public function add(Post $post): bool
     {
-        try {
-            $id = $post->getUserId();
-            $user = $this->findUserOfIdRepository->findUserOfId($id);
-            if ((bool) $user) return false;
-
-            return (bool) $this->postStoreRepository->store($post);
-        } catch(PostCouldNotBeCreatedException $e) {
-            throw $e;
-        }
+        $id = $post->getUserId();
+        $user = $this->findUserOfIdRepository->findUserOfId($id);
+        if ((bool) $user) return false;
+        return (bool) $this->postStoreRepository->store($post);
     }
 }
