@@ -8,7 +8,7 @@ use App\Domain\Usecases\UpdateAccountInformations;
 
 class UpdateAccountInformationsSpy implements UpdateAccountInformations
 {
-    public bool $result = false;
+    public bool $result = true;
     public array $params;
 
     /** {@inheritdoc} */

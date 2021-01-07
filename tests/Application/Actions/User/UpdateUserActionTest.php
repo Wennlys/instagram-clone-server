@@ -80,4 +80,13 @@ class UpdateUserActionTest extends TestCase
         $expectedResponse = new HttpResponse(400, ["error" => new UserCouldNotBeUpdatedException()]);
         $this->assertEquals($expectedResponse, $response);
     }
+
+    /** @test */
+    public function returns_matching_HttpResponse_object_when_UpdateAccountInformations_returns_true(): void
+    {
+        ["SUT" => $SUT] = $this->SUTFactory();
+        $response = $SUT->handle(new User(), 1);
+        $expectedResponse = new HttpResponse(200, ["data" => true]);
+        $this->assertEquals($expectedResponse, $response);
+    }
 }
