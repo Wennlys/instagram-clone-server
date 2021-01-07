@@ -5,16 +5,19 @@ namespace App\Application\Actions\User;
 
 use App\Domain\Models\User;
 use App\Domain\Usecases\LoadAccountById;
+use App\Domain\Usecases\UpdateAccountInformations;
 use App\Presentation\Errors\User\UserNotFoundException;
 use App\Presentation\Protocols\HttpResponse;
 
 class UpdateUserAction
 {
     private LoadAccountById $loadAccountById;
+    private UpdateAccountInformations $updateAccountInformations;
 
-    public function __construct(LoadAccountById $loadAccountById)
+    public function __construct(LoadAccountById $loadAccountById, UpdateAccountInformations $updateAccountInformations)
     {
         $this->loadAccountById = $loadAccountById;
+        $this->updateAccountInformations = $updateAccountInformations;
     }
 
     /** {@inheritdoc} */
@@ -22,6 +25,8 @@ class UpdateUserAction
     {
         if(!$this->loadAccountById->load($userId))
             return new HttpResponse(403, ["error" => new UserNotFoundException()]);
+
+        $wasUpdated = $this->updateAccountInformations->update($user, $userId);
         return new HttpResponse(200, []);
     }
 }
