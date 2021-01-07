@@ -7,7 +7,7 @@ use App\Domain\Usecases\LoadAccountById;
 
 class LoadAccountByIdSpy implements LoadAccountById
 {
-    public array $result = [];
+    public array $result = [1];
     public int $params;
 
     /** {@inheritdoc} */
