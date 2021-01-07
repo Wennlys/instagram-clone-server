@@ -3,6 +3,7 @@
     "require": {
         "php": "^7.2",
         "ext-json": "*",
+        "fzaninotto/faker": "^1.9",
         "monolog/monolog": "^2.0",
         "php-di/php-di": "^6.1",
         "rbdwllr/reallysimplejwt": "^3.1",
