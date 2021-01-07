@@ -33,14 +33,6 @@ class CreateUserActionTest extends TestCase
     }
 
     /** @test */
-    public function returns_HttpResponse_instance_on_success(): void
-    {
-        ["SUT" => $SUT] = $this->SUTFactory();
-        $response = $SUT->handle(new User());
-        $this->assertInstanceOf(HttpResponse::class, $response);
-    }
-
-    /** @test */
     public function returns_500_when_AddUser_throws_exception(): void
     {
         $this->expectExceptionMessage('Internal server error.');
