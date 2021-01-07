@@ -69,6 +69,16 @@ class CreateUserActionTest extends TestCase
     }
 
     /** @test */
+    public function returns_500_when_LoadAccountById_throws_exception(): void
+    {
+        $this->expectExceptionMessage('Internal server error.');
+        $loadAccountById = $this->prophesize(LoadAccountById::class);
+        $loadAccountById->load(1)->willThrow(HttpInternalServerErrorException::class)->shouldBeCalledOnce();
+        ["SUT" => $SUT] = $this->SUTFactory(null, $loadAccountById->reveal());
+        $SUT->handle(new User());
+    }
+
+    /** @test */
     public function returns_matching_HttpResponse_object_when_LoadAccountById_returns_empty_array(): void
     {
         [
@@ -83,7 +93,7 @@ class CreateUserActionTest extends TestCase
     }
 
     /** @test */
-    public function returns_matching_HttpResponse_object_when_AddUser_returns_not_empty_array(): void
+    public function returns_matching_HttpResponse_object_when_LoadAccountById_returns_not_empty_array(): void
     {
         [
             "SUT" => $SUT,
