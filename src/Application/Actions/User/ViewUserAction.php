@@ -22,6 +22,6 @@ class ViewUserAction
         $user = $this->loadAccountByUsername->load($username);
         if(!$user)
             return new HttpResponse(404, ["error" => new UserNotFoundException()]);
-        return new HttpResponse(200, []);
+        return new HttpResponse(200, ["data" => $user]);
     }
 }
