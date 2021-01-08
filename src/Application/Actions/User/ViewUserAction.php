@@ -3,20 +3,22 @@ declare(strict_types=1);
 
 namespace App\Application\Actions\User;
 
-use Psr\Http\Message\ResponseInterface as Response;
+use App\Domain\Usecases\LoadAccountByUsername;
+use App\Presentation\Protocols\HttpResponse;
 
-class ViewUserAction extends UserAction
+class ViewUserAction
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function action(): Response
+    private LoadAccountByUsername $loadAccountByUsername;
+
+    public function __construct(LoadAccountByUsername $loadAccountByUsername)
     {
-        $username = (string) $this->resolveArg('username');
-        $user = $this->userRepository->findUserOfUsername($username);
+        $this->loadAccountByUsername = $loadAccountByUsername;
+    }
 
-        $this->logger->info("User @`${username}` was viewed.");
-
-        return $this->respondWithData($user);
+    /** {@inheritdoc} */
+    public function handle(string $username): HttpResponse
+    {
+        $this->loadAccountByUsername->load($username);
+        return new HttpResponse(200, []);
     }
 }
