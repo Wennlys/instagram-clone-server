@@ -49,4 +49,16 @@ class ViewUserActionTest extends TestCase
         $expectedResponse = new HttpResponse(404, ["error" => new UserNotFoundException()]);
         $this->assertEquals($expectedResponse, $response);
     }
+
+    /** @test */
+    public function returns_matching_HttpResponse_object_when_LoadAccountByUsername_returns_not_empty_array(): void
+    {
+        [
+            "SUT" => $SUT,
+            "loadAccountByUsername" => $loadAccountByUsername
+        ] = $this->SUTFactory();
+        $expectedResponse = new HttpResponse(200, ["data" => [1]]);
+        $response = $SUT->handle("username");
+        $this->assertEquals($expectedResponse, $response);
+    }
 }
