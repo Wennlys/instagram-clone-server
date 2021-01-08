@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Application\Actions\User;
 
 use App\Domain\Usecases\LoadAccountByUsername;
+use App\Presentation\Errors\User\UserNotFoundException;
 use App\Presentation\Protocols\HttpResponse;
 
 class ViewUserAction
@@ -18,7 +19,9 @@ class ViewUserAction
     /** {@inheritdoc} */
     public function handle(string $username): HttpResponse
     {
-        $this->loadAccountByUsername->load($username);
+        $user = $this->loadAccountByUsername->load($username);
+        if(!$user)
+            return new HttpResponse(404, ["error" => new UserNotFoundException()]);
         return new HttpResponse(200, []);
     }
 }
