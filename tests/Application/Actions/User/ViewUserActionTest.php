@@ -5,6 +5,8 @@ namespace Tests\Application\Actions\User;
 
 use App\Application\Actions\User\ViewUserAction;
 use App\Domain\Usecases\LoadAccountByUsername;
+use App\Presentation\Errors\User\UserNotFoundException;
+use App\Presentation\Protocols\HttpResponse;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Slim\Exception\HttpInternalServerErrorException;
 use Tests\Application\Actions\Mocks\LoadAccountByUsernameSpy;
@@ -19,7 +21,8 @@ class ViewUserActionTest extends TestCase
         $loadAccountByUsername = $loadAccountByUsername ?: new LoadAccountByUsernameSpy();
         $SUT = new ViewUserAction($loadAccountByUsername);
         return [
-            "SUT" => $SUT
+            "SUT" => $SUT,
+            "loadAccountByUsername" => $loadAccountByUsername
         ];
     }
 
@@ -32,5 +35,18 @@ class ViewUserActionTest extends TestCase
         $loadAccountByUsername->load($username)->willThrow(HttpInternalServerErrorException::class)->shouldBeCalledOnce();
         ["SUT" => $SUT] = $this->SUTFactory($loadAccountByUsername->reveal());
         $SUT->handle($username);
+    }
+
+    /** @test */
+    public function returns_404_when_LoadAccountByUsername_returns_empty_array(): void
+    {
+        [
+            "SUT" => $SUT,
+            "loadAccountByUsername" => $loadAccountByUsername
+        ] = $this->SUTFactory();
+        $loadAccountByUsername->result = [];
+        $response = $SUT->handle("username");
+        $expectedResponse = new HttpResponse(404, ["error" => new UserNotFoundException()]);
+        $this->assertEquals($expectedResponse, $response);
     }
 }
