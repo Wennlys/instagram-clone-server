@@ -53,7 +53,8 @@ class UpdateUserActionTest extends TestCase
         $userId = 1;
         $loadAccountById->load($userId)->willThrow(HttpInternalServerErrorException::class)->shouldBeCalledOnce();
         ["SUT" => $SUT] = $this->SUTFactory($loadAccountById->reveal());
-        $SUT->handle(new User(), $userId);
+        $request = $this->requestFactory();
+        $SUT->handle($request);
     }
 
     /** @test */
