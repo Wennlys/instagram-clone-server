@@ -9,6 +9,7 @@ use App\Domain\Usecases\LoadAccountById;
 use App\Domain\Usecases\UpdateAccountInformations;
 use App\Presentation\Errors\User\UserCouldNotBeUpdatedException;
 use App\Presentation\Errors\User\UserNotFoundException;
+use App\Presentation\Protocols\HttpRequest;
 use App\Presentation\Protocols\HttpResponse;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Slim\Exception\HttpInternalServerErrorException;
@@ -32,6 +33,18 @@ class UpdateUserActionTest extends TestCase
         ];
     }
 
+    private function requestFactory(?User $user = null, int $userId = 1): HttpRequest
+    {
+        $user = $user ?: new User();
+        $requestBody = ["user" => $user, "userId" => $userId];
+        return new HttpRequest($requestBody);
+    }
+
+    private function responseFactory(int $statusCode, array $body): HttpResponse
+    {
+        return new HttpResponse($statusCode, $body);
+    }
+
     /** @test */
     public function returns_500_when_LoadAccountById_throws_exception(): void
     {
@@ -51,8 +64,9 @@ class UpdateUserActionTest extends TestCase
             "loadAccountById" => $loadAccountById
         ] = $this->SUTFactory();
         $loadAccountById->result = [];
-        $response = $SUT->handle(new User(), 1);
-        $expectedResponse = new HttpResponse(403, ["error" => new UserNotFoundException()]);
+        $request = $this->requestFactory();
+        $response = $SUT->handle($request);
+        $expectedResponse = $this->responseFactory(403, ["error" => new UserNotFoundException()]);
         $this->assertEquals($expectedResponse, $response);
     }
 
@@ -61,11 +75,10 @@ class UpdateUserActionTest extends TestCase
     {
         $this->expectExceptionMessage('Internal server error.');
         $updateAccountInformationsProphesize = $this->prophesize(UpdateAccountInformations::class);
-        $user = new User();
-        $userId = 1;
-        $updateAccountInformationsProphesize->update($user, $userId)->willThrow(HttpInternalServerErrorException::class)->shouldBeCalledOnce();
+        $updateAccountInformationsProphesize->update(new User(), 1)->willThrow(HttpInternalServerErrorException::class)->shouldBeCalledOnce();
         ["SUT" => $SUT] = $this->SUTFactory(null, $updateAccountInformationsProphesize->reveal());
-        $SUT->handle($user, $userId);
+        $request = $this->requestFactory();
+        $SUT->handle($request);
     }
 
     /** @test */
@@ -76,8 +89,9 @@ class UpdateUserActionTest extends TestCase
             "updateAccountInformations" => $updateAccountInformations
         ] = $this->SUTFactory();
         $updateAccountInformations->result = false;
-        $response = $SUT->handle(new User(), 1);
-        $expectedResponse = new HttpResponse(400, ["error" => new UserCouldNotBeUpdatedException()]);
+        $request = $this->requestFactory();
+        $response = $SUT->handle($request);
+        $expectedResponse = $this->responseFactory(400, ["error" => new UserCouldNotBeUpdatedException()]);
         $this->assertEquals($expectedResponse, $response);
     }
 
@@ -85,8 +99,9 @@ class UpdateUserActionTest extends TestCase
     public function returns_matching_HttpResponse_object_when_UpdateAccountInformations_returns_true(): void
     {
         ["SUT" => $SUT] = $this->SUTFactory();
-        $response = $SUT->handle(new User(), 1);
-        $expectedResponse = new HttpResponse(200, ["data" => true]);
+        $request = $this->requestFactory();
+        $response = $SUT->handle($request);
+        $expectedResponse = $this->responseFactory(200, ["data" => true]);
         $this->assertEquals($expectedResponse, $response);
     }
 }
