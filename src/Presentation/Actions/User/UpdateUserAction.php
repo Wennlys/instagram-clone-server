@@ -23,7 +23,6 @@ class UpdateUserAction implements Action
         $this->updateAccountInformations = $updateAccountInformations;
     }
 
-    /** {@inheritdoc} */
     public function handle(Request $request): Response
     {
         ["user" => $user, "userId" => $userId] = $request->getBody();

@@ -18,7 +18,6 @@ class ViewUserAction implements Action
         $this->loadAccountByUsername = $loadAccountByUsername;
     }
 
-    /** {@inheritdoc} */
     public function handle(Request $request): Response
     {
         ["username" => $username] = $request->getBody();

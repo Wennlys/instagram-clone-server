@@ -22,7 +22,6 @@ class CreateUserAction implements Action
        $this->loadAccountById = $loadAccountById;
     }
 
-    /** {@inheritdoc} */
     public function handle(Request $request): Response
     {
         ["user" => $user] = $request->getBody();
