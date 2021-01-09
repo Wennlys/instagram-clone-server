@@ -7,6 +7,7 @@ use App\Application\Actions\User\ViewUserAction;
 use App\Domain\Usecases\LoadAccountByUsername;
 use App\Presentation\Errors\User\UserNotFoundException;
 use App\Presentation\Protocols\HttpResponse;
+use App\Presentation\Protocols\HttpRequest;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Slim\Exception\HttpInternalServerErrorException;
 use Tests\Application\Actions\Mocks\LoadAccountByUsernameSpy;
@@ -26,6 +27,17 @@ class ViewUserActionTest extends TestCase
         ];
     }
 
+    private function requestFactory($username = 'username'): HttpRequest
+    {
+        $requestBody = ["username" => $username];
+        return new HttpRequest($requestBody);
+    }
+
+    private function responseFactory(int $statusCode, array $body): HttpResponse
+    {
+        return new HttpResponse($statusCode, $body);
+    }
+
     /** @test */
     public function returns_500_when_LoadAccountByUsername_throws_exception(): void
     {
@@ -34,7 +46,8 @@ class ViewUserActionTest extends TestCase
         $username = 'username';
         $loadAccountByUsername->load($username)->willThrow(HttpInternalServerErrorException::class)->shouldBeCalledOnce();
         ["SUT" => $SUT] = $this->SUTFactory($loadAccountByUsername->reveal());
-        $SUT->handle($username);
+        $request = $this->requestFactory($username);
+        $SUT->handle($request);
     }
 
     /** @test */
@@ -45,7 +58,8 @@ class ViewUserActionTest extends TestCase
             "loadAccountByUsername" => $loadAccountByUsername
         ] = $this->SUTFactory();
         $loadAccountByUsername->result = [];
-        $response = $SUT->handle("username");
+        $request = $this->requestFactory();
+        $response = $SUT->handle($request);
         $expectedResponse = new HttpResponse(404, ["error" => new UserNotFoundException()]);
         $this->assertEquals($expectedResponse, $response);
     }
@@ -55,7 +69,8 @@ class ViewUserActionTest extends TestCase
     {
         ["SUT" => $SUT] = $this->SUTFactory();
         $expectedResponse = new HttpResponse(200, ["data" => [1]]);
-        $response = $SUT->handle("username");
+        $request = $this->requestFactory();
+        $response = $SUT->handle($request);
         $this->assertEquals($expectedResponse, $response);
     }
 }
