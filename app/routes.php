@@ -50,7 +50,7 @@ return function (App $app) {
         $group->get('', ListPostsAction::class);
     })->add(SessionMiddleware::class);
 
-    $app->get('/posts/{id}', ViewPostAction::class);
+    $app->get('/posts/{post_id}', ViewPostAction::class);
 
     $app->group('/users', function (Group $group) {
         $group->put('', UpdateUserAction::class);
