@@ -53,10 +53,7 @@ class ViewUserActionTest extends TestCase
     /** @test */
     public function returns_matching_HttpResponse_object_when_LoadAccountByUsername_returns_not_empty_array(): void
     {
-        [
-            "SUT" => $SUT,
-            "loadAccountByUsername" => $loadAccountByUsername
-        ] = $this->SUTFactory();
+        ["SUT" => $SUT] = $this->SUTFactory();
         $expectedResponse = new HttpResponse(200, ["data" => [1]]);
         $response = $SUT->handle("username");
         $this->assertEquals($expectedResponse, $response);
