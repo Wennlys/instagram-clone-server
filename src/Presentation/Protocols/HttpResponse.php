@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace App\Presentation\Protocols;
 
-class HttpResponse {
+use JsonSerializable;
+
+class HttpResponse implements JsonSerializable {
     public int $statusCode;
     public array $body;
 
@@ -31,5 +33,20 @@ class HttpResponse {
     public function setBody(array $body): void
     {
        $this->body = $body;
+    }
+
+    public function jsonSerialize(): array
+    {
+        $response = [
+            'statusCode' => $this->statusCode,
+        ];
+
+        if ($this->body !== null) {
+            $response['data'] = $this->body['data'];
+        } elseif ($this->error !== null) {
+            $response['error'] = $this->body['error'];
+        }
+
+        return $response;
     }
 }
