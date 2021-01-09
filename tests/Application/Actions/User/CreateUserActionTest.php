@@ -10,6 +10,7 @@ use App\Domain\Usecases\LoadAccountById;
 use App\Presentation\Errors\User\DuplicatedUserException;
 use App\Presentation\Errors\User\UserCouldNotBeCreatedException;
 use App\Presentation\Protocols\HttpResponse;
+use App\Presentation\Protocols\HttpRequest;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Slim\Exception\HttpInternalServerErrorException;
 use Tests\Application\Actions\Mocks\AddUserSpy;
@@ -32,6 +33,18 @@ class CreateUserActionTest extends TestCase
         ];
     }
 
+    private function requestFactory(User $user = null): HttpRequest
+    {
+        $user = $user ?: new User();
+        $requestBody = ["user" => $user];
+        return new HttpRequest($requestBody);
+    }
+
+    private function responseFactory(int $statusCode, array $body): HttpResponse
+    {
+        return new HttpResponse($statusCode, $body);
+    }
+
     /** @test */
     public function returns_500_when_AddUser_throws_exception(): void
     {
@@ -40,7 +53,8 @@ class CreateUserActionTest extends TestCase
         $user = new User();
         $addUserProphecy->add($user)->willThrow(HttpInternalServerErrorException::class)->shouldBeCalledOnce();
         ["SUT" => $SUT] = $this->SUTFactory($addUserProphecy->reveal());
-        $SUT->handle($user);
+        $request = $this->requestFactory();
+        $SUT->handle($request);
     }
 
     /** @test */
@@ -51,8 +65,9 @@ class CreateUserActionTest extends TestCase
             "addUser" => $addUser
         ] = $this->SUTFactory();
         $addUser->result = 0;
-        $response = $SUT->handle(new User());
-        $expectedResponse = new HttpResponse(403, ["error" => new DuplicatedUserException()]);
+        $request = $this->requestFactory();
+        $response = $SUT->handle($request);
+        $expectedResponse = $this->responseFactory(403, ["error" => new DuplicatedUserException()]);
         $this->assertEquals($expectedResponse, $response);
     }
 
@@ -64,7 +79,8 @@ class CreateUserActionTest extends TestCase
             "addUser" => $addUser
         ] = $this->SUTFactory();
         $user = new User();
-        $SUT->handle($user);
+        $request = $this->requestFactory();
+        $SUT->handle($request);
         $this->assertEquals($user, $addUser->params);
     }
 
@@ -75,7 +91,8 @@ class CreateUserActionTest extends TestCase
         $loadAccountById = $this->prophesize(LoadAccountById::class);
         $loadAccountById->load(1)->willThrow(HttpInternalServerErrorException::class)->shouldBeCalledOnce();
         ["SUT" => $SUT] = $this->SUTFactory(null, $loadAccountById->reveal());
-        $SUT->handle(new User());
+        $request = $this->requestFactory();
+        $SUT->handle($request);
     }
 
     /** @test */
@@ -87,8 +104,9 @@ class CreateUserActionTest extends TestCase
         ] = $this->SUTFactory();
         $user = new User();
         $loadAccountById->result = [];
-        $response = $SUT->handle($user);
-        $expectedResponse = new HttpResponse(403, ["error" => new UserCouldNotBeCreatedException()]);
+        $request = $this->requestFactory();
+        $response = $SUT->handle($request);
+        $expectedResponse = $this->responseFactory(403, ["error" => new UserCouldNotBeCreatedException()]);
         $this->assertEquals($expectedResponse, $response);
     }
 
@@ -102,8 +120,9 @@ class CreateUserActionTest extends TestCase
         $user = new User('', 'mail@mail.com', '');
         $userArray = (array) $user;
         $loadAccountById->result = $userArray;
-        $expectedResponse = new HttpResponse(200, ["data" => $userArray]);
-        $response = $SUT->handle($user);
+        $expectedResponse = $this->responseFactory(200, ["data" => $userArray]);
+        $request = $this->requestFactory();
+        $response = $SUT->handle($request);
         $this->assertEquals($expectedResponse, $response);
     }
 }

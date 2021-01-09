@@ -3,14 +3,15 @@ declare(strict_types=1);
 
 namespace App\Application\Actions\User;
 
-use App\Domain\Models\User;
+use App\Application\Actions\Action;
 use App\Domain\Usecases\AddUser;
 use App\Domain\Usecases\LoadAccountById;
 use App\Presentation\Errors\User\DuplicatedUserException;
 use App\Presentation\Errors\User\UserCouldNotBeCreatedException;
-use App\Presentation\Protocols\HttpResponse;
+use App\Presentation\Protocols\HttpResponse as Response;
+use App\Presentation\Protocols\HttpRequest as Request;
 
-class CreateUserAction
+class CreateUserAction implements Action
 {
     private AddUser $addUser;
     private LoadAccountById $loadAccountById;
@@ -22,16 +23,17 @@ class CreateUserAction
     }
 
     /** {@inheritdoc} */
-    public function handle(User $user): HttpResponse
+    public function handle(Request $request): Response
     {
+        ["user" => $user] = $request->getBody();
         $userId = $this->addUser->add($user);
         if($userId === 0)
-            return new HttpResponse(403, ["error" => new DuplicatedUserException()]);
+            return new Response(403, ["error" => new DuplicatedUserException()]);
 
         $user = $this->loadAccountById->load($userId);
         if($user === [])
-            return new HttpResponse(403, ["error" => new UserCouldNotBeCreatedException()]);
+            return new Response(403, ["error" => new UserCouldNotBeCreatedException()]);
 
-        return new HttpResponse(200, ["data" => $user]);
+        return new Response(200, ["data" => $user]);
     }
 }
