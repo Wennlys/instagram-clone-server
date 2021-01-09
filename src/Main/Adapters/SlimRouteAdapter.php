@@ -2,7 +2,7 @@
 
 namespace App\Main\Adapters;
 
-use App\Application\Actions\Action;
+use App\Presentation\Actions\Action;
 use App\Presentation\Protocols\HttpRequest;
 use App\Presentation\Protocols\HttpResponse;
 use Slim\Psr7\Request as SlimRequest;

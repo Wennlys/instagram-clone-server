@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-use App\Application\Actions\User\CreateUserAction;
-use App\Application\Actions\User\ListUsersAction;
-use App\Application\Actions\User\UpdateUserAction;
-use App\Application\Actions\User\ViewUserAction;
-use App\Application\Actions\Session\SessionCreateAction;
-use App\Application\Actions\Post\CreatePostAction;
-use App\Application\Actions\Post\ListPostsAction;
-use App\Application\Actions\Post\ViewPostAction;
-use App\Application\Middleware\SessionMiddleware;
+use App\Presentation\Actions\User\CreateUserAction;
+use App\Presentation\Actions\User\ListUsersAction;
+use App\Presentation\Actions\User\UpdateUserAction;
+use App\Presentation\Actions\User\ViewUserAction;
+use App\Presentation\Actions\Session\SessionCreateAction;
+use App\Presentation\Actions\Post\CreatePostAction;
+use App\Presentation\Actions\Post\ListPostsAction;
+use App\Presentation\Actions\Post\ViewPostAction;
+use App\Presentation\Middleware\SessionMiddleware;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\App;
