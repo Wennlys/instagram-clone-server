@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Tests\Presentation\Middleware;
@@ -11,44 +12,59 @@ use ReallySimpleJWT\Token;
 use Slim\Psr7\Response;
 use Tests\TestCase;
 
-class SessionMiddlewareTest extends TestCase
+final class SessionMiddlewareTest extends TestCase
 {
     use ProphecyTrait;
 
-    public function testMiddleware() {
+    /**
+     * @test
+     */
+    public function middleware()
+    {
         $middleware = new SessionMiddleware();
         $token = Token::create(1, $_ENV['SECRET'], time() + 3600, $_ENV['ISSUER']);
         $request = $this->createRequest('PUT', '/users', ['Content-Type' => 'application/json', 'Authorization' => "Bearer {$token}"]);
         $handler = $this->prophesize(RequestHandlerInterface::class);
         $handler
             ->handle($request)
-            ->willReturn(new Response());
+            ->willReturn(new Response())
+        ;
         $response = $middleware->process($request, $handler->reveal());
 
         $this->assertNotNull($response);
     }
 
-    public function testInvalidToken() {
+    /**
+     * @test
+     */
+    public function invalidToken()
+    {
         $middleware = new SessionMiddleware();
         $token = 'dfasdfasdfasd.asdfasdf.asdfasdfasdf';
         $request = $this->createRequest('PUT', '/users', ['Content-Type' => 'application/json', 'Authorization' => "Bearer {$token}"]);
         $handler = $this->prophesize(RequestHandlerInterface::class);
         $handler
             ->handle($request)
-            ->willReturn(new Response());
+            ->willReturn(new Response())
+        ;
 
         $this->expectException(ValidateException::class);
         $middleware->process($request, $handler->reveal());
     }
 
-    public function testOutdatedToken() {
+    /**
+     * @test
+     */
+    public function outdatedToken()
+    {
         $middleware = new SessionMiddleware();
         $token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2MDM2Njc2NzUsImlzcyI6Imluc3RhZ3JhbS5jbG9uZSIsImlhdCI6MTYwMzY2NzY3NH0.KVZ1Fw80AMh58JyxwJCQcwU3TfBSPBLJZaGdEQzzrhI';
         $request = $this->createRequest('PUT', '/users', ['Content-Type' => 'application/json', 'Authorization' => "Bearer {$token}"]);
         $handler = $this->prophesize(RequestHandlerInterface::class);
         $handler
             ->handle($request)
-            ->willReturn(new Response());
+            ->willReturn(new Response())
+        ;
 
         $response = $middleware->process($request, $handler->reveal());
         $this->assertSame('Invalid token.', (string) $response->getBody());

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Tests\Data\Mocks;
@@ -6,7 +7,7 @@ namespace Tests\Data\Mocks;
 use App\Data\Protocols\Db\Post\PostStoreRepository;
 use App\Domain\Models\Post;
 
-class PostStoreRepositorySpy implements PostStoreRepository
+final class PostStoreRepositorySpy implements PostStoreRepository
 {
     public bool $result = false;
     public Post $params;
@@ -15,6 +16,7 @@ class PostStoreRepositorySpy implements PostStoreRepository
     public function store(Post $post): bool
     {
         $this->params = $post;
+
         return $this->result;
     }
 }

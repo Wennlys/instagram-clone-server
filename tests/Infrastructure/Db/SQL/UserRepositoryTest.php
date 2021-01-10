@@ -1,19 +1,19 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Tests\Infrastructure\Db\SQL;
 
+use App\Domain\Models\User;
+use App\Infrastructure\Db\SQL\UserRepository;
 use App\Presentation\Errors\User\UserCouldNotBeCreatedException;
 use App\Presentation\Errors\User\UserCouldNotBeUpdatedException;
-use App\Infrastructure\Db\SQL\UserRepository;
-use App\Presentation\Errors\User\UserNotFoundException;
-use App\Domain\Models\User;
 use PDO;
 use ReflectionClass;
 use Tests\DataBaseSetUp;
 use Tests\TestCase;
 
-class UserRepositoryTest extends TestCase
+final class UserRepositoryTest extends TestCase
 {
     private UserRepository $userRepository;
 
@@ -22,11 +22,6 @@ class UserRepositoryTest extends TestCase
         parent::__construct();
         DataBaseSetUp::up();
         $this->userRepository = new UserRepository();
-    }
-
-    private function createUser(array $user): User
-    {
-        return new User($user['username'], $user['email'], $user['name'], $user['password'] ?? null);
     }
 
     public function userProvider(): array
@@ -42,38 +37,47 @@ class UserRepositoryTest extends TestCase
                 'username' => 'user2',
                 'email' => 'user2@mail.com',
                 'name' => 'User Two',
-                'password' => 'newpassword'
+                'password' => 'newpassword',
             ],
             'New User' => [
                 'username' => 'user99999999999999999',
                 'email' => 'user99999999999999999@mail.com',
                 'name' => 'New User',
-                'password' => 'newpassword'
+                'password' => 'newpassword',
             ],
             'User to update' => [
                 'username' => 'updateduser',
                 'email' => 'updated@mail.com',
-                'name' => 'Updated User'
-            ]
+                'name' => 'Updated User',
+            ],
         ];
     }
 
-    public function testDbConnection()
+    /**
+     * @test
+     */
+    public function dbConnection()
     {
         $reflection = new ReflectionClass(UserRepository::class);
-        $property = $reflection->getProperty("db");
+        $property = $reflection->getProperty('db');
         $obj = new UserRepository();
 
         $property->setAccessible(true);
         $this->assertNotNull($property->getValue($obj));
     }
 
-    public function testFindAll()
+    /**
+     * @test
+     */
+    public function findAll()
     {
         $this->assertNotEmpty($this->userRepository->findAll());
     }
 
-    public function testFindUserOfId()
+    /**
+     * @test
+     */
+    public function findUserOfId()
     {
         $userFound = $this->userRepository->findUserOfId(1);
         $userArray = $this->userProvider()['User One'];
@@ -81,7 +85,10 @@ class UserRepositoryTest extends TestCase
         $this->assertEquals($userArray, $userFound);
     }
 
-    public function testFindUserOfUsername()
+    /**
+     * @test
+     */
+    public function findUserOfUsername()
     {
         $userFound = $this->userRepository->findUserOfUsername('user1');
         $userArray = $this->userProvider()['User One'];
@@ -89,7 +96,10 @@ class UserRepositoryTest extends TestCase
         $this->assertEquals($userArray, $userFound);
     }
 
-    public function testFindUserOfEmail()
+    /**
+     * @test
+     */
+    public function findUserOfEmail()
     {
         $userFound = $this->userRepository->findUserOfEmail('user1@mail.com');
         $userArray = $this->userProvider()['User One'];
@@ -97,7 +107,10 @@ class UserRepositoryTest extends TestCase
         $this->assertEquals($userArray, $userFound);
     }
 
-    public function testStore()
+    /**
+     * @test
+     */
+    public function store()
     {
         $providedUser = $this->userProvider()['New User'];
         $user = $this->createUser($providedUser);
@@ -106,7 +119,10 @@ class UserRepositoryTest extends TestCase
         $this->assertGreaterThan(0, $userId);
     }
 
-    public function testStoreThrowsUserCouldNotBeCreatedException()
+    /**
+     * @test
+     */
+    public function storeThrowsUserCouldNotBeCreatedException()
     {
         $providedUser = $this->userProvider()['New User'];
         $user = $this->createUser($providedUser);
@@ -115,13 +131,16 @@ class UserRepositoryTest extends TestCase
         $this->expectException(UserCouldNotBeCreatedException::class);
 
         $userRepository = new ReflectionClass($class);
-        $property = $userRepository->getProperty("db");
+        $property = $userRepository->getProperty('db');
         $property->setAccessible(true);
         $property->setValue($class, new PDO('sqlite:', null, null, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]));
-        $userRepository->getMethod("store")->invokeArgs($class, [$user]);
+        $userRepository->getMethod('store')->invokeArgs($class, [$user]);
     }
 
-    public function testUpdate()
+    /**
+     * @test
+     */
+    public function update()
     {
         $providedUser = $this->userProvider()['User to update'];
         ['username' => $username, 'email' => $email, 'name' => $name] = $providedUser;
@@ -132,7 +151,10 @@ class UserRepositoryTest extends TestCase
         $this->assertTrue($isUpdated);
     }
 
-    public function testUpdateThrowsUserCouldNotBeUpdatedException()
+    /**
+     * @test
+     */
+    public function updateThrowsUserCouldNotBeUpdatedException()
     {
         $providedUser = $this->userProvider()['New User'];
         $user = $this->createUser($providedUser);
@@ -141,9 +163,14 @@ class UserRepositoryTest extends TestCase
         $this->expectException(UserCouldNotBeUpdatedException::class);
 
         $userRepository = new ReflectionClass($class);
-        $property = $userRepository->getProperty("db");
+        $property = $userRepository->getProperty('db');
         $property->setAccessible(true);
         $property->setValue($class, new PDO('sqlite:', null, null, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]));
-        $userRepository->getMethod("update")->invokeArgs($class, [$user, 1]);
+        $userRepository->getMethod('update')->invokeArgs($class, [$user, 1]);
+    }
+
+    private function createUser(array $user): User
+    {
+        return new User($user['username'], $user['email'], $user['name'], $user['password'] ?? null);
     }
 }

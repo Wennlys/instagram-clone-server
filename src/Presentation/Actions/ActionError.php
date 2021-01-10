@@ -1,11 +1,12 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Presentation\Actions;
 
 use JsonSerializable;
 
-class ActionError implements JsonSerializable
+final class ActionError implements JsonSerializable
 {
     public const BAD_REQUEST = 'BAD_REQUEST';
     public const INSUFFICIENT_PRIVILEGES = 'INSUFFICIENT_PRIVILEGES';
@@ -34,6 +35,7 @@ class ActionError implements JsonSerializable
     public function setType(string $type): self
     {
         $this->type = $type;
+
         return $this;
     }
 
@@ -45,16 +47,15 @@ class ActionError implements JsonSerializable
     public function setDescription(?string $description = null): self
     {
         $this->description = $description;
+
         return $this;
     }
 
     public function jsonSerialize()
     {
-        $payload = [
+        return [
             'type' => $this->type,
             'description' => $this->description,
         ];
-
-        return $payload;
     }
 }

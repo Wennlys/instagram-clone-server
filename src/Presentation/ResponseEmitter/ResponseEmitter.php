@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Presentation\ResponseEmitter;
@@ -6,7 +7,7 @@ namespace App\Presentation\ResponseEmitter;
 use Psr\Http\Message\ResponseInterface;
 use Slim\ResponseEmitter as SlimResponseEmitter;
 
-class ResponseEmitter extends SlimResponseEmitter
+final class ResponseEmitter extends SlimResponseEmitter
 {
     /**
      * {@inheritdoc}
@@ -23,7 +24,8 @@ class ResponseEmitter extends SlimResponseEmitter
             ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS')
             ->withHeader('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
             ->withAddedHeader('Cache-Control', 'post-check=0, pre-check=0')
-            ->withHeader('Pragma', 'no-cache');
+            ->withHeader('Pragma', 'no-cache')
+        ;
 
         if (ob_get_contents()) {
             ob_clean();

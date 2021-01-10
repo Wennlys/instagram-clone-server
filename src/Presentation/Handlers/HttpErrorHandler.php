@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Presentation\Handlers;
@@ -17,10 +18,10 @@ use Slim\Exception\HttpUnauthorizedException;
 use Slim\Handlers\ErrorHandler as SlimErrorHandler;
 use Throwable;
 
-class HttpErrorHandler extends SlimErrorHandler
+final class HttpErrorHandler extends SlimErrorHandler
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function respond(): Response
     {

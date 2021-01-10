@@ -1,14 +1,14 @@
 <?php
+
 declare(strict_types=1);
 
-use App\Presentation\Actions\User\CreateUserAction;
-use App\Presentation\Actions\User\ListUsersAction;
-use App\Presentation\Actions\User\UpdateUserAction;
-use App\Presentation\Actions\User\ViewUserAction;
-use App\Presentation\Actions\Session\SessionCreateAction;
 use App\Presentation\Actions\Post\CreatePostAction;
 use App\Presentation\Actions\Post\ListPostsAction;
 use App\Presentation\Actions\Post\ViewPostAction;
+use App\Presentation\Actions\Session\SessionCreateAction;
+use App\Presentation\Actions\User\CreateUserAction;
+use App\Presentation\Actions\User\UpdateUserAction;
+use App\Presentation\Actions\User\ViewUserAction;
 use App\Presentation\Middleware\SessionMiddleware;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -19,9 +19,10 @@ use Slim\Psr7\Response as Psr7Response;
 return function (App $app) {
     $app->get('/tmp/{name}', function (Request $request) {
         $name = $request->getAttribute('name');
-        $image = file_get_contents(getcwd() . "/public/tmp/{$name}");
+        $image = file_get_contents(getcwd()."/public/tmp/{$name}");
         $response = new Psr7Response();
         $response->getBody()->write($image);
+
         return $response->withStatus(200);
     });
 
@@ -31,12 +32,14 @@ return function (App $app) {
     });
 
     $app->add(function ($request, $handler) {
-    $response = $handler->handle($request);
-    return $response
+        $response = $handler->handle($request);
+
+        return $response
             ->withHeader('Access-Control-Allow-Origin', '*')
             ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
             ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS')
-            ->withHeader('Access-Control-Allow-Credentials', 'true');
+            ->withHeader('Access-Control-Allow-Credentials', 'true')
+        ;
     });
 
     $app->post('/users', CreateUserAction::class);

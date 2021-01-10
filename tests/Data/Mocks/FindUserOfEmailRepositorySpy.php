@@ -1,11 +1,12 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Tests\Data\Mocks;
 
 use App\Data\Protocols\Db\User\FindUserOfEmailRepository;
 
-class FindUserOfEmailRepositorySpy implements FindUserOfEmailRepository
+final class FindUserOfEmailRepositorySpy implements FindUserOfEmailRepository
 {
     public array $result = [];
 

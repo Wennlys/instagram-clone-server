@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Presentation\Middleware;
@@ -9,7 +10,7 @@ use Psr\Http\Server\MiddlewareInterface as Middleware;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 use Slim\Psr7\Response;
 
-class SessionMiddleware implements Middleware
+final class SessionMiddleware implements Middleware
 {
     /**
      * {@inheritdoc}
@@ -23,6 +24,7 @@ class SessionMiddleware implements Middleware
 
         $response = new Response();
         $response->getBody()->write('Invalid token.');
+
         return $response->withStatus(400);
     }
 }

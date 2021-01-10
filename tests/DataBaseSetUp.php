@@ -6,7 +6,7 @@ namespace Tests;
 
 use App\Infrastructure\Db\SQL\Connection;
 
-class DataBaseSetUp
+final class DataBaseSetUp
 {
     public static function up(): void
     {

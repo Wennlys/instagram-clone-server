@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Tests\Data\Usecases;
@@ -13,51 +14,35 @@ use Tests\Data\Mocks\FindUserOfIdRepositorySpy;
 use Tests\Data\Mocks\PostStoreRepositorySpy;
 use Tests\TestCase;
 
-class DbAddPostTest extends TestCase
+final class DbAddPostTest extends TestCase
 {
     use ProphecyTrait;
 
-    private function SUTFactory(
-        PostStoreRepository $postStoreRepository = null,
-        FindUserOfIdRepository $findUserOfIdRepository = null
-    ): array
-    {
-        $postStoreRepository = $postStoreRepository ?: new PostStoreRepositorySpy();
-        $findUserOfIdRepository = $findUserOfIdRepository ?: new FindUserOfIdRepositorySpy();
-        $SUT = new DbAddPost($postStoreRepository, $findUserOfIdRepository);
-
-        return [
-            "SUT" => $SUT,
-            "postRepository" => $postStoreRepository,
-            "userRepository" => $findUserOfIdRepository
-        ];
-    }
-
     /** @test */
-    public function fails_when_PostStoreRepository_throws(): void
+    public function failsWhenPostStoreRepositoryThrows(): void
     {
         $this->expectException(PostCouldNotBeCreatedException::class);
         $post = new Post('', '', 1);
         $postStoreRepositoryProphecy = $this->prophesize(PostStoreRepository::class);
         $postStoreRepositoryProphecy->store($post)->willThrow(new PostCouldNotBeCreatedException())->shouldBeCalledOnce();
 
-        ["SUT" => $SUT] = $this->SUTFactory($postStoreRepositoryProphecy->reveal());
+        ['SUT' => $SUT] = $this->SUTFactory($postStoreRepositoryProphecy->reveal());
         $SUT->add($post);
     }
 
     /** @test */
-    public function calls_PostStoreRepository_with_correct_values(): void
+    public function callsPostStoreRepositoryWithCorrectValues(): void
     {
-        ["SUT" => $SUT, "postRepository" => $postRepository] = $this->SUTFactory();
+        ['SUT' => $SUT, 'postRepository' => $postRepository] = $this->SUTFactory();
         $post = new Post('', '', 1);
         $SUT->add($post);
         $this->assertEquals($post, $postRepository->params);
     }
 
     /** @test */
-    public function returns_false_when_FindUserOfIdRepository_returns_true(): void
+    public function returnsFalseWhenFindUserOfIdRepositoryReturnsTrue(): void
     {
-        ["SUT" => $SUT, "userRepository" => $userRespository] = $this->SUTFactory();
+        ['SUT' => $SUT, 'userRepository' => $userRespository] = $this->SUTFactory();
         $post = new Post('', '', 1);
         $userRespository->result = [1];
         $isAValidPost = $SUT->add($post);
@@ -65,11 +50,26 @@ class DbAddPostTest extends TestCase
     }
 
     /** @test */
-    public function calls_AddAccountRepository_using_expected_values(): void
+    public function callsAddAccountRepositoryUsingExpectedValues(): void
     {
-        ["SUT" => $SUT, "postRepository" => $postRepository] = $this->SUTFactory();
+        ['SUT' => $SUT, 'postRepository' => $postRepository] = $this->SUTFactory();
         $post = new Post('', '', 1);
         $SUT->add($post);
         $this->assertEquals($post, $postRepository->params);
+    }
+
+    private function SUTFactory(
+        PostStoreRepository $postStoreRepository = null,
+        FindUserOfIdRepository $findUserOfIdRepository = null
+    ): array {
+        $postStoreRepository = $postStoreRepository ?: new PostStoreRepositorySpy();
+        $findUserOfIdRepository = $findUserOfIdRepository ?: new FindUserOfIdRepositorySpy();
+        $SUT = new DbAddPost($postStoreRepository, $findUserOfIdRepository);
+
+        return [
+            'SUT' => $SUT,
+            'postRepository' => $postStoreRepository,
+            'userRepository' => $findUserOfIdRepository,
+        ];
     }
 }

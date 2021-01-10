@@ -13,22 +13,23 @@ function now(): string
 function copyArray(array $array): array
 {
     $arrObj = new ArrayObject($array);
+
     return $arrObj->getArrayCopy();
 }
 
 function deleteFileFromFolder(string $filepath): void
 {
-    array_map( 'unlink', array_filter((array) glob(getcwd() . $filepath)));
+    array_map('unlink', array_filter((array) glob(getcwd().$filepath)));
 }
 
 function TMP_DIR(): string
 {
-    return getcwd() . '/public/tmp/';
+    return getcwd().'/public/tmp/';
 }
 
 function ASSETS_DIR(): string
 {
-    return getcwd() . '/public/assets/';
+    return getcwd().'/public/assets/';
 }
 
 function getPayload(ServerRequestInterface $request): ?array

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Domain\Models;
@@ -7,7 +8,7 @@ use App\Presentation\Errors\User\InvalidPasswordException;
 use JsonSerializable;
 use PharIo\Manifest\InvalidEmailException;
 
-class User implements JsonSerializable
+final class User implements JsonSerializable
 {
     private ?string $username;
     private ?string $email;
@@ -24,7 +25,7 @@ class User implements JsonSerializable
 
     public function setUsername(string $username): void
     {
-       $this->username = strtolower($username);
+        $this->username = strtolower($username);
     }
 
     public function getUsername(): ?string
@@ -34,7 +35,7 @@ class User implements JsonSerializable
 
     public function setEmail(string $email): void
     {
-        if (false == filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        if (false === filter_var($email, FILTER_VALIDATE_EMAIL)) {
             throw new InvalidEmailException();
         }
 
@@ -58,7 +59,7 @@ class User implements JsonSerializable
 
     public function setPassword(string $password): void
     {
-        if (strlen($password) < 6) {
+        if (\strlen($password) < 6) {
             throw new InvalidPasswordException();
         }
 
@@ -79,7 +80,7 @@ class User implements JsonSerializable
             'username' => $this->username,
             'email' => $this->email,
             'name' => $this->name,
-            'password' => $this->password ?? null
+            'password' => $this->password ?? null,
         ]);
     }
 }
