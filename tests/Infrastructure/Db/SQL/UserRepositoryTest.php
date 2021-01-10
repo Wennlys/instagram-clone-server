@@ -53,9 +53,7 @@ final class UserRepositoryTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function db_connection()
     {
         $reflection = new ReflectionClass(UserRepository::class);
@@ -66,17 +64,13 @@ final class UserRepositoryTest extends TestCase
         $this->assertNotNull($property->getValue($obj));
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function find_all()
     {
         $this->assertNotEmpty($this->userRepository->findAll());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function find_user_of_id()
     {
         $userFound = $this->userRepository->findUserOfId(1);
@@ -85,9 +79,7 @@ final class UserRepositoryTest extends TestCase
         $this->assertEquals($userArray, $userFound);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function find_user_of_username()
     {
         $userFound = $this->userRepository->findUserOfUsername('user1');
@@ -96,9 +88,7 @@ final class UserRepositoryTest extends TestCase
         $this->assertEquals($userArray, $userFound);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function find_user_of_email()
     {
         $userFound = $this->userRepository->findUserOfEmail('user1@mail.com');
@@ -107,9 +97,7 @@ final class UserRepositoryTest extends TestCase
         $this->assertEquals($userArray, $userFound);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function store()
     {
         $providedUser = $this->userProvider()['New User'];
@@ -119,9 +107,7 @@ final class UserRepositoryTest extends TestCase
         $this->assertGreaterThan(0, $userId);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function store_throws_user_could_not_be_created_exception()
     {
         $providedUser = $this->userProvider()['New User'];
@@ -137,9 +123,7 @@ final class UserRepositoryTest extends TestCase
         $userRepository->getMethod('store')->invokeArgs($class, [$user]);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function update()
     {
         $providedUser = $this->userProvider()['User to update'];
@@ -151,9 +135,7 @@ final class UserRepositoryTest extends TestCase
         $this->assertTrue($isUpdated);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function update_throws_user_could_not_be_updated_exception()
     {
         $providedUser = $this->userProvider()['New User'];

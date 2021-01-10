@@ -23,9 +23,7 @@ final class PostRepositoryTest extends TestCase
         $this->postRepository = new PostRepository();
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function store_throws_post_could_not_be_created_exception()
     {
         $post = $this->createPost('Post One');
@@ -40,9 +38,7 @@ final class PostRepositoryTest extends TestCase
         $userRepository->getMethod('store')->invokeArgs($class, [$post]);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function post_store()
     {
         $post = $this->createPost('Post One');
@@ -50,9 +46,7 @@ final class PostRepositoryTest extends TestCase
         $this->assertTrue($isStored);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function find_post_of_id()
     {
         ['Post One' => $expectedPost] = $this->postProvider();
@@ -60,9 +54,7 @@ final class PostRepositoryTest extends TestCase
         $this->assertEquals($expectedPost, $actualPost);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function list_posts()
     {
         $userId = 1;
@@ -70,9 +62,7 @@ final class PostRepositoryTest extends TestCase
         $this->assertCount(4, $actualPosts);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function list_posts_returns_empty_array_when_user_doesnt_follow_any_other_user()
     {
         $userId = 2;
