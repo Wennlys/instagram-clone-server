@@ -23,7 +23,7 @@ final class CreateUserActionTest extends TestCase
     use ProphecyTrait;
 
     /** @test */
-    public function returns500WhenAddUserThrowsException(): void
+    public function returns500_when_add_user_throws_exception(): void
     {
         $this->expectExceptionMessage('Internal server error.');
         $addUserProphecy = $this->prophesize(AddUser::class);
@@ -35,7 +35,7 @@ final class CreateUserActionTest extends TestCase
     }
 
     /** @test */
-    public function returnsMatchingHttpResponseObjectWhenAddUserReturns0(): void
+    public function returns_matching_http_response_object_when_add_user_returns0(): void
     {
         [
             'SUT' => $SUT,
@@ -49,7 +49,7 @@ final class CreateUserActionTest extends TestCase
     }
 
     /** @test */
-    public function callsAddUserWithExpectedValues(): void
+    public function calls_add_user_with_expected_values(): void
     {
         [
             'SUT' => $SUT,
@@ -62,7 +62,7 @@ final class CreateUserActionTest extends TestCase
     }
 
     /** @test */
-    public function returns500WhenLoadAccountByIdThrowsException(): void
+    public function returns500_when_load_account_by_id_throws_exception(): void
     {
         $this->expectExceptionMessage('Internal server error.');
         $loadAccountById = $this->prophesize(LoadAccountById::class);
@@ -73,7 +73,7 @@ final class CreateUserActionTest extends TestCase
     }
 
     /** @test */
-    public function returnsMatchingHttpResponseObjectWhenLoadAccountByIdReturnsEmptyArray(): void
+    public function returns_matching_http_response_object_when_load_account_by_id_returns_empty_array(): void
     {
         [
             'SUT' => $SUT,
@@ -88,7 +88,7 @@ final class CreateUserActionTest extends TestCase
     }
 
     /** @test */
-    public function returnsMatchingHttpResponseObjectWhenLoadAccountByIdReturnsNotEmptyArray(): void
+    public function returns_matching_http_response_object_when_load_account_by_id_returns_not_empty_array(): void
     {
         [
             'SUT' => $SUT,

@@ -56,7 +56,7 @@ final class UserRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function dbConnection()
+    public function db_connection()
     {
         $reflection = new ReflectionClass(UserRepository::class);
         $property = $reflection->getProperty('db');
@@ -69,7 +69,7 @@ final class UserRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function findAll()
+    public function find_all()
     {
         $this->assertNotEmpty($this->userRepository->findAll());
     }
@@ -77,7 +77,7 @@ final class UserRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function findUserOfId()
+    public function find_user_of_id()
     {
         $userFound = $this->userRepository->findUserOfId(1);
         $userArray = $this->userProvider()['User One'];
@@ -88,7 +88,7 @@ final class UserRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function findUserOfUsername()
+    public function find_user_of_username()
     {
         $userFound = $this->userRepository->findUserOfUsername('user1');
         $userArray = $this->userProvider()['User One'];
@@ -99,7 +99,7 @@ final class UserRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function findUserOfEmail()
+    public function find_user_of_email()
     {
         $userFound = $this->userRepository->findUserOfEmail('user1@mail.com');
         $userArray = $this->userProvider()['User One'];
@@ -122,7 +122,7 @@ final class UserRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function storeThrowsUserCouldNotBeCreatedException()
+    public function store_throws_user_could_not_be_created_exception()
     {
         $providedUser = $this->userProvider()['New User'];
         $user = $this->createUser($providedUser);
@@ -154,7 +154,7 @@ final class UserRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function updateThrowsUserCouldNotBeUpdatedException()
+    public function update_throws_user_could_not_be_updated_exception()
     {
         $providedUser = $this->userProvider()['New User'];
         $user = $this->createUser($providedUser);

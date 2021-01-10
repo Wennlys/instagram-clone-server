@@ -23,7 +23,7 @@ final class UpdateUserActionTest extends TestCase
     use ProphecyTrait;
 
     /** @test */
-    public function returns500WhenLoadAccountByIdThrowsException(): void
+    public function returns500_when_load_account_by_id_throws_exception(): void
     {
         $this->expectExceptionMessage('Internal server error.');
         $loadAccountById = $this->prophesize(LoadAccountById::class);
@@ -35,7 +35,7 @@ final class UpdateUserActionTest extends TestCase
     }
 
     /** @test */
-    public function returnsMatchingHttpResponseObjectWhenLoadAccountByIdReturnsEmptyArray(): void
+    public function returns_matching_http_response_object_when_load_account_by_id_returns_empty_array(): void
     {
         [
             'SUT' => $SUT,
@@ -49,7 +49,7 @@ final class UpdateUserActionTest extends TestCase
     }
 
     /** @test */
-    public function returns500WhenUpdateAccountInformationsThrowsException(): void
+    public function returns500_when_update_account_informations_throws_exception(): void
     {
         $this->expectExceptionMessage('Internal server error.');
         $updateAccountInformationsProphesize = $this->prophesize(UpdateAccountInformations::class);
@@ -60,7 +60,7 @@ final class UpdateUserActionTest extends TestCase
     }
 
     /** @test */
-    public function returnsMatchingHttpResponseObjectWhenUpdateAccountInformationsReturnsFalse(): void
+    public function returns_matching_http_response_object_when_update_account_informations_returns_false(): void
     {
         [
             'SUT' => $SUT,
@@ -74,7 +74,7 @@ final class UpdateUserActionTest extends TestCase
     }
 
     /** @test */
-    public function returnsMatchingHttpResponseObjectWhenUpdateAccountInformationsReturnsTrue(): void
+    public function returns_matching_http_response_object_when_update_account_informations_returns_true(): void
     {
         ['SUT' => $SUT] = $this->SUTFactory();
         $request = $this->requestFactory();

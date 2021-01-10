@@ -16,7 +16,7 @@ final class DbLoadAccountByIdTest extends TestCase
     use ProphecyTrait;
 
     /** @test */
-    public function failsWhenFindUserOfIdRepositoryThrowsException(): void
+    public function fails_when_find_user_of_id_repository_throws_exception(): void
     {
         $this->expectException(UserNotFoundException::class);
         $userRepositoryProphecy = $this->prophesize(FindUserOfIdRepository::class);
@@ -27,7 +27,7 @@ final class DbLoadAccountByIdTest extends TestCase
     }
 
     /** @test */
-    public function returnsTheSameResultOfFindUserOfIdRepository(): void
+    public function returns_the_same_result_of_find_user_of_id_repository(): void
     {
         ['SUT' => $SUT, 'userRepository' => $userRepository] = $this->SUTFactory();
         $search1 = $SUT->load(999999999);

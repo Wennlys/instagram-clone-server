@@ -19,7 +19,7 @@ final class ViewUserActionTest extends TestCase
     use ProphecyTrait;
 
     /** @test */
-    public function returns500WhenLoadAccountByUsernameThrowsException(): void
+    public function returns500_when_load_account_by_username_throws_exception(): void
     {
         $this->expectExceptionMessage('Internal server error.');
         $loadAccountByUsername = $this->prophesize(LoadAccountByUsername::class);
@@ -31,7 +31,7 @@ final class ViewUserActionTest extends TestCase
     }
 
     /** @test */
-    public function returns404WhenLoadAccountByUsernameReturnsEmptyArray(): void
+    public function returns404_when_load_account_by_username_returns_empty_array(): void
     {
         [
             'SUT' => $SUT,
@@ -45,7 +45,7 @@ final class ViewUserActionTest extends TestCase
     }
 
     /** @test */
-    public function returnsMatchingHttpResponseObjectWhenLoadAccountByUsernameReturnsNotEmptyArray(): void
+    public function returns_matching_http_response_object_when_load_account_by_username_returns_not_empty_array(): void
     {
         ['SUT' => $SUT] = $this->SUTFactory();
         $expectedResponse = new HttpResponse(200, ['data' => [1]]);

@@ -37,7 +37,7 @@ final class SessionMiddlewareTest extends TestCase
     /**
      * @test
      */
-    public function invalidToken()
+    public function invalid_token()
     {
         $middleware = new SessionMiddleware();
         $token = 'dfasdfasdfasd.asdfasdf.asdfasdfasdf';
@@ -55,7 +55,7 @@ final class SessionMiddlewareTest extends TestCase
     /**
      * @test
      */
-    public function outdatedToken()
+    public function outdated_token()
     {
         $middleware = new SessionMiddleware();
         $token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2MDM2Njc2NzUsImlzcyI6Imluc3RhZ3JhbS5jbG9uZSIsImlhdCI6MTYwMzY2NzY3NH0.KVZ1Fw80AMh58JyxwJCQcwU3TfBSPBLJZaGdEQzzrhI';

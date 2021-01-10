@@ -16,7 +16,7 @@ final class DbLoadPostByIdTest extends TestCase
     use ProphecyTrait;
 
     /** @test */
-    public function failsWhenFindPostOfIdRepositoryThrowsException(): void
+    public function fails_when_find_post_of_id_repository_throws_exception(): void
     {
         $this->expectException(PostNotFoundException::class);
         $postRepositoryProphecy = $this->prophesize(FindPostOfIdRepository::class);
@@ -27,7 +27,7 @@ final class DbLoadPostByIdTest extends TestCase
     }
 
     /** @test */
-    public function returnsTheSameResultOfFindPostOfIdRepository(): void
+    public function returns_the_same_result_of_find_post_of_id_repository(): void
     {
         ['SUT' => $SUT, 'postRepository' => $postRepository] = $this->SUTFactory();
         $search1 = $SUT->load(999999999);

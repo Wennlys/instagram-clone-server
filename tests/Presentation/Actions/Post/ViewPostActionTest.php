@@ -19,7 +19,7 @@ final class ViewPostActionTest extends TestCase
     use ProphecyTrait;
 
     /** @test */
-    public function returns500WhenLoadPostByIdThrowsException(): void
+    public function returns500_when_load_post_by_id_throws_exception(): void
     {
         $this->expectExceptionMessage('Internal server error.');
         $loadPostById = $this->prophesize(LoadPostById::class);
@@ -31,7 +31,7 @@ final class ViewPostActionTest extends TestCase
     }
 
     /** @test */
-    public function returns404WhenLoadPostByIdReturnsEmptyArray(): void
+    public function returns404_when_load_post_by_id_returns_empty_array(): void
     {
         [
             'SUT' => $SUT,
@@ -45,7 +45,7 @@ final class ViewPostActionTest extends TestCase
     }
 
     /** @test */
-    public function returnsMatchingHttpResponseObjectWhenLoadPostByIdReturnsNotEmptyArray(): void
+    public function returns_matching_http_response_object_when_load_post_by_id_returns_not_empty_array(): void
     {
         ['SUT' => $SUT] = $this->SUTFactory();
         $expectedResponse = new HttpResponse(200, ['data' => [1]]);

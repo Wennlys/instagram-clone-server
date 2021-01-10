@@ -21,7 +21,7 @@ final class DbAddUserTest extends TestCase
     use ProphecyTrait;
 
     /** @test */
-    public function callsUserStoreRepositoryUsingExpectedValues(): void
+    public function calls_user_store_repository_using_expected_values(): void
     {
         [
             'SUT' => $SUT,
@@ -33,7 +33,7 @@ final class DbAddUserTest extends TestCase
     }
 
     /** @test */
-    public function failsWhenUserStoreRepositoryThrowsException(): void
+    public function fails_when_user_store_repository_throws_exception(): void
     {
         $this->expectException(UserCouldNotBeCreatedException::class);
         [$user] = $this->userFactory();
@@ -44,7 +44,7 @@ final class DbAddUserTest extends TestCase
     }
 
     /** @test */
-    public function returnsGreaterThan0IntegerWhenFindUserOfUsernameAndFindUserOfEmailReturnsEmptyArray(): void
+    public function returns_greater_than0_integer_when_find_user_of_username_and_find_user_of_email_returns_empty_array(): void
     {
         [
             'SUT' => $SUT,
@@ -57,7 +57,7 @@ final class DbAddUserTest extends TestCase
     }
 
     /** @test */
-    public function returns0WhenFindUserOfUsernameReturnsNotEmptyArray(): void
+    public function returns0_when_find_user_of_username_returns_not_empty_array(): void
     {
         [
             'SUT' => $SUT,
@@ -70,7 +70,7 @@ final class DbAddUserTest extends TestCase
     }
 
     /** @test */
-    public function returnsGreaterThan0IntegerWhenFindUserOfEmailReturnsEmptyArray(): void
+    public function returns_greater_than0_integer_when_find_user_of_email_returns_empty_array(): void
     {
         [
             'SUT' => $SUT,
@@ -83,7 +83,7 @@ final class DbAddUserTest extends TestCase
     }
 
     /** @test */
-    public function returns0WhenFindUserOfEmailReturnsNotEmptyArray(): void
+    public function returns0_when_find_user_of_email_returns_not_empty_array(): void
     {
         [
             'SUT' => $SUT,

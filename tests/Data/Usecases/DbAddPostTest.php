@@ -19,7 +19,7 @@ final class DbAddPostTest extends TestCase
     use ProphecyTrait;
 
     /** @test */
-    public function failsWhenPostStoreRepositoryThrows(): void
+    public function fails_when_post_store_repository_throws(): void
     {
         $this->expectException(PostCouldNotBeCreatedException::class);
         $post = new Post('', '', 1);
@@ -31,7 +31,7 @@ final class DbAddPostTest extends TestCase
     }
 
     /** @test */
-    public function callsPostStoreRepositoryWithCorrectValues(): void
+    public function calls_post_store_repository_with_correct_values(): void
     {
         ['SUT' => $SUT, 'postRepository' => $postRepository] = $this->SUTFactory();
         $post = new Post('', '', 1);
@@ -40,7 +40,7 @@ final class DbAddPostTest extends TestCase
     }
 
     /** @test */
-    public function returnsFalseWhenFindUserOfIdRepositoryReturnsTrue(): void
+    public function returns_false_when_find_user_of_id_repository_returns_true(): void
     {
         ['SUT' => $SUT, 'userRepository' => $userRespository] = $this->SUTFactory();
         $post = new Post('', '', 1);
@@ -50,7 +50,7 @@ final class DbAddPostTest extends TestCase
     }
 
     /** @test */
-    public function callsAddAccountRepositoryUsingExpectedValues(): void
+    public function calls_add_account_repository_using_expected_values(): void
     {
         ['SUT' => $SUT, 'postRepository' => $postRepository] = $this->SUTFactory();
         $post = new Post('', '', 1);
