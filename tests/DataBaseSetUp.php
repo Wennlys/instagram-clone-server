@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests;
 
-use App\Infrastructure\Connection;
+use App\Infrastructure\Db\SQL\Connection;
 
 class DataBaseSetUp
 {
