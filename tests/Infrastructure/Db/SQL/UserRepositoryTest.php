@@ -11,7 +11,7 @@ use App\Presentation\Errors\User\UserCouldNotBeUpdatedException;
 use PDO;
 use ReflectionClass;
 use Tests\DataBaseSetUp;
-use Tests\TestCase;
+use PHPUnit\Framework\TestCase;
 
 final class UserRepositoryTest extends TestCase
 {

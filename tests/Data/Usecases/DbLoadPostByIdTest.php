@@ -9,7 +9,7 @@ use App\Data\Usecases\DbLoadPostById;
 use App\Presentation\Errors\Post\PostNotFoundException;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Tests\Data\Mocks\FindPostOfIdRepositorySpy;
-use Tests\TestCase;
+use PHPUnit\Framework\TestCase;
 
 final class DbLoadPostByIdTest extends TestCase
 {

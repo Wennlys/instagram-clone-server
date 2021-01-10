@@ -10,7 +10,7 @@ use App\Presentation\Errors\Post\PostCouldNotBeCreatedException;
 use PDO;
 use ReflectionClass;
 use Tests\DataBaseSetUp;
-use Tests\TestCase;
+use PHPUnit\Framework\TestCase;
 
 final class PostRepositoryTest extends TestCase
 {

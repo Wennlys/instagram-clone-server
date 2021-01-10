@@ -9,7 +9,7 @@ use App\Data\Usecases\DbLoadAccountById;
 use App\Presentation\Errors\User\UserNotFoundException;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Tests\Data\Mocks\FindUserOfIdRepositorySpy;
-use Tests\TestCase;
+use PHPUnit\Framework\TestCase;
 
 final class DbLoadAccountByIdTest extends TestCase
 {

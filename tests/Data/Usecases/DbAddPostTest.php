@@ -12,7 +12,7 @@ use App\Presentation\Errors\Post\PostCouldNotBeCreatedException;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Tests\Data\Mocks\FindUserOfIdRepositorySpy;
 use Tests\Data\Mocks\PostStoreRepositorySpy;
-use Tests\TestCase;
+use PHPUnit\Framework\TestCase;
 
 final class DbAddPostTest extends TestCase
 {
