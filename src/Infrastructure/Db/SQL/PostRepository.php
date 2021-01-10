@@ -10,7 +10,7 @@ use App\Data\Protocols\Db\Post\PostStoreRepository;
 use App\Domain\Models\Post;
 use App\Presentation\Errors\Post\PostCouldNotBeCreatedException;
 use App\Presentation\Errors\Post\PostNotFoundException;
-use App\Infrastructure\Connection;
+use App\Infrastructure\Db\SQL\Connection;
 use PDO;
 use PDOException;
 

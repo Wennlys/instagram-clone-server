@@ -12,7 +12,7 @@ use App\Data\Protocols\Db\User\UserUpdateRepository;
 use App\Presentation\Errors\User\UserCouldNotBeCreatedException;
 use App\Presentation\Errors\User\UserCouldNotBeUpdatedException;
 use App\Domain\Models\User;
-use App\Infrastructure\Connection;
+use App\Infrastructure\Db\SQL\Connection;
 use PDO;
 use PDOException;
 
