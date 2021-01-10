@@ -26,7 +26,7 @@ class JWTAdapter implements CreateTokenPayload, GetTokenPayload
         return Token::create($userId, $this->secret, $this->time, $this->issuer);
     }
 
-    public function getPayload(string $token): array
+    public function get(string $token): array
     {
         [, $token] = explode(' ', $token);
 

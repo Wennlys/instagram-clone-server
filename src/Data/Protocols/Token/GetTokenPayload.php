@@ -6,5 +6,5 @@ namespace App\Data\Protocols\Token;
 
 interface GetTokenPayload
 {
-    public function getPayload(string $token): array;
+    public function get(string $token): array;
 }
