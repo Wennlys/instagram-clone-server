@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Tests\Presentation\Actions\Mocks;
@@ -6,7 +7,7 @@ namespace Tests\Presentation\Actions\Mocks;
 use App\Domain\Models\User;
 use App\Domain\Usecases\UpdateAccountInformations;
 
-class UpdateAccountInformationsSpy implements UpdateAccountInformations
+final class UpdateAccountInformationsSpy implements UpdateAccountInformations
 {
     public bool $result = true;
     public array $params;
@@ -15,6 +16,7 @@ class UpdateAccountInformationsSpy implements UpdateAccountInformations
     public function update(User $user, int $userId): bool
     {
         $this->params = [$user, $userId];
+
         return $this->result;
     }
 }

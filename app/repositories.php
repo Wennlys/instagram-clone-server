@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 use App\Data\Protocols\Db\Post\FindPostOfIdRepository;
@@ -12,8 +13,8 @@ use App\Data\Protocols\Db\User\UserStoreRepository;
 use App\Data\Protocols\Db\User\UserUpdateRepository;
 use App\Infrastructure\Db\SQL\PostRepository;
 use App\Infrastructure\Db\SQL\UserRepository;
-use DI\ContainerBuilder;
 use function DI\autowire;
+use DI\ContainerBuilder;
 
 return function (ContainerBuilder $containerBuilder) {
     $containerBuilder->addDefinitions([

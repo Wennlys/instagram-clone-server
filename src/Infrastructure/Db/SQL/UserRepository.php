@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Infrastructure\Db\SQL;
@@ -9,19 +10,13 @@ use App\Data\Protocols\Db\User\FindUserOfIdRepository;
 use App\Data\Protocols\Db\User\FindUserOfUsernameRepository;
 use App\Data\Protocols\Db\User\UserStoreRepository;
 use App\Data\Protocols\Db\User\UserUpdateRepository;
+use App\Domain\Models\User;
 use App\Presentation\Errors\User\UserCouldNotBeCreatedException;
 use App\Presentation\Errors\User\UserCouldNotBeUpdatedException;
-use App\Domain\Models\User;
-use App\Infrastructure\Db\SQL\Connection;
 use PDO;
 use PDOException;
 
-class UserRepository implements FindAllUsersRepository,
-                                FindUserOfIdRepository,
-                                FindUserOfUsernameRepository,
-                                FindUserOfEmailRepository,
-                                UserStoreRepository,
-                                UserUpdateRepository
+final class UserRepository implements FindAllUsersRepository, FindUserOfIdRepository, FindUserOfUsernameRepository, FindUserOfEmailRepository, UserStoreRepository, UserUpdateRepository
 {
     private ?PDO $db = null;
 
@@ -31,11 +26,6 @@ class UserRepository implements FindAllUsersRepository,
     {
         $this->db = Connection::getInstance()->getConnection();
         $this->dateNow = now();
-    }
-
-    private function hash(string $string): string
-    {
-        return password_hash($string, PASSWORD_DEFAULT);
     }
 
     /** {@inheritdoc} */
@@ -103,7 +93,7 @@ class UserRepository implements FindAllUsersRepository,
             $fields = [
                 'username' => $user->getUsername(),
                 'email' => $user->getEmail(),
-                'name' => $user->getName()
+                'name' => $user->getName(),
             ];
             array_filter($fields, fn ($value) => null !== $value && '' !== $value);
             $params = [];
@@ -119,9 +109,14 @@ class UserRepository implements FindAllUsersRepository,
             $query = rtrim($setStr, ',');
             $params['id'] = $id;
 
-            return $this->db->prepare("UPDATE users SET $query WHERE id = :id")->execute($params);
+            return $this->db->prepare("UPDATE users SET {$query} WHERE id = :id")->execute($params);
         } catch (PDOException $e) {
             throw new UserCouldNotBeUpdatedException($e->getMessage());
         }
+    }
+
+    private function hash(string $string): string
+    {
+        return password_hash($string, PASSWORD_DEFAULT);
     }
 }

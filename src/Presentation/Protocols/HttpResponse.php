@@ -1,11 +1,13 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Presentation\Protocols;
 
 use JsonSerializable;
 
-class HttpResponse implements JsonSerializable {
+final class HttpResponse implements JsonSerializable
+{
     public int $statusCode;
     public array $body;
 
@@ -22,7 +24,7 @@ class HttpResponse implements JsonSerializable {
 
     public function setStatusCode(int $statusCode): void
     {
-       $this->statusCode = $statusCode;
+        $this->statusCode = $statusCode;
     }
 
     public function getBody(): array
@@ -32,7 +34,7 @@ class HttpResponse implements JsonSerializable {
 
     public function setBody(array $body): void
     {
-       $this->body = $body;
+        $this->body = $body;
     }
 
     public function jsonSerialize(): array

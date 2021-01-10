@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Db\SQL;
 
-use PDO;
 use Exception;
+use PDO;
 use PDOException;
 
 final class Connection
@@ -28,7 +28,7 @@ final class Connection
     {
         try {
             $this->conn = new PDO(
-                $_ENV['HOST'] . $_ENV['NAME'],
+                $_ENV['HOST'].$_ENV['NAME'],
                 $_ENV['USER'],
                 $_ENV['PASSWORD'],
                 // self::OPTIONS

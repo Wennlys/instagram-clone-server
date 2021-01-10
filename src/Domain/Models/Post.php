@@ -1,11 +1,12 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Domain\Models;
 
 use JsonSerializable;
 
-class Post implements JsonSerializable
+final class Post implements JsonSerializable
 {
     private ?string $imageUrl = null;
     private ?string $description = null;

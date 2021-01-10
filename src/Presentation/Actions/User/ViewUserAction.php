@@ -1,15 +1,16 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Presentation\Actions\User;
 
-use App\Presentation\Actions\Action;
 use App\Domain\Usecases\LoadAccountByUsername;
+use App\Presentation\Actions\Action;
 use App\Presentation\Errors\User\UserNotFoundException;
-use App\Presentation\Protocols\HttpResponse as Response;
 use App\Presentation\Protocols\HttpRequest as Request;
+use App\Presentation\Protocols\HttpResponse as Response;
 
-class ViewUserAction implements Action
+final class ViewUserAction implements Action
 {
     private LoadAccountByUsername $loadAccountByUsername;
 
@@ -20,10 +21,12 @@ class ViewUserAction implements Action
 
     public function handle(Request $request): Response
     {
-        ["username" => $username] = $request->getBody();
+        ['username' => $username] = $request->getBody();
         $user = $this->loadAccountByUsername->load($username);
-        if(!$user)
-            return new Response(404, ["error" => new UserNotFoundException()]);
-        return new Response(200, ["data" => $user]);
+        if (!$user) {
+            return new Response(404, ['error' => new UserNotFoundException()]);
+        }
+
+        return new Response(200, ['data' => $user]);
     }
 }

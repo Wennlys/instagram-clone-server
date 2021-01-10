@@ -1,11 +1,12 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Tests\Data\Mocks;
 
 use App\Data\Protocols\Db\Post\FindPostOfIdRepository;
 
-class FindPostOfIdRepositorySpy implements FindPostOfIdRepository
+final class FindPostOfIdRepositorySpy implements FindPostOfIdRepository
 {
     public array $result = [];
 

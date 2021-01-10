@@ -1,22 +1,18 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Infrastructure\Db\SQL;
 
 use App\Data\Protocols\Db\Post\FindPostOfIdRepository;
 use App\Data\Protocols\Db\Post\ListPostsByIdRepository;
-use App\Data\Protocols\Db\Post\PostDestroyRepository;
 use App\Data\Protocols\Db\Post\PostStoreRepository;
 use App\Domain\Models\Post;
 use App\Presentation\Errors\Post\PostCouldNotBeCreatedException;
-use App\Presentation\Errors\Post\PostNotFoundException;
-use App\Infrastructure\Db\SQL\Connection;
 use PDO;
 use PDOException;
 
-class PostRepository implements FindPostOfIdRepository,
-                                ListPostsByIdRepository,
-                                PostStoreRepository
+final class PostRepository implements FindPostOfIdRepository, ListPostsByIdRepository, PostStoreRepository
 {
     private ?PDO $db = null;
 
@@ -62,7 +58,7 @@ class PostRepository implements FindPostOfIdRepository,
             $createUserQuery->execute();
 
             return true;
-        } catch(PDOException $e) {
+        } catch (PDOException $e) {
             throw new PostCouldNotBeCreatedException($e->getMessage());
         }
     }
