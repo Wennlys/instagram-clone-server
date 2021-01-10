@@ -8,11 +8,10 @@ use App\Domain\Usecases\LoadAccountByUsername;
 use App\Presentation\Actions\User\ViewUserAction;
 use App\Presentation\Errors\User\UserNotFoundException;
 use App\Presentation\Protocols\HttpRequest;
-use App\Presentation\Protocols\HttpResponse;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Slim\Exception\HttpInternalServerErrorException;
 use Tests\Presentation\Actions\Mocks\LoadAccountByUsernameSpy;
-use Tests\TestCase;
+use Tests\Presentation\Actions\ActionTestCase as TestCase;
 
 final class ViewUserActionTest extends TestCase
 {
@@ -40,7 +39,7 @@ final class ViewUserActionTest extends TestCase
         $loadAccountByUsername->result = [];
         $request = $this->requestFactory();
         $response = $SUT->handle($request);
-        $expectedResponse = new HttpResponse(404, ['error' => new UserNotFoundException()]);
+        $expectedResponse = $this->responseFactory(404, ['error' => new UserNotFoundException()]);
         $this->assertEquals($expectedResponse, $response);
     }
 
@@ -48,7 +47,7 @@ final class ViewUserActionTest extends TestCase
     public function returns_matching_http_response_object_when_load_account_by_username_returns_not_empty_array(): void
     {
         ['SUT' => $SUT] = $this->SUTFactory();
-        $expectedResponse = new HttpResponse(200, ['data' => [1]]);
+        $expectedResponse = $this->responseFactory(200, ['data' => [1]]);
         $request = $this->requestFactory();
         $response = $SUT->handle($request);
         $this->assertEquals($expectedResponse, $response);
@@ -70,10 +69,5 @@ final class ViewUserActionTest extends TestCase
         $requestBody = ['username' => $username];
 
         return new HttpRequest($requestBody);
-    }
-
-    private function responseFactory(int $statusCode, array $body): HttpResponse
-    {
-        return new HttpResponse($statusCode, $body);
     }
 }

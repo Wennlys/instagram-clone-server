@@ -11,12 +11,11 @@ use App\Presentation\Actions\User\CreateUserAction;
 use App\Presentation\Errors\User\DuplicatedUserException;
 use App\Presentation\Errors\User\UserCouldNotBeCreatedException;
 use App\Presentation\Protocols\HttpRequest;
-use App\Presentation\Protocols\HttpResponse;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Slim\Exception\HttpInternalServerErrorException;
 use Tests\Presentation\Actions\Mocks\AddUserSpy;
 use Tests\Presentation\Actions\Mocks\LoadAccountByIdSpy;
-use Tests\TestCase;
+use Tests\Presentation\Actions\ActionTestCase as TestCase;
 
 final class CreateUserActionTest extends TestCase
 {
@@ -122,10 +121,5 @@ final class CreateUserActionTest extends TestCase
         $requestBody = ['user' => $user];
 
         return new HttpRequest($requestBody);
-    }
-
-    private function responseFactory(int $statusCode, array $body): HttpResponse
-    {
-        return new HttpResponse($statusCode, $body);
     }
 }

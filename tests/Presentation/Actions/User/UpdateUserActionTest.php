@@ -11,12 +11,11 @@ use App\Presentation\Actions\User\UpdateUserAction;
 use App\Presentation\Errors\User\UserCouldNotBeUpdatedException;
 use App\Presentation\Errors\User\UserNotFoundException;
 use App\Presentation\Protocols\HttpRequest;
-use App\Presentation\Protocols\HttpResponse;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Slim\Exception\HttpInternalServerErrorException;
 use Tests\Presentation\Actions\Mocks\LoadAccountByIdSpy;
 use Tests\Presentation\Actions\Mocks\UpdateAccountInformationsSpy;
-use Tests\TestCase;
+use Tests\Presentation\Actions\ActionTestCase as TestCase;
 
 final class UpdateUserActionTest extends TestCase
 {
@@ -102,10 +101,5 @@ final class UpdateUserActionTest extends TestCase
         $requestBody = ['user' => $user, 'userId' => $userId];
 
         return new HttpRequest($requestBody);
-    }
-
-    private function responseFactory(int $statusCode, array $body): HttpResponse
-    {
-        return new HttpResponse($statusCode, $body);
     }
 }

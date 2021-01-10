@@ -8,11 +8,10 @@ use App\Domain\Usecases\LoadPostById;
 use App\Presentation\Actions\Post\ViewPostAction;
 use App\Presentation\Errors\Post\PostNotFoundException;
 use App\Presentation\Protocols\HttpRequest;
-use App\Presentation\Protocols\HttpResponse;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Slim\Exception\HttpInternalServerErrorException;
 use Tests\Presentation\Actions\Mocks\LoadPostByIdSpy;
-use Tests\TestCase;
+use Tests\Presentation\Actions\ActionTestCase as TestCase;
 
 final class ViewPostActionTest extends TestCase
 {
@@ -40,7 +39,7 @@ final class ViewPostActionTest extends TestCase
         $loadPostById->result = [];
         $request = $this->requestFactory();
         $response = $SUT->handle($request);
-        $expectedResponse = new HttpResponse(404, ['error' => new PostNotFoundException()]);
+        $expectedResponse = $this->responseFactory(404, ['error' => new PostNotFoundException()]);
         $this->assertEquals($expectedResponse, $response);
     }
 
@@ -48,7 +47,7 @@ final class ViewPostActionTest extends TestCase
     public function returns_matching_http_response_object_when_load_post_by_id_returns_not_empty_array(): void
     {
         ['SUT' => $SUT] = $this->SUTFactory();
-        $expectedResponse = new HttpResponse(200, ['data' => [1]]);
+        $expectedResponse = $this->responseFactory(200, ['data' => [1]]);
         $request = $this->requestFactory();
         $response = $SUT->handle($request);
         $this->assertEquals($expectedResponse, $response);
@@ -70,10 +69,5 @@ final class ViewPostActionTest extends TestCase
         $requestBody = ['post_id' => $postId];
 
         return new HttpRequest($requestBody);
-    }
-
-    private function responseFactory(int $statusCode, array $body): HttpResponse
-    {
-        return new HttpResponse($statusCode, $body);
     }
 }
