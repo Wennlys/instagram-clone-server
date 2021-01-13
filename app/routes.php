@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use App\Presentation\Actions\Post\CreatePostAction;
-use App\Presentation\Actions\Post\ListPostsAction;
+use App\Presentation\Actions\Post\ListUserFollowingsPostsAction;
 use App\Presentation\Actions\Post\ViewPostAction;
 use App\Presentation\Actions\Session\SessionCreateAction;
 use App\Presentation\Actions\User\CreateUserAction;
@@ -50,7 +50,7 @@ return function (App $app) {
 
     $app->group('/posts', function (Group $group) {
         $group->post('', CreatePostAction::class);
-        $group->get('', ListPostsAction::class);
+        $group->get('', ListUserFollowingsPostsAction::class);
     })->add(SessionMiddleware::class);
 
     $app->get('/posts/{post_id}', ViewPostAction::class);
