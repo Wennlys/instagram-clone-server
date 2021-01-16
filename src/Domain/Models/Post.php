@@ -6,7 +6,7 @@ namespace App\Domain\Models;
 
 use JsonSerializable;
 
-final class Post implements JsonSerializable
+class Post implements JsonSerializable
 {
     private ?string $imageUrl = null;
     private ?string $description = null;

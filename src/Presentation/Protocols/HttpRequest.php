@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Presentation\Protocols;
 
-final class HttpRequest
+class HttpRequest
 {
     public ?array $body;
 

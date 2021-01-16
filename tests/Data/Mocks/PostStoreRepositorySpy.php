@@ -7,7 +7,7 @@ namespace Tests\Data\Mocks;
 use App\Data\Protocols\Db\Post\PostStoreRepository;
 use App\Domain\Models\Post;
 
-final class PostStoreRepositorySpy implements PostStoreRepository
+class PostStoreRepositorySpy implements PostStoreRepository
 {
     public bool $result = false;
     public Post $params;

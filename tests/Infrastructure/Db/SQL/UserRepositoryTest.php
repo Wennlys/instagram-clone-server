@@ -13,7 +13,7 @@ use ReflectionClass;
 use Tests\DataBaseSetUp;
 use PHPUnit\Framework\TestCase;
 
-final class UserRepositoryTest extends TestCase
+class UserRepositoryTest extends TestCase
 {
     private UserRepository $userRepository;
 

@@ -7,7 +7,7 @@ namespace Tests\Data\Mocks;
 use App\Data\Protocols\Db\User\UserStoreRepository;
 use App\Domain\Models\User;
 
-final class UserStoreRepositorySpy implements UserStoreRepository
+class UserStoreRepositorySpy implements UserStoreRepository
 {
     public int $result = 1;
     public User $params;

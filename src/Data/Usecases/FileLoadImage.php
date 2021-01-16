@@ -6,7 +6,7 @@ namespace App\Data\Usecases;
 
 use App\Domain\Usecases\LoadImage;
 
-final class FileLoadImage implements LoadImage
+class FileLoadImage implements LoadImage
 {
     public function load(string $imageName): string
     {

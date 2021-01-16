@@ -6,7 +6,7 @@ namespace App\Presentation\Actions;
 
 use JsonSerializable;
 
-final class ActionError implements JsonSerializable
+class ActionError implements JsonSerializable
 {
     public const BAD_REQUEST = 'BAD_REQUEST';
     public const INSUFFICIENT_PRIVILEGES = 'INSUFFICIENT_PRIVILEGES';

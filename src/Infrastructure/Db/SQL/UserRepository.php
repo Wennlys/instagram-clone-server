@@ -16,7 +16,7 @@ use App\Presentation\Errors\User\UserCouldNotBeUpdatedException;
 use PDO;
 use PDOException;
 
-final class UserRepository implements FindAllUsersRepository, FindUserOfIdRepository, FindUserOfUsernameRepository, FindUserOfEmailRepository, UserStoreRepository, UserUpdateRepository
+class UserRepository implements FindAllUsersRepository, FindUserOfIdRepository, FindUserOfUsernameRepository, FindUserOfEmailRepository, UserStoreRepository, UserUpdateRepository
 {
     private ?PDO $db = null;
 

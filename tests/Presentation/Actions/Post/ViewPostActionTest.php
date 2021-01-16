@@ -13,7 +13,7 @@ use Slim\Exception\HttpInternalServerErrorException;
 use Tests\Presentation\Actions\Mocks\LoadPostByIdSpy;
 use Tests\Presentation\Actions\ActionTestCase as TestCase;
 
-final class ViewPostActionTest extends TestCase
+class ViewPostActionTest extends TestCase
 {
     use ProphecyTrait;
 

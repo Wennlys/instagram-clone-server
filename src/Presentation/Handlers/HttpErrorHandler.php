@@ -18,7 +18,7 @@ use Slim\Exception\HttpUnauthorizedException;
 use Slim\Handlers\ErrorHandler as SlimErrorHandler;
 use Throwable;
 
-final class HttpErrorHandler extends SlimErrorHandler
+class HttpErrorHandler extends SlimErrorHandler
 {
     /**
      * {@inheritdoc}

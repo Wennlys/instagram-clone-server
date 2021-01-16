@@ -7,7 +7,7 @@ namespace App\Data\Usecases;
 use App\Data\Protocols\Db\User\FindUserOfIdRepository;
 use App\Domain\Usecases\LoadAccountById;
 
-final class DbLoadAccountById implements LoadAccountById
+class DbLoadAccountById implements LoadAccountById
 {
     private FindUserOfIdRepository $findUserOfIdRepository;
 

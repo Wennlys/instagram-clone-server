@@ -6,7 +6,7 @@ namespace App\Presentation\Protocols;
 
 use JsonSerializable;
 
-final class HttpResponse implements JsonSerializable
+class HttpResponse implements JsonSerializable
 {
     public int $statusCode;
     public array $body;

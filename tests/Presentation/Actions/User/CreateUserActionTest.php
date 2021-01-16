@@ -17,7 +17,7 @@ use Tests\Presentation\Actions\Mocks\AddUserSpy;
 use Tests\Presentation\Actions\Mocks\LoadAccountByIdSpy;
 use Tests\Presentation\Actions\ActionTestCase as TestCase;
 
-final class CreateUserActionTest extends TestCase
+class CreateUserActionTest extends TestCase
 {
     use ProphecyTrait;
 

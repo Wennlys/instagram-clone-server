@@ -7,7 +7,7 @@ namespace Tests\Presentation\Actions\Mocks;
 use App\Domain\Models\User;
 use App\Domain\Usecases\UpdateAccountInformations;
 
-final class UpdateAccountInformationsSpy implements UpdateAccountInformations
+class UpdateAccountInformationsSpy implements UpdateAccountInformations
 {
     public bool $result = true;
     public array $params;

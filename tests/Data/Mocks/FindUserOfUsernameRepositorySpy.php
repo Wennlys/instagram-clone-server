@@ -6,7 +6,7 @@ namespace Tests\Data\Mocks;
 
 use App\Data\Protocols\Db\User\FindUserOfUsernameRepository;
 
-final class FindUserOfUsernameRepositorySpy implements FindUserOfUsernameRepository
+class FindUserOfUsernameRepositorySpy implements FindUserOfUsernameRepository
 {
     public array $result = [];
 

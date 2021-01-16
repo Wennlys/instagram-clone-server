@@ -11,7 +11,7 @@ use Prophecy\PhpUnit\ProphecyTrait;
 use Tests\Data\Mocks\FindPostOfIdRepositorySpy;
 use PHPUnit\Framework\TestCase;
 
-final class DbLoadPostByIdTest extends TestCase
+class DbLoadPostByIdTest extends TestCase
 {
     use ProphecyTrait;
 

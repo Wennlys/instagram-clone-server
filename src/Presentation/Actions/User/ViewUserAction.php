@@ -10,7 +10,7 @@ use App\Presentation\Errors\User\UserNotFoundException;
 use App\Presentation\Protocols\HttpRequest as Request;
 use App\Presentation\Protocols\HttpResponse as Response;
 
-final class ViewUserAction implements Action
+class ViewUserAction implements Action
 {
     private LoadAccountByUsername $loadAccountByUsername;
 

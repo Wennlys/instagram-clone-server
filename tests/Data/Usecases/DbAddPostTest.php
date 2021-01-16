@@ -14,7 +14,7 @@ use Tests\Data\Mocks\FindUserOfIdRepositorySpy;
 use Tests\Data\Mocks\PostStoreRepositorySpy;
 use PHPUnit\Framework\TestCase;
 
-final class DbAddPostTest extends TestCase
+class DbAddPostTest extends TestCase
 {
     use ProphecyTrait;
 

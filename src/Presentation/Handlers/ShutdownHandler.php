@@ -8,7 +8,7 @@ use App\Presentation\ResponseEmitter\ResponseEmitter;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Exception\HttpInternalServerErrorException;
 
-final class ShutdownHandler
+class ShutdownHandler
 {
     /**
      * @var Request

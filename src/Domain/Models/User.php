@@ -8,7 +8,7 @@ use App\Presentation\Errors\User\InvalidPasswordException;
 use JsonSerializable;
 use PharIo\Manifest\InvalidEmailException;
 
-final class User implements JsonSerializable
+class User implements JsonSerializable
 {
     private ?string $username;
     private ?string $email;

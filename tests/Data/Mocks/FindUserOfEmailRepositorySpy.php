@@ -6,7 +6,7 @@ namespace Tests\Data\Mocks;
 
 use App\Data\Protocols\Db\User\FindUserOfEmailRepository;
 
-final class FindUserOfEmailRepositorySpy implements FindUserOfEmailRepository
+class FindUserOfEmailRepositorySpy implements FindUserOfEmailRepository
 {
     public array $result = [];
 

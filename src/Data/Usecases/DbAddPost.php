@@ -8,7 +8,7 @@ use App\Data\Protocols\Db\Post\PostStoreRepository;
 use App\Data\Protocols\Db\User\FindUserOfIdRepository;
 use App\Domain\Models\Post;
 
-final class DbAddPost
+class DbAddPost
 {
     private PostStoreRepository $postStoreRepository;
     private FindUserOfIdRepository $findUserOfIdRepository;

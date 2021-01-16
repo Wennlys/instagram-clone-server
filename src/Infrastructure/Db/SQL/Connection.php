@@ -8,7 +8,7 @@ use Exception;
 use PDO;
 use PDOException;
 
-final class Connection
+class Connection
 {
     // private const OPTIONS = [
     //     PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',

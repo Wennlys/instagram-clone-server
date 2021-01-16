@@ -16,7 +16,7 @@ use Tests\Data\Mocks\FindUserOfUsernameRepositorySpy;
 use Tests\Data\Mocks\UserStoreRepositorySpy;
 use PHPUnit\Framework\TestCase;
 
-final class DbAddUserTest extends TestCase
+class DbAddUserTest extends TestCase
 {
     use ProphecyTrait;
 

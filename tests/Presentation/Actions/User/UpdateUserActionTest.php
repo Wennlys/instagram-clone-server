@@ -17,7 +17,7 @@ use Tests\Presentation\Actions\Mocks\LoadAccountByIdSpy;
 use Tests\Presentation\Actions\Mocks\UpdateAccountInformationsSpy;
 use Tests\Presentation\Actions\ActionTestCase as TestCase;
 
-final class UpdateUserActionTest extends TestCase
+class UpdateUserActionTest extends TestCase
 {
     use ProphecyTrait;
 

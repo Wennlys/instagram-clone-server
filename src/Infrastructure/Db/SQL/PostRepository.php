@@ -12,7 +12,7 @@ use App\Presentation\Errors\Post\PostCouldNotBeCreatedException;
 use PDO;
 use PDOException;
 
-final class PostRepository implements FindPostOfIdRepository, ListPostsByIdRepository, PostStoreRepository
+class PostRepository implements FindPostOfIdRepository, ListPostsByIdRepository, PostStoreRepository
 {
     private ?PDO $db = null;
 

@@ -8,7 +8,7 @@ use App\Data\Protocols\Images\ImageDestroyRepository;
 use App\Data\Protocols\Images\ImageIndexRepository;
 use App\Data\Protocols\Images\ImageStoreRepository;
 
-final class ImageRepository implements ImageIndexRepository, ImageStoreRepository, ImageDestroyRepository
+class ImageRepository implements ImageIndexRepository, ImageStoreRepository, ImageDestroyRepository
 {
     public function index(string $imageName): string
     {

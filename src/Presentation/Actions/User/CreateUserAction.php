@@ -12,7 +12,7 @@ use App\Presentation\Errors\User\UserCouldNotBeCreatedException;
 use App\Presentation\Protocols\HttpRequest as Request;
 use App\Presentation\Protocols\HttpResponse as Response;
 
-final class CreateUserAction implements Action
+class CreateUserAction implements Action
 {
     private AddUser $addUser;
     private LoadAccountById $loadAccountById;

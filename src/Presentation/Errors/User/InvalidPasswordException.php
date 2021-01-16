@@ -6,6 +6,6 @@ namespace App\Presentation\Errors\User;
 
 use App\Domain\DomainException\DomainRecordNotFoundException;
 
-final class InvalidPasswordException extends DomainRecordNotFoundException
+class InvalidPasswordException extends DomainRecordNotFoundException
 {
 }

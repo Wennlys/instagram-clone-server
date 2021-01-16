@@ -9,7 +9,7 @@ use App\Presentation\Actions\Action;
 use App\Presentation\Protocols\HttpRequest as Request;
 use App\Presentation\Protocols\HttpResponse as Response;
 
-final class ListUserFollowingsPostsAction implements Action
+class ListUserFollowingsPostsAction implements Action
 {
     private GetTokenPayload $getTokenPayload;
 

@@ -6,7 +6,7 @@ namespace App\Data\Usecases;
 
 use App\Domain\Usecases\LoadAccountByEmail;
 
-final class DbLoadAccountByEmail implements LoadAccountByEmail
+class DbLoadAccountByEmail implements LoadAccountByEmail
 {
     public function load(string $email): array
     {

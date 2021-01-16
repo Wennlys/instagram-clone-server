@@ -10,7 +10,7 @@ use App\Presentation\Errors\Post\PostNotFoundException;
 use App\Presentation\Protocols\HttpRequest as Request;
 use App\Presentation\Protocols\HttpResponse as Response;
 
-final class ViewPostAction implements Action
+class ViewPostAction implements Action
 {
     private LoadPostById $loadPostById;
 

@@ -6,7 +6,7 @@ namespace App\Presentation\Errors\User;
 
 use App\Domain\DomainException\DomainRecordNotPersistedException;
 
-final class DuplicatedUserException extends DomainRecordNotPersistedException
+class DuplicatedUserException extends DomainRecordNotPersistedException
 {
     public $message = 'User already exists.';
 }

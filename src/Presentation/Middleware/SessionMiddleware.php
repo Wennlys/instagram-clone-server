@@ -10,7 +10,7 @@ use Psr\Http\Server\MiddlewareInterface as Middleware;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 use Slim\Psr7\Response;
 
-final class SessionMiddleware implements Middleware
+class SessionMiddleware implements Middleware
 {
     /**
      * {@inheritdoc}

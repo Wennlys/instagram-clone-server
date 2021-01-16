@@ -7,7 +7,7 @@ namespace Tests\Presentation\Actions\Mocks;
 use App\Domain\Models\User;
 use App\Domain\Usecases\AddUser;
 
-final class AddUserSpy implements AddUser
+class AddUserSpy implements AddUser
 {
     public int $result = 1;
     public User $params;

@@ -6,7 +6,7 @@ namespace App\Presentation\Errors\Post;
 
 use App\Domain\DomainException\DomainRecordNotFoundException;
 
-final class PostNotFoundException extends DomainRecordNotFoundException
+class PostNotFoundException extends DomainRecordNotFoundException
 {
     public $message = 'Post not found.';
 }

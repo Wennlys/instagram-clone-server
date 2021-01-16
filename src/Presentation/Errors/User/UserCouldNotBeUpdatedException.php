@@ -6,6 +6,6 @@ namespace App\Presentation\Errors\User;
 
 use App\Domain\DomainException\DomainRecordNotPersistedException;
 
-final class UserCouldNotBeUpdatedException extends DomainRecordNotPersistedException
+class UserCouldNotBeUpdatedException extends DomainRecordNotPersistedException
 {
 }

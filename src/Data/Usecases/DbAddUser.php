@@ -10,7 +10,7 @@ use App\Data\Protocols\Db\User\UserStoreRepository;
 use App\Domain\Models\User;
 use App\Domain\Usecases\AddUser;
 
-final class DbAddUser implements AddUser
+class DbAddUser implements AddUser
 {
     private UserStoreRepository $userStoreRepository;
     private FindUserOfUsernameRepository $findUserOfUsernameRepository;

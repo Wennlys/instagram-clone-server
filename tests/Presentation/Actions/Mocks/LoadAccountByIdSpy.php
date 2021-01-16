@@ -6,7 +6,7 @@ namespace Tests\Presentation\Actions\Mocks;
 
 use App\Domain\Usecases\LoadAccountById;
 
-final class LoadAccountByIdSpy implements LoadAccountById
+class LoadAccountByIdSpy implements LoadAccountById
 {
     public array $result = [1];
     public int $params;

@@ -6,7 +6,7 @@ namespace Tests\Presentation\Actions\Mocks;
 
 use App\Data\Protocols\Token\GetTokenPayload;
 
-final class GetTokenPayloadSpy implements GetTokenPayload
+class GetTokenPayloadSpy implements GetTokenPayload
 {
     public array $result = [];
 

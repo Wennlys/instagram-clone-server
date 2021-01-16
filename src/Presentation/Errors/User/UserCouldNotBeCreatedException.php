@@ -6,6 +6,6 @@ namespace App\Presentation\Errors\User;
 
 use App\Domain\DomainException\DomainRecordNotPersistedException;
 
-final class UserCouldNotBeCreatedException extends DomainRecordNotPersistedException
+class UserCouldNotBeCreatedException extends DomainRecordNotPersistedException
 {
 }

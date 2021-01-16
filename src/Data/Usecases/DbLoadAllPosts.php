@@ -6,7 +6,7 @@ namespace App\Data\Usecases;
 
 use App\Domain\Usecases\LoadAllPosts;
 
-final class DbLoadAllPosts implements LoadAllPosts
+class DbLoadAllPosts implements LoadAllPosts
 {
     public function load(): array
     {

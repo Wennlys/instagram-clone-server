@@ -12,7 +12,7 @@ use App\Presentation\Errors\User\UserNotFoundException;
 use App\Presentation\Protocols\HttpRequest as Request;
 use App\Presentation\Protocols\HttpResponse as Response;
 
-final class UpdateUserAction implements Action
+class UpdateUserAction implements Action
 {
     private LoadAccountById $loadAccountById;
     private UpdateAccountInformations $updateAccountInformations;

@@ -6,6 +6,6 @@ namespace App\Presentation\Errors\Post;
 
 use App\Domain\DomainException\DomainRecordNotPersistedException;
 
-final class PostCouldNotBeCreatedException extends DomainRecordNotPersistedException
+class PostCouldNotBeCreatedException extends DomainRecordNotPersistedException
 {
 }

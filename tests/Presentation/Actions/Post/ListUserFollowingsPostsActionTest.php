@@ -12,7 +12,7 @@ use Slim\Exception\HttpInternalServerErrorException;
 use Tests\Presentation\Actions\Mocks\GetTokenPayloadSpy;
 use Tests\Presentation\Actions\ActionTestCase as TestCase;
 
-final class ListUserFollowingsPostsActionTest extends TestCase
+class ListUserFollowingsPostsActionTest extends TestCase
 {
     use ProphecyTrait;
 

@@ -8,7 +8,7 @@ use App\Presentation\Protocols\HttpResponse;
 use Slim\Psr7\Request as SlimRequest;
 use Slim\Psr7\Response as SlimResponse;
 
-final class SlimRouteAdapter
+class SlimRouteAdapter
 {
     private SlimRequest $request;
     private SlimResponse $response;

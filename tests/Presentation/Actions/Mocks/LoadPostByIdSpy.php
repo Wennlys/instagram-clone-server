@@ -6,7 +6,7 @@ namespace Tests\Presentation\Actions\Mocks;
 
 use App\Domain\Usecases\LoadPostById;
 
-final class LoadPostByIdSpy implements LoadPostById
+class LoadPostByIdSpy implements LoadPostById
 {
     public array $result = [1];
     public int $params;

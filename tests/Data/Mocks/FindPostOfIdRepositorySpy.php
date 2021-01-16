@@ -6,7 +6,7 @@ namespace Tests\Data\Mocks;
 
 use App\Data\Protocols\Db\Post\FindPostOfIdRepository;
 
-final class FindPostOfIdRepositorySpy implements FindPostOfIdRepository
+class FindPostOfIdRepositorySpy implements FindPostOfIdRepository
 {
     public array $result = [];
 

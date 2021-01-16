@@ -12,7 +12,7 @@ use ReflectionClass;
 use Tests\DataBaseSetUp;
 use PHPUnit\Framework\TestCase;
 
-final class PostRepositoryTest extends TestCase
+class PostRepositoryTest extends TestCase
 {
     private PostRepository $postRepository;
 

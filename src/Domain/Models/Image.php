@@ -2,7 +2,7 @@
 
 namespace App\Domain\Models;
 
-final class Image
+class Image
 {
     private string $directoryName;
     private string $imageStream;

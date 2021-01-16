@@ -7,7 +7,7 @@ namespace App\Data\Usecases;
 use App\Domain\Models\User;
 use App\Domain\Usecases\UpdateAccountInformations;
 
-final class DbUpdateAccountInformations implements UpdateAccountInformations
+class DbUpdateAccountInformations implements UpdateAccountInformations
 {
     public function update(User $user, int $id): bool
     {
