@@ -6,5 +6,5 @@ namespace App\Data\Protocols\Token;
 
 interface CreateToken
 {
-    public function create(int $userId): string;
+    public function create(int $userId): ?string;
 }
