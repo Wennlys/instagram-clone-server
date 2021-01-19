@@ -18,7 +18,22 @@ return $config->setRules([
     'php_unit_internal_class' => false,
     'php_unit_method_casing' => ['case' => 'snake_case'],
     'yoda_style' => false,
-    'ordered_class_elements' => false,
+    'ordered_class_elements' => ['order' => [
+        'use_trait',
+        'constant_public',
+        'constant_protected',
+        'constant_private',
+        'property_public',
+        'property_protected',
+        'property_private',
+        'construct',
+        'destruct',
+        'magic',
+        'phpunit',
+        'method_private',
+        'method_protected',
+        'method_public',
+    ]],
 ])
     ->setFinder($finder)
 ;
