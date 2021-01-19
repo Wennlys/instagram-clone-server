@@ -1,8 +1,6 @@
 <?php
 
-$finder = PhpCsFixer\Finder::create()
-    ->in(__DIR__)
-;
+$finder = PhpCsFixer\Finder::create()->in(__DIR__);
 
 $config = new PhpCsFixer\Config();
 
@@ -34,6 +32,4 @@ return $config->setRules([
         'method_protected',
         'method_public',
     ]],
-])
-    ->setFinder($finder)
-;
+])->setFinder($finder);
