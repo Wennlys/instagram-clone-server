@@ -10,12 +10,30 @@ use App\Presentation\Errors\Post\PostNotFoundException;
 use App\Presentation\Protocols\HttpRequest;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Slim\Exception\HttpInternalServerErrorException;
-use Tests\Presentation\Actions\Mocks\LoadPostByIdSpy;
 use Tests\Presentation\Actions\ActionTestCase as TestCase;
+use Tests\Presentation\Actions\Mocks\LoadPostByIdSpy;
 
 class ViewPostActionTest extends TestCase
 {
     use ProphecyTrait;
+
+    private function SUTFactory(LoadPostById $loadPostById = null): array
+    {
+        $loadPostById = $loadPostById ?: new LoadPostByIdSpy();
+        $SUT = new ViewPostAction($loadPostById);
+
+        return [
+            'SUT' => $SUT,
+            'loadPostById' => $loadPostById,
+        ];
+    }
+
+    private function requestFactory(int $postId = 1): HttpRequest
+    {
+        $requestBody = ['post_id' => $postId];
+
+        return new HttpRequest($requestBody);
+    }
 
     /** @test */
     public function returns500_when_load_post_by_id_throws_exception(): void
@@ -51,23 +69,5 @@ class ViewPostActionTest extends TestCase
         $request = $this->requestFactory();
         $response = $SUT->handle($request);
         $this->assertEquals($expectedResponse, $response);
-    }
-
-    private function SUTFactory(LoadPostById $loadPostById = null): array
-    {
-        $loadPostById = $loadPostById ?: new LoadPostByIdSpy();
-        $SUT = new ViewPostAction($loadPostById);
-
-        return [
-            'SUT' => $SUT,
-            'loadPostById' => $loadPostById,
-        ];
-    }
-
-    private function requestFactory(int $postId = 1): HttpRequest
-    {
-        $requestBody = ['post_id' => $postId];
-
-        return new HttpRequest($requestBody);
     }
 }

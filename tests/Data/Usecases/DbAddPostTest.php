@@ -9,14 +9,29 @@ use App\Data\Protocols\Db\User\FindUserOfIdRepository;
 use App\Data\Usecases\DbAddPost;
 use App\Domain\Models\Post;
 use App\Presentation\Errors\Post\PostCouldNotBeCreatedException;
+use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Tests\Data\Mocks\FindUserOfIdRepositorySpy;
 use Tests\Data\Mocks\PostStoreRepositorySpy;
-use PHPUnit\Framework\TestCase;
 
 class DbAddPostTest extends TestCase
 {
     use ProphecyTrait;
+
+    private function SUTFactory(
+        PostStoreRepository $postStoreRepository = null,
+        FindUserOfIdRepository $findUserOfIdRepository = null
+    ): array {
+        $postStoreRepository = $postStoreRepository ?: new PostStoreRepositorySpy();
+        $findUserOfIdRepository = $findUserOfIdRepository ?: new FindUserOfIdRepositorySpy();
+        $SUT = new DbAddPost($postStoreRepository, $findUserOfIdRepository);
+
+        return [
+            'SUT' => $SUT,
+            'postRepository' => $postStoreRepository,
+            'userRepository' => $findUserOfIdRepository,
+        ];
+    }
 
     /** @test */
     public function fails_when_post_store_repository_throws(): void
@@ -56,20 +71,5 @@ class DbAddPostTest extends TestCase
         $post = new Post('', '', 1);
         $SUT->add($post);
         $this->assertEquals($post, $postRepository->params);
-    }
-
-    private function SUTFactory(
-        PostStoreRepository $postStoreRepository = null,
-        FindUserOfIdRepository $findUserOfIdRepository = null
-    ): array {
-        $postStoreRepository = $postStoreRepository ?: new PostStoreRepositorySpy();
-        $findUserOfIdRepository = $findUserOfIdRepository ?: new FindUserOfIdRepositorySpy();
-        $SUT = new DbAddPost($postStoreRepository, $findUserOfIdRepository);
-
-        return [
-            'SUT' => $SUT,
-            'postRepository' => $postStoreRepository,
-            'userRepository' => $findUserOfIdRepository,
-        ];
     }
 }

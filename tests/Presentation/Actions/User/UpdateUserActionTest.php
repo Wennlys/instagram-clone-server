@@ -13,13 +13,34 @@ use App\Presentation\Errors\User\UserNotFoundException;
 use App\Presentation\Protocols\HttpRequest;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Slim\Exception\HttpInternalServerErrorException;
+use Tests\Presentation\Actions\ActionTestCase as TestCase;
 use Tests\Presentation\Actions\Mocks\LoadAccountByIdSpy;
 use Tests\Presentation\Actions\Mocks\UpdateAccountInformationsSpy;
-use Tests\Presentation\Actions\ActionTestCase as TestCase;
 
 class UpdateUserActionTest extends TestCase
 {
     use ProphecyTrait;
+
+    private function SUTFactory(?LoadAccountById $loadAccountById = null, ?UpdateAccountInformations $updateAccountInformations = null): array
+    {
+        $updateAccountInformations = $updateAccountInformations ?: new UpdateAccountInformationsSpy();
+        $loadAccountById = $loadAccountById ?: new LoadAccountByIdSpy();
+        $SUT = new UpdateUserAction($loadAccountById, $updateAccountInformations);
+
+        return [
+            'SUT' => $SUT,
+            'loadAccountById' => $loadAccountById,
+            'updateAccountInformations' => $updateAccountInformations,
+        ];
+    }
+
+    private function requestFactory(?User $user = null, int $userId = 1): HttpRequest
+    {
+        $user = $user ?: new User();
+        $requestBody = ['user' => $user, 'userId' => $userId];
+
+        return new HttpRequest($requestBody);
+    }
 
     /** @test */
     public function returns500_when_load_account_by_id_throws_exception(): void
@@ -80,26 +101,5 @@ class UpdateUserActionTest extends TestCase
         $response = $SUT->handle($request);
         $expectedResponse = $this->responseFactory(200, ['data' => true]);
         $this->assertEquals($expectedResponse, $response);
-    }
-
-    private function SUTFactory(?LoadAccountById $loadAccountById = null, ?UpdateAccountInformations $updateAccountInformations = null): array
-    {
-        $updateAccountInformations = $updateAccountInformations ?: new UpdateAccountInformationsSpy();
-        $loadAccountById = $loadAccountById ?: new LoadAccountByIdSpy();
-        $SUT = new UpdateUserAction($loadAccountById, $updateAccountInformations);
-
-        return [
-            'SUT' => $SUT,
-            'loadAccountById' => $loadAccountById,
-            'updateAccountInformations' => $updateAccountInformations,
-        ];
-    }
-
-    private function requestFactory(?User $user = null, int $userId = 1): HttpRequest
-    {
-        $user = $user ?: new User();
-        $requestBody = ['user' => $user, 'userId' => $userId];
-
-        return new HttpRequest($requestBody);
     }
 }

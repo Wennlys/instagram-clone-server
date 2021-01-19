@@ -10,12 +10,30 @@ use App\Presentation\Errors\User\UserNotFoundException;
 use App\Presentation\Protocols\HttpRequest;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Slim\Exception\HttpInternalServerErrorException;
-use Tests\Presentation\Actions\Mocks\LoadAccountByUsernameSpy;
 use Tests\Presentation\Actions\ActionTestCase as TestCase;
+use Tests\Presentation\Actions\Mocks\LoadAccountByUsernameSpy;
 
 class ViewUserActionTest extends TestCase
 {
     use ProphecyTrait;
+
+    private function SUTFactory(?LoadAccountByUsername $loadAccountByUsername = null): array
+    {
+        $loadAccountByUsername = $loadAccountByUsername ?: new LoadAccountByUsernameSpy();
+        $SUT = new ViewUserAction($loadAccountByUsername);
+
+        return [
+            'SUT' => $SUT,
+            'loadAccountByUsername' => $loadAccountByUsername,
+        ];
+    }
+
+    private function requestFactory($username = 'username'): HttpRequest
+    {
+        $requestBody = ['username' => $username];
+
+        return new HttpRequest($requestBody);
+    }
 
     /** @test */
     public function returns500_when_load_account_by_username_throws_exception(): void
@@ -51,23 +69,5 @@ class ViewUserActionTest extends TestCase
         $request = $this->requestFactory();
         $response = $SUT->handle($request);
         $this->assertEquals($expectedResponse, $response);
-    }
-
-    private function SUTFactory(?LoadAccountByUsername $loadAccountByUsername = null): array
-    {
-        $loadAccountByUsername = $loadAccountByUsername ?: new LoadAccountByUsernameSpy();
-        $SUT = new ViewUserAction($loadAccountByUsername);
-
-        return [
-            'SUT' => $SUT,
-            'loadAccountByUsername' => $loadAccountByUsername,
-        ];
-    }
-
-    private function requestFactory($username = 'username'): HttpRequest
-    {
-        $requestBody = ['username' => $username];
-
-        return new HttpRequest($requestBody);
     }
 }

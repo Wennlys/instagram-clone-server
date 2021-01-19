@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Presentation\Actions;
 
-use PHPUnit\Framework\TestCase;
 use App\Presentation\Protocols\HttpResponse;
+use PHPUnit\Framework\TestCase;
 
 abstract class ActionTestCase extends TestCase
 {

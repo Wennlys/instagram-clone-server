@@ -13,13 +13,34 @@ use App\Presentation\Errors\User\UserCouldNotBeCreatedException;
 use App\Presentation\Protocols\HttpRequest;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Slim\Exception\HttpInternalServerErrorException;
+use Tests\Presentation\Actions\ActionTestCase as TestCase;
 use Tests\Presentation\Actions\Mocks\AddUserSpy;
 use Tests\Presentation\Actions\Mocks\LoadAccountByIdSpy;
-use Tests\Presentation\Actions\ActionTestCase as TestCase;
 
 class CreateUserActionTest extends TestCase
 {
     use ProphecyTrait;
+
+    private function SUTFactory(?AddUser $addUser = null, ?LoadAccountById $loadAccountById = null): array
+    {
+        $addUser = $addUser ?: new AddUserSpy();
+        $loadAccountById = $loadAccountById ?: new LoadAccountByIdSpy();
+        $SUT = new CreateUserAction($addUser, $loadAccountById);
+
+        return [
+            'SUT' => $SUT,
+            'addUser' => $addUser,
+            'loadAccountById' => $loadAccountById,
+        ];
+    }
+
+    private function requestFactory(User $user = null): HttpRequest
+    {
+        $user = $user ?: new User();
+        $requestBody = ['user' => $user];
+
+        return new HttpRequest($requestBody);
+    }
 
     /** @test */
     public function returns500_when_add_user_throws_exception(): void
@@ -100,26 +121,5 @@ class CreateUserActionTest extends TestCase
         $request = $this->requestFactory();
         $response = $SUT->handle($request);
         $this->assertEquals($expectedResponse, $response);
-    }
-
-    private function SUTFactory(?AddUser $addUser = null, ?LoadAccountById $loadAccountById = null): array
-    {
-        $addUser = $addUser ?: new AddUserSpy();
-        $loadAccountById = $loadAccountById ?: new LoadAccountByIdSpy();
-        $SUT = new CreateUserAction($addUser, $loadAccountById);
-
-        return [
-            'SUT' => $SUT,
-            'addUser' => $addUser,
-            'loadAccountById' => $loadAccountById,
-        ];
-    }
-
-    private function requestFactory(User $user = null): HttpRequest
-    {
-        $user = $user ?: new User();
-        $requestBody = ['user' => $user];
-
-        return new HttpRequest($requestBody);
     }
 }

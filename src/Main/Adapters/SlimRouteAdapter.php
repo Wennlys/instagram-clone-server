@@ -21,6 +21,17 @@ class SlimRouteAdapter
         $this->args = $args;
     }
 
+    private function respond(HttpResponse $response): SlimResponse
+    {
+        $json = json_encode($response, JSON_PRETTY_PRINT);
+        $this->response->getBody()->write($json);
+
+        return $this->response
+            ->withHeader('Content-Type', 'application/json')
+            ->withStatus($response->getStatusCode())
+        ;
+    }
+
     public function adapt(Action $action)
     {
         $parsedBody = $this->request->getParsedBody();
@@ -35,16 +46,5 @@ class SlimRouteAdapter
         $response = $action->handle($request);
 
         return $this->respond($response);
-    }
-
-    private function respond(HttpResponse $response): SlimResponse
-    {
-        $json = json_encode($response, JSON_PRETTY_PRINT);
-        $this->response->getBody()->write($json);
-
-        return $this->response
-            ->withHeader('Content-Type', 'application/json')
-            ->withStatus($response->getStatusCode())
-        ;
     }
 }

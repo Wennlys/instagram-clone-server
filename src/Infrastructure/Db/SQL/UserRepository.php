@@ -28,6 +28,11 @@ class UserRepository implements FindAllUsersRepository, FindUserOfIdRepository, 
         $this->dateNow = now();
     }
 
+    private function hash(string $string): string
+    {
+        return password_hash($string, PASSWORD_DEFAULT);
+    }
+
     /** {@inheritdoc} */
     public function findAll(): array
     {
@@ -113,10 +118,5 @@ class UserRepository implements FindAllUsersRepository, FindUserOfIdRepository, 
         } catch (PDOException $e) {
             throw new UserCouldNotBeUpdatedException($e->getMessage());
         }
-    }
-
-    private function hash(string $string): string
-    {
-        return password_hash($string, PASSWORD_DEFAULT);
     }
 }

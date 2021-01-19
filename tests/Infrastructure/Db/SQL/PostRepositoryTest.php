@@ -8,9 +8,9 @@ use App\Domain\Models\Post;
 use App\Infrastructure\Db\SQL\PostRepository;
 use App\Presentation\Errors\Post\PostCouldNotBeCreatedException;
 use PDO;
+use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use Tests\DataBaseSetUp;
-use PHPUnit\Framework\TestCase;
 
 class PostRepositoryTest extends TestCase
 {
@@ -21,6 +21,24 @@ class PostRepositoryTest extends TestCase
         parent::__construct();
         DataBaseSetUp::up();
         $this->postRepository = new PostRepository();
+    }
+
+    private function postProvider(): array
+    {
+        return [
+            'Post One' => [
+                'image_url' => '/tmp/avatar.jpg',
+                'description' => 'Nothing to see here :P',
+                'user_id' => 1,
+            ],
+        ];
+    }
+
+    private function createPost(string $postName): Post
+    {
+        $post = $this->postProvider()[$postName];
+
+        return new Post($post['image_url'], $post['description'], $post['user_id']);
     }
 
     /** @test */
@@ -68,23 +86,5 @@ class PostRepositoryTest extends TestCase
         $userId = 2;
         $posts = $this->postRepository->listPostsById($userId);
         $this->assertEquals([], $posts);
-    }
-
-    private function postProvider(): array
-    {
-        return [
-            'Post One' => [
-                'image_url' => '/tmp/avatar.jpg',
-                'description' => 'Nothing to see here :P',
-                'user_id' => 1,
-            ],
-        ];
-    }
-
-    private function createPost(string $postName): Post
-    {
-        $post = $this->postProvider()[$postName];
-
-        return new Post($post['image_url'], $post['description'], $post['user_id']);
     }
 }

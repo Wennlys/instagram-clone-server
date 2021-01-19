@@ -22,6 +22,7 @@ class ListUserFollowingsPostsAction implements Action
     {
         ['authToken' => $authToken] = $request->getBody();
         $this->getTokenPayload->get($authToken);
+
         return new Response(200, []);
     }
 }

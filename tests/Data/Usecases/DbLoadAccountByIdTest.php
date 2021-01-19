@@ -7,13 +7,24 @@ namespace Tests\Data\Usecases;
 use App\Data\Protocols\Db\User\FindUserOfIdRepository;
 use App\Data\Usecases\DbLoadAccountById;
 use App\Presentation\Errors\User\UserNotFoundException;
+use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Tests\Data\Mocks\FindUserOfIdRepositorySpy;
-use PHPUnit\Framework\TestCase;
 
 class DbLoadAccountByIdTest extends TestCase
 {
     use ProphecyTrait;
+
+    private function SUTFactory(FindUserOfIdRepository $findUserOfIdRepository = null): array
+    {
+        $findUserOfIdRepository = $findUserOfIdRepository ?: new FindUserOfIdRepositorySpy();
+        $SUT = new DbLoadAccountById($findUserOfIdRepository);
+
+        return [
+            'SUT' => $SUT,
+            'userRepository' => $findUserOfIdRepository,
+        ];
+    }
 
     /** @test */
     public function fails_when_find_user_of_id_repository_throws_exception(): void
@@ -36,16 +47,5 @@ class DbLoadAccountByIdTest extends TestCase
         $userRepository->result = $result;
         $search2 = $SUT->load(1);
         $this->assertEquals($result, $search2);
-    }
-
-    private function SUTFactory(FindUserOfIdRepository $findUserOfIdRepository = null): array
-    {
-        $findUserOfIdRepository = $findUserOfIdRepository ?: new FindUserOfIdRepositorySpy();
-        $SUT = new DbLoadAccountById($findUserOfIdRepository);
-
-        return [
-            'SUT' => $SUT,
-            'userRepository' => $findUserOfIdRepository,
-        ];
     }
 }

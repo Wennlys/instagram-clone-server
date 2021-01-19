@@ -9,9 +9,9 @@ use App\Infrastructure\Db\SQL\UserRepository;
 use App\Presentation\Errors\User\UserCouldNotBeCreatedException;
 use App\Presentation\Errors\User\UserCouldNotBeUpdatedException;
 use PDO;
+use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use Tests\DataBaseSetUp;
-use PHPUnit\Framework\TestCase;
 
 class UserRepositoryTest extends TestCase
 {
@@ -22,6 +22,11 @@ class UserRepositoryTest extends TestCase
         parent::__construct();
         DataBaseSetUp::up();
         $this->userRepository = new UserRepository();
+    }
+
+    private function createUser(array $user): User
+    {
+        return new User($user['username'], $user['email'], $user['name'], $user['password'] ?? null);
     }
 
     public function userProvider(): array
@@ -149,10 +154,5 @@ class UserRepositoryTest extends TestCase
         $property->setAccessible(true);
         $property->setValue($class, new PDO('sqlite:', null, null, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]));
         $userRepository->getMethod('update')->invokeArgs($class, [$user, 1]);
-    }
-
-    private function createUser(array $user): User
-    {
-        return new User($user['username'], $user['email'], $user['name'], $user['password'] ?? null);
     }
 }

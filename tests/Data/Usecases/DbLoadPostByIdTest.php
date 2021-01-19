@@ -7,13 +7,24 @@ namespace Tests\Data\Usecases;
 use App\Data\Protocols\Db\Post\FindPostOfIdRepository;
 use App\Data\Usecases\DbLoadPostById;
 use App\Presentation\Errors\Post\PostNotFoundException;
+use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Tests\Data\Mocks\FindPostOfIdRepositorySpy;
-use PHPUnit\Framework\TestCase;
 
 class DbLoadPostByIdTest extends TestCase
 {
     use ProphecyTrait;
+
+    private function SUTFactory(FindPostOfIdRepository $findPostOfIdRepository = null): array
+    {
+        $findPostOfIdRepository = $findPostOfIdRepository ?: new FindPostOfIdRepositorySpy();
+        $SUT = new DbLoadPostById($findPostOfIdRepository);
+
+        return [
+            'SUT' => $SUT,
+            'postRepository' => $findPostOfIdRepository,
+        ];
+    }
 
     /** @test */
     public function fails_when_find_post_of_id_repository_throws_exception(): void
@@ -36,16 +47,5 @@ class DbLoadPostByIdTest extends TestCase
         $postRepository->result = $result;
         $search2 = $SUT->load(1);
         $this->assertEquals($result, $search2);
-    }
-
-    private function SUTFactory(FindPostOfIdRepository $findPostOfIdRepository = null): array
-    {
-        $findPostOfIdRepository = $findPostOfIdRepository ?: new FindPostOfIdRepositorySpy();
-        $SUT = new DbLoadPostById($findPostOfIdRepository);
-
-        return [
-            'SUT' => $SUT,
-            'postRepository' => $findPostOfIdRepository,
-        ];
     }
 }

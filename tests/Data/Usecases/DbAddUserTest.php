@@ -10,15 +10,41 @@ use App\Data\Protocols\Db\User\UserStoreRepository;
 use App\Data\Usecases\DbAddUser;
 use App\Domain\Models\User;
 use App\Presentation\Errors\User\UserCouldNotBeCreatedException;
+use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Tests\Data\Mocks\FindUserOfEmailRepositorySpy;
 use Tests\Data\Mocks\FindUserOfUsernameRepositorySpy;
 use Tests\Data\Mocks\UserStoreRepositorySpy;
-use PHPUnit\Framework\TestCase;
 
 class DbAddUserTest extends TestCase
 {
     use ProphecyTrait;
+
+    private function SUTFactory(
+        ?UserStoreRepository $userStoreRepository = null,
+        ?FindUserOfUsernameRepository $findUserOfUsernameRepository = null,
+        ?FindUserOfEmailRepository $findUserOfEmailRepository = null
+    ): array {
+        $userStoreRepository = $userStoreRepository ?: new UserStoreRepositorySpy();
+        $findUserOfUsernameRepository = $findUserOfUsernameRepository ?: new FindUserOfUsernameRepositorySpy();
+        $findUserOfEmailRepository = $findUserOfEmailRepository ?: new FindUserOfEmailRepositorySpy();
+
+        $SUT = new DbAddUser($userStoreRepository, $findUserOfUsernameRepository, $findUserOfEmailRepository);
+
+        return [
+            'SUT' => $SUT,
+            'userStoreRepository' => $userStoreRepository,
+            'findUserOfUsernameRepository' => $findUserOfUsernameRepository,
+            'findUserOfEmailRepository' => $findUserOfEmailRepository,
+        ];
+    }
+
+    private function userFactory(): array
+    {
+        return [
+            new User('user1', 'mail@mail.com', '', '12345678'),
+        ];
+    }
 
     /** @test */
     public function calls_user_store_repository_using_expected_values(): void
@@ -93,31 +119,5 @@ class DbAddUserTest extends TestCase
         $findUserOfEmail->result = [1];
         $userId = $SUT->add($user);
         $this->assertEquals(0, $userId);
-    }
-
-    private function SUTFactory(
-        ?UserStoreRepository $userStoreRepository = null,
-        ?FindUserOfUsernameRepository $findUserOfUsernameRepository = null,
-        ?FindUserOfEmailRepository $findUserOfEmailRepository = null
-    ): array {
-        $userStoreRepository = $userStoreRepository ?: new UserStoreRepositorySpy();
-        $findUserOfUsernameRepository = $findUserOfUsernameRepository ?: new FindUserOfUsernameRepositorySpy();
-        $findUserOfEmailRepository = $findUserOfEmailRepository ?: new FindUserOfEmailRepositorySpy();
-
-        $SUT = new DbAddUser($userStoreRepository, $findUserOfUsernameRepository, $findUserOfEmailRepository);
-
-        return [
-            'SUT' => $SUT,
-            'userStoreRepository' => $userStoreRepository,
-            'findUserOfUsernameRepository' => $findUserOfUsernameRepository,
-            'findUserOfEmailRepository' => $findUserOfEmailRepository,
-        ];
-    }
-
-    private function userFactory(): array
-    {
-        return [
-            new User('user1', 'mail@mail.com', '', '12345678'),
-        ];
     }
 }
