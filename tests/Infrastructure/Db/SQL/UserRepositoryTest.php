@@ -9,7 +9,7 @@ use App\Infrastructure\Db\SQL\UserRepository;
 use App\Presentation\Errors\User\UserCouldNotBeCreatedException;
 use App\Presentation\Errors\User\UserCouldNotBeUpdatedException;
 use PDO;
-use PHPUnit\Framework\TestCase;
+use Tests\BaseTestCase as TestCase;
 use ReflectionClass;
 use Tests\DataBaseSetUp;
 

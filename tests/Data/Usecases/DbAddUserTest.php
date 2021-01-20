@@ -10,7 +10,7 @@ use App\Data\Protocols\Db\User\UserStoreRepository;
 use App\Data\Usecases\DbAddUser;
 use App\Domain\Models\User;
 use App\Presentation\Errors\User\UserCouldNotBeCreatedException;
-use PHPUnit\Framework\TestCase;
+use Tests\BaseTestCase as TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Tests\Data\Mocks\FindUserOfEmailRepositorySpy;
 use Tests\Data\Mocks\FindUserOfUsernameRepositorySpy;

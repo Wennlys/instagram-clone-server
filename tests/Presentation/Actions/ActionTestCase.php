@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Tests\Presentation\Actions;
 
 use App\Presentation\Protocols\HttpResponse;
-use PHPUnit\Framework\TestCase;
+use Tests\BaseTestCase;
 
-abstract class ActionTestCase extends TestCase
+abstract class ActionTestCase extends BaseTestCase
 {
     protected function responseFactory(int $statusCode, array $body): HttpResponse
     {

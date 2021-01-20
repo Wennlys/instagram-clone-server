@@ -7,7 +7,7 @@ namespace Tests\Data\Usecases;
 use App\Data\Protocols\Db\User\FindUserOfIdRepository;
 use App\Data\Usecases\DbLoadAccountById;
 use App\Presentation\Errors\User\UserNotFoundException;
-use PHPUnit\Framework\TestCase;
+use Tests\BaseTestCase as TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Tests\Data\Mocks\FindUserOfIdRepositorySpy;
 

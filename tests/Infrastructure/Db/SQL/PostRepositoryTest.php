@@ -8,7 +8,7 @@ use App\Domain\Models\Post;
 use App\Infrastructure\Db\SQL\PostRepository;
 use App\Presentation\Errors\Post\PostCouldNotBeCreatedException;
 use PDO;
-use PHPUnit\Framework\TestCase;
+use Tests\BaseTestCase as TestCase;
 use ReflectionClass;
 use Tests\DataBaseSetUp;
 

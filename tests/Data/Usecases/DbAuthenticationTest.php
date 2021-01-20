@@ -9,9 +9,7 @@ use App\Data\Protocols\Encryption\HashComparer;
 use App\Data\Protocols\Token\CreateToken;
 use App\Data\Usecases\DbAuthentication;
 use Exception;
-use Faker\Factory;
-use Faker\Generator;
-use PHPUnit\Framework\TestCase;
+use Tests\BaseTestCase as TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Tests\Data\Mocks\CreateTokenSpy;
 use Tests\Data\Mocks\FindUserOfUsernameRepositorySpy;
@@ -20,14 +18,6 @@ use Tests\Data\Mocks\HashComparerSpy;
 class DbAuthenticationTest extends TestCase
 {
     use ProphecyTrait;
-
-    private Generator $faker;
-
-    public function __construct()
-    {
-        parent::__construct();
-        $this->faker = Factory::create();
-    }
 
     private function SUTFactory(?FindUserOfUsernameRepository $findUserOfUsernameRepository = null, ?HashComparer $hashComparer = null, ?CreateToken $createToken = null): array
     {
