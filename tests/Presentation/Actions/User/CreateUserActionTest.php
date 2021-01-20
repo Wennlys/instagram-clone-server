@@ -6,37 +6,63 @@ namespace Tests\Presentation\Actions\User;
 
 use App\Domain\Models\User;
 use App\Domain\Usecases\AddUser;
+use App\Domain\Usecases\Authentication;
 use App\Domain\Usecases\LoadAccountById;
 use App\Presentation\Actions\User\CreateUserAction;
+use App\Presentation\Errors\Http\HttpInternalServerErrorException;
 use App\Presentation\Errors\User\DuplicatedUserException;
 use App\Presentation\Errors\User\UserCouldNotBeCreatedException;
 use App\Presentation\Protocols\HttpRequest;
 use Prophecy\PhpUnit\ProphecyTrait;
-use Slim\Exception\HttpInternalServerErrorException;
 use Tests\Presentation\Actions\ActionTestCase as TestCase;
 use Tests\Presentation\Actions\Mocks\AddUserSpy;
+use Tests\Presentation\Actions\Mocks\AuthenticationSpy;
 use Tests\Presentation\Actions\Mocks\LoadAccountByIdSpy;
 
 class CreateUserActionTest extends TestCase
 {
     use ProphecyTrait;
 
-    private function SUTFactory(?AddUser $addUser = null, ?LoadAccountById $loadAccountById = null): array
+    private function userProvider(string $index = 'one'): array
+    {
+        return [
+            'one' => [
+                'username' => 'user.name',
+                'password' => '12345678',
+                'email' => 'email@email.com',
+                'name' => 'Firstname Lastname',
+            ],
+            'random' => [
+                'username' => $this->faker->userName,
+                'password' => $this->faker->password(),
+                'email' => $this->faker->email,
+                'name' => $this->faker->name,
+            ],
+        ][$index];
+    }
+
+    private function SUTFactory(?AddUser $addUser = null, ?LoadAccountById $loadAccountById = null, ?Authentication $authentication = null): array
     {
         $addUser = $addUser ?: new AddUserSpy();
         $loadAccountById = $loadAccountById ?: new LoadAccountByIdSpy();
-        $SUT = new CreateUserAction($addUser, $loadAccountById);
+        $authentication = $authentication ?: new AuthenticationSpy();
+
+        $loadAccountById->result = $this->userProvider();
+
+        $SUT = new CreateUserAction($addUser, $loadAccountById, $authentication);
 
         return [
             'SUT' => $SUT,
             'addUser' => $addUser,
             'loadAccountById' => $loadAccountById,
+            'authentication' => $authentication,
         ];
     }
 
     private function requestFactory(User $user = null): HttpRequest
     {
-        $user = $user ?: new User();
+        $placeholderUser = $this->userProvider();
+        $user = $user ?: new User($placeholderUser['username'], $placeholderUser['email'], $placeholderUser['name'], $placeholderUser['password']);
         $requestBody = ['user' => $user];
 
         return new HttpRequest($requestBody);
@@ -50,7 +76,7 @@ class CreateUserActionTest extends TestCase
         $user = new User();
         $addUserProphecy->add($user)->willThrow(HttpInternalServerErrorException::class)->shouldBeCalledOnce();
         ['SUT' => $SUT] = $this->SUTFactory($addUserProphecy->reveal());
-        $request = $this->requestFactory();
+        $request = $this->requestFactory($user);
         $SUT->handle($request);
     }
 
@@ -76,7 +102,7 @@ class CreateUserActionTest extends TestCase
             'addUser' => $addUser
         ] = $this->SUTFactory();
         $user = new User();
-        $request = $this->requestFactory();
+        $request = $this->requestFactory($user);
         $SUT->handle($request);
         $this->assertEquals($user, $addUser->params);
     }
@@ -99,7 +125,6 @@ class CreateUserActionTest extends TestCase
             'SUT' => $SUT,
             'loadAccountById' => $loadAccountById
         ] = $this->SUTFactory();
-        $user = new User();
         $loadAccountById->result = [];
         $request = $this->requestFactory();
         $response = $SUT->handle($request);
@@ -108,18 +133,39 @@ class CreateUserActionTest extends TestCase
     }
 
     /** @test */
-    public function returns_matching_http_response_object_when_load_account_by_id_returns_not_empty_array(): void
+    public function returns500_when_authentication_throws_exception(): void
+    {
+        $this->expectExceptionMessage('Internal server error.');
+        $authentication = $this->prophesize(Authentication::class);
+        $user = $this->userProvider();
+        $authentication->authenticate($user['username'], $user['password'])->willThrow(HttpInternalServerErrorException::class)->shouldBeCalledOnce();
+        ['SUT' => $SUT] = $this->SUTFactory(null, null, $authentication->reveal());
+        $request = $this->requestFactory();
+        $SUT->handle($request);
+    }
+
+    /** @test */
+    public function returns_matching_http_response_object_when_authentication_returns_null(): void
     {
         [
             'SUT' => $SUT,
-            'loadAccountById' => $loadAccountById
+            'authentication' => $authentication
         ] = $this->SUTFactory();
-        $user = new User('', 'mail@mail.com', '');
-        $userArray = (array) $user;
-        $loadAccountById->result = $userArray;
-        $expectedResponse = $this->responseFactory(200, ['data' => $userArray]);
+        $authentication->result = null;
         $request = $this->requestFactory();
         $response = $SUT->handle($request);
+        $expectedResponse = $this->responseFactory(500, ['error' => new HttpInternalServerErrorException()]);
         $this->assertEquals($expectedResponse, $response);
+    }
+
+    /** @test */
+    public function returns_user_and_authentication_token_when_ok(): void
+    {
+        ['SUT' => $SUT] = $this->SUTFactory();
+        $request = $this->requestFactory();
+        $response = $SUT->handle($request);
+        $expectedResponseBody = ['user' => $this->userProvider(), 'authToken' => 'token.token'];
+        $responseBody = $response->getBody()['data'];
+        $this->assertEquals($expectedResponseBody, $responseBody);
     }
 }
