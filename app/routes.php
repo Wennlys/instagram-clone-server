@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
+use App\Main\Adapters\SlimRouteAdapter;
+use App\Main\Factories\Actions\User\CreateUserActionFactory;
 use App\Presentation\Actions\Post\CreatePostAction;
 use App\Presentation\Actions\Post\ListUserFollowingsPostsAction;
 use App\Presentation\Actions\Post\ViewPostAction;
 use App\Presentation\Actions\Session\SessionCreateAction;
-use App\Presentation\Actions\User\CreateUserAction;
 use App\Presentation\Actions\User\UpdateUserAction;
 use App\Presentation\Actions\User\ViewUserAction;
 use App\Presentation\Middleware\SessionMiddleware;
@@ -42,7 +43,12 @@ return function (App $app) {
         ;
     });
 
-    $app->post('/users', CreateUserAction::class);
+    $app->post('/users', function (Request $request, Response $response, array $args) {
+        $routeAdapter = new SlimRouteAdapter($request, $response, $args);
+        $action = CreateUserActionFactory::create();
+
+        return $routeAdapter->adapt($action);
+    });
 
     $app->group('/sessions', function (Group $group) {
         $group->post('', SessionCreateAction::class);
