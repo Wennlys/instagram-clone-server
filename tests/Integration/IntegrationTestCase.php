@@ -13,7 +13,7 @@ use Slim\Psr7\Headers;
 use Slim\Psr7\Request as SlimRequest;
 use Slim\Psr7\Uri;
 
-abstract class IntegrationTestCase extends TestCase
+abstract class IntegraationTestCase extends TestCase
 {
     protected function getAppInstance(): App
     {
