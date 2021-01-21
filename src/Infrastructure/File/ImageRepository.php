@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Files;
+namespace App\Infrastructure\File;
 
 use App\Data\Protocols\Images\ImageDestroyRepository;
 use App\Data\Protocols\Images\ImageIndexRepository;
