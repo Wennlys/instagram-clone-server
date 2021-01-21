@@ -9,8 +9,8 @@ use App\Data\Protocols\Encryption\HashComparer;
 use App\Data\Protocols\Token\CreateToken;
 use App\Data\Usecases\DbAuthentication;
 use Exception;
-use Tests\BaseTestCase as TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Tests\BaseTestCase as TestCase;
 use Tests\Data\Mocks\CreateTokenSpy;
 use Tests\Data\Mocks\FindUserOfUsernameRepositorySpy;
 use Tests\Data\Mocks\HashComparerSpy;
@@ -19,37 +19,41 @@ class DbAuthenticationTest extends TestCase
 {
     use ProphecyTrait;
 
-    private function SUTFactory(?FindUserOfUsernameRepository $findUserOfUsernameRepository = null, ?HashComparer $hashComparer = null, ?CreateToken $createToken = null): array
+    private function SUTFactory(?FindUserOfUsernameRepository $findUserOfUsername = null, ?HashComparer $hashComparer = null, ?CreateToken $createToken = null): array
     {
-        $findUserOfUsernameRepository = $findUserOfUsernameRepository ?: new FindUserOfUsernameRepositorySpy();
+        $findUserOfUsername = $findUserOfUsername ?: new FindUserOfUsernameRepositorySpy();
         $hashComparer = $hashComparer ?: new HashComparerSpy();
         $createToken = $createToken ?: new CreateTokenSpy();
-        $SUT = new DbAuthentication($findUserOfUsernameRepository, $hashComparer, $createToken);
+        $SUT = new DbAuthentication($findUserOfUsername, $hashComparer, $createToken);
 
         return [
             'SUT' => $SUT,
-            'findUserOfUsernameRepository' => $findUserOfUsernameRepository,
+            'findUserOfUsername' => $findUserOfUsername,
             'hashComparer' => $hashComparer,
             'createToken' => $createToken,
         ];
     }
 
     /** @test */
-    public function fails_when_load_account_by_username_throws_exception(): void
+    public function fails_when_find_user_of_username_throws_exception(): void
     {
         $this->expectException(Exception::class);
-        $findUserOfUsernameRepositoryProphecy = $this->prophesize(FindUserOfUsernameRepository::class);
+        $findUserOfUsernameProphecy = $this->prophesize(FindUserOfUsernameRepository::class);
         $username = $this->faker->userName;
         $password = $this->faker->password();
-        $findUserOfUsernameRepositoryProphecy->findUserOfUsername($username)->willThrow(Exception::class)->shouldBeCalledOnce();
-        ['SUT' => $SUT] = $this->SUTFactory($findUserOfUsernameRepositoryProphecy->reveal());
+        $findUserOfUsernameProphecy->findUserOfUsername($username)->willThrow(Exception::class)->shouldBeCalledOnce();
+        ['SUT' => $SUT] = $this->SUTFactory($findUserOfUsernameProphecy->reveal());
         $SUT->authenticate($username, $password);
     }
 
     /** @test */
-    public function returns_null_when_load_account_by_username_returns_empty_array(): void
+    public function returns_null_when_find_user_of_username_returns_empty_array(): void
     {
-        ['SUT' => $SUT] = $this->SUTFactory();
+        [
+            'SUT' => $SUT,
+            'findUserOfUsername' => $findUserOfUsername
+        ] = $this->SUTFactory();
+        $findUserOfUsername->result = [];
         $username = $this->faker->userName;
         $password = $this->faker->password();
         $result = $SUT->authenticate($username, $password);
@@ -63,17 +67,18 @@ class DbAuthenticationTest extends TestCase
         $hashComparerProphecy = $this->prophesize(HashComparer::class);
         $username = $this->faker->userName;
         $password = $this->faker->password();
-        $hashComparerProphecy->compare($password)->willThrow(Exception::class)->shouldBeCalledOnce();
+        $hash = $this->faker->randomAscii();
+        $hashComparerProphecy->compare($password, $hash)->willThrow(Exception::class)->shouldBeCalledOnce();
         [
             'SUT' => $SUT,
-            'findUserOfUsernameRepository' => $findUserOfUsernameRepository
+            'findUserOfUsername' => $findUserOfUsername
         ] = $this->SUTFactory(null, $hashComparerProphecy->reveal());
-        $findUserOfUsernameRepository->result = [1];
+        $findUserOfUsername->result = ['id' => 1, 'password' => $hash];
         $SUT->authenticate($username, $password);
     }
 
     /** @test */
-    public function returns_null_when_hash_comparer_returns_null(): void
+    public function returns_null_when_hash_comparer_returns_false(): void
     {
         [
             'SUT' => $SUT,
@@ -97,9 +102,9 @@ class DbAuthenticationTest extends TestCase
         $createTokenProphecy->create($userId)->willThrow(Exception::class)->shouldBeCalledOnce();
         [
             'SUT' => $SUT,
-            'findUserOfUsernameRepository' => $findUserOfUsernameRepository,
+            'findUserOfUsername' => $findUserOfUsername,
         ] = $this->SUTFactory(null, null, $createTokenProphecy->reveal());
-        $findUserOfUsernameRepository->result = ['id' => $userId];
+        $findUserOfUsername->result = ['id' => $userId, 'password' => $password];
         $SUT->authenticate($username, $password);
     }
 
@@ -108,12 +113,10 @@ class DbAuthenticationTest extends TestCase
     {
         [
             'SUT' => $SUT,
-            'findUserOfUsernameRepository' => $findUserOfUsernameRepository,
+            'findUserOfUsername' => $findUserOfUsername,
             'createToken' => $createToken,
         ] = $this->SUTFactory();
-        $userId = $this->faker->randomNumber(1);
         $createToken->result = null;
-        $findUserOfUsernameRepository->result = ['id' => $userId];
         $username = $this->faker->userName;
         $password = $this->faker->password();
         $result = $SUT->authenticate($username, $password);
