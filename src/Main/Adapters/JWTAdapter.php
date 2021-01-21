@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Main\Adapters;
 
-use App\Data\Protocols\Token\CreateTokenPayload;
+use App\Data\Protocols\Token\CreateToken;
 use App\Data\Protocols\Token\GetTokenPayload;
 use ReallySimpleJWT\Token;
 
-class JWTAdapter implements CreateTokenPayload, GetTokenPayload
+class JWTAdapter implements CreateToken, GetTokenPayload
 {
     private string $secret;
     private ?string $issuer;
