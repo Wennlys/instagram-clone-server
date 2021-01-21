@@ -30,12 +30,12 @@ class DbAuthentication implements Authentication
             return null;
         }
 
-        $passwordMatches = $this->hashComparer->compare($password);
+        $passwordMatches = $this->hashComparer->compare($password, $user['password']);
         if (!$passwordMatches) {
             return null;
         }
 
-        $userId = $user['id'];
+        $userId = (int) $user['id'];
 
         return $this->createToken->create($userId);
     }

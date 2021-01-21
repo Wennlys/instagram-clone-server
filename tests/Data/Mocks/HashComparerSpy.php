@@ -9,12 +9,9 @@ use App\Data\Protocols\Encryption\HashComparer;
 class HashComparerSpy implements HashComparer
 {
     public bool $result = true;
-    public string $params;
 
-    public function compare(string $stringToCompare): bool
+    public function compare(string $stringToCompare, string $hash): bool
     {
-        $this->params = $stringToCompare;
-
         return $this->result;
     }
 }
