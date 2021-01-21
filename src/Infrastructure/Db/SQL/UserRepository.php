@@ -44,7 +44,7 @@ class UserRepository implements FindAllUsersRepository, FindUserOfIdRepository, 
     /** {@inheritdoc} */
     public function findUserOfId(int $id): array
     {
-        $query = $this->db->query('SELECT username, name, email FROM users WHERE id = :id');
+        $query = $this->db->query('SELECT username, name, email, password FROM users WHERE id = :id');
         $query->execute([':id' => $id]);
         $user = $query->fetch(PDO::FETCH_ASSOC);
 

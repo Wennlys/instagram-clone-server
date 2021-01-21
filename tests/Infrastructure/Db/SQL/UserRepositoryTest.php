@@ -9,8 +9,8 @@ use App\Infrastructure\Db\SQL\UserRepository;
 use App\Presentation\Errors\User\UserCouldNotBeCreatedException;
 use App\Presentation\Errors\User\UserCouldNotBeUpdatedException;
 use PDO;
-use Tests\BaseTestCase as TestCase;
 use ReflectionClass;
+use Tests\BaseTestCase as TestCase;
 use Tests\DataBaseSetUp;
 
 class UserRepositoryTest extends TestCase
@@ -80,7 +80,7 @@ class UserRepositoryTest extends TestCase
     {
         $userFound = $this->userRepository->findUserOfId(1);
         $userArray = $this->userProvider()['User One'];
-        unset($userArray['id']);
+        unset($userArray['id'], $userFound['password']);
         $this->assertEquals($userArray, $userFound);
     }
 
