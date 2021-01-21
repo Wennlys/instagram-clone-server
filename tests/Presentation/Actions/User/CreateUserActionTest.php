@@ -32,12 +32,6 @@ class CreateUserActionTest extends TestCase
                 'email' => 'email@email.com',
                 'name' => 'Firstname Lastname',
             ],
-            'random' => [
-                'username' => $this->faker->userName,
-                'password' => $this->faker->password(),
-                'email' => $this->faker->email,
-                'name' => $this->faker->name,
-            ],
         ][$index];
     }
 
@@ -46,10 +40,9 @@ class CreateUserActionTest extends TestCase
         $addUser = $addUser ?: new AddUserSpy();
         $loadAccountById = $loadAccountById ?: new LoadAccountByIdSpy();
         $authentication = $authentication ?: new AuthenticationSpy();
+        $SUT = new CreateUserAction($addUser, $loadAccountById, $authentication);
 
         $loadAccountById->result = $this->userProvider();
-
-        $SUT = new CreateUserAction($addUser, $loadAccountById, $authentication);
 
         return [
             'SUT' => $SUT,
@@ -59,10 +52,9 @@ class CreateUserActionTest extends TestCase
         ];
     }
 
-    private function requestFactory(User $user = null): HttpRequest
+    private function requestFactory(array $user = null): HttpRequest
     {
-        $placeholderUser = $this->userProvider();
-        $user = $user ?: new User($placeholderUser['username'], $placeholderUser['email'], $placeholderUser['name'], $placeholderUser['password']);
+        $user = $user ?: $this->userProvider();
         $requestBody = ['user' => $user];
 
         return new HttpRequest($requestBody);
@@ -73,10 +65,11 @@ class CreateUserActionTest extends TestCase
     {
         $this->expectExceptionMessage('Internal server error.');
         $addUserProphecy = $this->prophesize(AddUser::class);
-        $user = new User();
+        $userArray = $this->userProvider();
+        $user = new User($userArray['username'], $userArray['email'], $userArray['name'], $userArray['password']);
         $addUserProphecy->add($user)->willThrow(HttpInternalServerErrorException::class)->shouldBeCalledOnce();
         ['SUT' => $SUT] = $this->SUTFactory($addUserProphecy->reveal());
-        $request = $this->requestFactory($user);
+        $request = $this->requestFactory($userArray);
         $SUT->handle($request);
     }
 
@@ -92,19 +85,6 @@ class CreateUserActionTest extends TestCase
         $response = $SUT->handle($request);
         $expectedResponse = $this->responseFactory(403, ['error' => new DuplicatedUserException()]);
         $this->assertEquals($expectedResponse, $response);
-    }
-
-    /** @test */
-    public function calls_add_user_with_expected_values(): void
-    {
-        [
-            'SUT' => $SUT,
-            'addUser' => $addUser
-        ] = $this->SUTFactory();
-        $user = new User();
-        $request = $this->requestFactory($user);
-        $SUT->handle($request);
-        $this->assertEquals($user, $addUser->params);
     }
 
     /** @test */

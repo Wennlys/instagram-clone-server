@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Presentation\Actions\User;
 
+use App\Domain\Models\User;
 use App\Domain\Usecases\AddUser;
 use App\Domain\Usecases\Authentication;
 use App\Domain\Usecases\LoadAccountById;
@@ -29,8 +30,11 @@ class CreateUserAction implements Action
 
     public function handle(Request $request): Response
     {
-        ['user' => $user] = $request->getBody();
-        $userId = $this->addUser->add($user);
+        ['user' => $userBody] = $request->getBody();
+
+        $userObject = new User($userBody['username'], $userBody['email'], $userBody['name'], $userBody['password']);
+
+        $userId = $this->addUser->add($userObject);
         if ($userId === 0) {
             return new Response(403, ['error' => new DuplicatedUserException()]);
         }
@@ -40,7 +44,7 @@ class CreateUserAction implements Action
             return new Response(403, ['error' => new UserCouldNotBeCreatedException()]);
         }
 
-        $authToken = $this->authentication->authenticate($user['username'], $user['password']);
+        $authToken = $this->authentication->authenticate($user['username'], $userBody['password']);
         if ($authToken === null) {
             return new Response(500, ['error' => new HttpInternalServerErrorException()]);
         }
