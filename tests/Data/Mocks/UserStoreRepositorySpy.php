@@ -13,9 +13,9 @@ class UserStoreRepositorySpy implements UserStoreRepository
     public User $params;
 
     /** {@inheritdoc} */
-    public function store(User $User): int
+    public function store(User $user): int
     {
-        $this->params = $User;
+        $this->params = $user;
 
         return $this->result;
     }
