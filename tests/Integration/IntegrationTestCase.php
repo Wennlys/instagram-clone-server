@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests;
+namespace Tests\Integration;
 
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -13,18 +13,19 @@ use Slim\Psr7\Headers;
 use Slim\Psr7\Request as SlimRequest;
 use Slim\Psr7\Uri;
 
-abstract class IntegraationTestCase extends TestCase
+abstract class IntegrationTestCase extends TestCase
 {
     protected function getAppInstance(): App
     {
         $app = AppFactory::create();
 
         // Register middleware
-        $middleware = require __DIR__.'/../app/middleware.php';
+        $middleware = require getcwd().'/app/middleware.php';
         $middleware($app);
 
         // Register routes
-        $routes = require __DIR__.'/../app/routes.php';
+        $app->addRoutingMiddleware();
+        $routes = require getcwd().'/app/routes.php';
         $routes($app);
 
         return $app;
