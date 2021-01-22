@@ -21,6 +21,18 @@ class UpdateUserActionTest extends TestCase
 {
     use ProphecyTrait;
 
+    private function userProvider(string $index = 'one'): array
+    {
+        return [
+            'one' => [
+                'username' => 'user.name',
+                'password' => '12345678',
+                'email' => 'email@email.com',
+                'name' => 'Firstname Lastname',
+            ],
+        ][$index];
+    }
+
     private function SUTFactory(?LoadAccountById $loadAccountById = null, ?UpdateAccountInformations $updateAccountInformations = null): array
     {
         $updateAccountInformations = $updateAccountInformations ?: new UpdateAccountInformationsSpy();
@@ -34,10 +46,10 @@ class UpdateUserActionTest extends TestCase
         ];
     }
 
-    private function requestFactory(?User $user = null, int $userId = 1): HttpRequest
+    private function requestFactory(array $user = null, int $userId = 1): HttpRequest
     {
-        $user = $user ?: new User();
-        $requestBody = ['user' => $user, 'userId' => $userId];
+        $user = $user ?: $this->userProvider();
+        $requestBody = ['user' => $user, 'user_id' => $userId];
 
         return new HttpRequest($requestBody);
     }
@@ -73,7 +85,9 @@ class UpdateUserActionTest extends TestCase
     {
         $this->expectExceptionMessage('Internal server error.');
         $updateAccountInformationsProphesize = $this->prophesize(UpdateAccountInformations::class);
-        $updateAccountInformationsProphesize->update(new User(), 1)->willThrow(HttpInternalServerErrorException::class)->shouldBeCalledOnce();
+        $userArray = $this->userProvider();
+        $user = new User($userArray['username'], $userArray['email'], $userArray['name'], $userArray['password']);
+        $updateAccountInformationsProphesize->update($user, 1)->willThrow(HttpInternalServerErrorException::class)->shouldBeCalledOnce();
         ['SUT' => $SUT] = $this->SUTFactory(null, $updateAccountInformationsProphesize->reveal());
         $request = $this->requestFactory();
         $SUT->handle($request);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Presentation\Actions\User;
 
+use App\Domain\Models\User;
 use App\Domain\Usecases\LoadAccountById;
 use App\Domain\Usecases\UpdateAccountInformations;
 use App\Presentation\Actions\Action;
@@ -25,12 +26,16 @@ class UpdateUserAction implements Action
 
     public function handle(Request $request): Response
     {
-        ['user' => $user, 'userId' => $userId] = $request->getBody();
+        ['user' => $userBody, 'user_id' => $userId] = $request->getBody();
+
+        $userId = (int) $userId;
+        $userObject = new User($userBody['username'], $userBody['email'], $userBody['name'], $userBody['password']);
+
         if (!$this->loadAccountById->load($userId)) {
             return new Response(403, ['error' => new UserNotFoundException()]);
         }
 
-        $wasUpdated = $this->updateAccountInformations->update($user, $userId);
+        $wasUpdated = $this->updateAccountInformations->update($userObject, $userId);
         if (!$wasUpdated) {
             return new Response(400, ['error' => new UserCouldNotBeUpdatedException()]);
         }
