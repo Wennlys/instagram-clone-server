@@ -40,8 +40,9 @@ class SlimRouteAdapter
         $queryParams = $this->request->getQueryParams();
         $cookieParams = $this->request->getCookieParams();
         $attributes = $this->request->getAttributes();
-        $authToken['authToken'] = $this->request->getHeader('Authorization')[0] ?? [];
-        $requestBody = array_merge($parsedBody, $uploadedFiles, $serverParams, $queryParams, $cookieParams, $attributes, $authToken, $this->args);
+        $authToken['authToken'] = $this->request->getHeaderLine('Authorization') ?? [];
+        $headers = $this->request->getHeaders();
+        $requestBody = array_merge($parsedBody, $uploadedFiles, $serverParams, $queryParams, $cookieParams, $attributes, $headers, $authToken, $this->args);
         $request = new HttpRequest($requestBody);
         $response = $action->handle($request);
 
