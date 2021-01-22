@@ -4,27 +4,28 @@ declare(strict_types=1);
 
 namespace App\Presentation\Middleware;
 
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Server\MiddlewareInterface as Middleware;
-use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
-use Slim\Psr7\Response;
+use App\Data\Protocols\Token\GetTokenPayload;
+use App\Presentation\Errors\Http\HttpUnauthorizedException;
+use App\Presentation\Protocols\HttpRequest as Request;
+use App\Presentation\Protocols\HttpResponse as Response;
 
 class SessionMiddleware implements Middleware
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function process(Request $request, RequestHandler $handler): ResponseInterface
+    private GetTokenPayload $getTokenPayload;
+
+    public function __construct(GetTokenPayload $getTokenPayload)
     {
-        ['exp' => $expiration] = getPayload($request);
-        if ($expiration > time()) {
-            return $handler->handle($request);
+        $this->getTokenPayload = $getTokenPayload;
+    }
+
+    public function process(Request $request): Response
+    {
+        ['Authorization' => $authToken] = $request->getBody()['headers'];
+        ['exp' => $expiration] = $this->getTokenPayload->get($authToken);
+        if ($expiration >= time()) {
+            return new Response(200, []);
         }
 
-        $response = new Response();
-        $response->getBody()->write('Invalid token.');
-
-        return $response->withStatus(400);
+        return new Response(401, ['error' => new HttpUnauthorizedException()]);
     }
 }
