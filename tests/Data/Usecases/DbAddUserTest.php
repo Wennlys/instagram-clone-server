@@ -10,8 +10,8 @@ use App\Data\Protocols\Db\User\UserStoreRepository;
 use App\Data\Usecases\DbAddUser;
 use App\Domain\Models\User;
 use App\Presentation\Errors\User\UserCouldNotBeCreatedException;
-use Tests\BaseTestCase as TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Tests\BaseTestCase as TestCase;
 use Tests\Data\Mocks\FindUserOfEmailRepositorySpy;
 use Tests\Data\Mocks\FindUserOfUsernameRepositorySpy;
 use Tests\Data\Mocks\UserStoreRepositorySpy;
@@ -44,18 +44,6 @@ class DbAddUserTest extends TestCase
         return [
             new User('user1', 'mail@mail.com', '', '12345678'),
         ];
-    }
-
-    /** @test */
-    public function calls_user_store_repository_using_expected_values(): void
-    {
-        [
-            'SUT' => $SUT,
-            'userStoreRepository' => $userStoreRepository,
-        ] = $this->SUTFactory();
-        [$user] = $this->userFactory();
-        $SUT->add($user);
-        $this->assertEquals($user, $userStoreRepository->params);
     }
 
     /** @test */

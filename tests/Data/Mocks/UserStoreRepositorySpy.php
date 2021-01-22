@@ -10,13 +10,10 @@ use App\Domain\Models\User;
 class UserStoreRepositorySpy implements UserStoreRepository
 {
     public int $result = 1;
-    public User $params;
 
     /** {@inheritdoc} */
     public function store(User $user): int
     {
-        $this->params = $user;
-
         return $this->result;
     }
 }
