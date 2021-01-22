@@ -9,8 +9,8 @@ use App\Data\Protocols\Db\User\FindUserOfIdRepository;
 use App\Data\Usecases\DbAddPost;
 use App\Domain\Models\Post;
 use App\Presentation\Errors\Post\PostCouldNotBeCreatedException;
-use Tests\BaseTestCase as TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Tests\BaseTestCase as TestCase;
 use Tests\Data\Mocks\FindUserOfIdRepositorySpy;
 use Tests\Data\Mocks\PostStoreRepositorySpy;
 
