@@ -22,9 +22,11 @@ class HttpResponse implements JsonSerializable
         return $this->statusCode;
     }
 
-    public function setStatusCode(int $statusCode): void
+    public function setStatusCode(int $statusCode): self
     {
         $this->statusCode = $statusCode;
+
+        return $this;
     }
 
     public function getBody(): array
@@ -32,9 +34,11 @@ class HttpResponse implements JsonSerializable
         return $this->body;
     }
 
-    public function setBody(array $body): void
+    public function setBody(array $body): self
     {
         $this->body = $body;
+
+        return $this;
     }
 
     public function jsonSerialize(): array
