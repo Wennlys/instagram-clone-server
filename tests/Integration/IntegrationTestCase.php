@@ -12,10 +12,19 @@ use Slim\Psr7\Factory\StreamFactory;
 use Slim\Psr7\Headers;
 use Slim\Psr7\Request as SlimRequest;
 use Slim\Psr7\Uri;
+use Tests\DataBaseSetUp;
 
 abstract class IntegrationTestCase extends TestCase
 {
-    protected function getAppInstance(): App
+    protected App $app;
+
+    protected function setUp(): void
+    {
+        DataBaseSetUp::up();
+        $this->app = $this->getAppInstance();
+    }
+
+    private function getAppInstance(): App
     {
         $app = AppFactory::create();
 
