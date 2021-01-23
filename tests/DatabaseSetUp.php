@@ -29,6 +29,7 @@ class DatabaseSetUp
             INSERT INTO users (username, email, name, password, created_at, updated_at) VALUES ('user1', 'user1@mail.com', 'User One', '{$password}', '{$dateNow}', '{$dateNow}');
             INSERT INTO users (username, email, name, password, created_at, updated_at) VALUES ('user2', 'user2@mail.com', 'User Two', '{$password}', '{$dateNow}', '{$dateNow}');
             INSERT INTO users (username, email, name, password, created_at, updated_at) VALUES ('user3', 'user3@mail.com', 'User Three', '{$password}', '{$dateNow}', '{$dateNow}');
+            INSERT INTO users (username, email, name, password, created_at, updated_at) VALUES ('user4', 'user4@mail.com', 'User Four', '{$password}', '{$dateNow}', '{$dateNow}');
 
             DROP TABLE IF EXISTS posts;
             CREATE TABLE posts (
