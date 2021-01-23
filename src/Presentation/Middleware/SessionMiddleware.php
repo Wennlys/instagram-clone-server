@@ -20,7 +20,7 @@ class SessionMiddleware implements Middleware
 
     public function process(Request $request): Response
     {
-        ['Authorization' => $authToken] = $request->getBody()['headers'];
+        ['authToken' => $authToken] = $request->getBody();
         ['exp' => $expiration] = $this->getTokenPayload->get($authToken);
         if ($expiration >= time()) {
             return new Response(200, []);

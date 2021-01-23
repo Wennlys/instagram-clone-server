@@ -30,7 +30,7 @@ final class SessionMiddlewareTest extends TestCase
 
     private function requestFactory($authToken = 'token.token'): Request
     {
-        $body = ['headers' => ['Authorization' => $authToken]];
+        $body = ['authToken' => $authToken];
 
         return new Request($body);
     }
