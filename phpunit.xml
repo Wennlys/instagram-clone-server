@@ -22,9 +22,11 @@
     </testsuite>
     <testsuite name="Unit">
       <directory>./tests/Data</directory>
-      <directory>./tests/Infrastructure</directory>
       <directory>./tests/Presentation</directory>
       <!-- <directory>./tests/Main</directory> -->
+    </testsuite>
+    <testsuite name="Persistence">
+      <directory>./tests/Infrastructure</directory>
     </testsuite>
   </testsuites>
   <php>
