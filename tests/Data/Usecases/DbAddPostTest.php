@@ -57,9 +57,9 @@ class DbAddPostTest extends TestCase
     /** @test */
     public function returns_false_when_find_user_of_id_repository_returns_true(): void
     {
-        ['SUT' => $SUT, 'userRepository' => $userRespository] = $this->SUTFactory();
+        ['SUT' => $SUT, 'userRepository' => $userRepository] = $this->SUTFactory();
         $post = new Post('', '', 1);
-        $userRespository->result = [1];
+        $userRepository->result = [1];
         $isAValidPost = $SUT->add($post);
         $this->assertFalse($isAValidPost);
     }
