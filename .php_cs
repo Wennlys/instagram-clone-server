@@ -16,6 +16,7 @@ return $config->setRules([
     'php_unit_internal_class' => false,
     'php_unit_method_casing' => ['case' => 'snake_case'],
     'yoda_style' => false,
+    'native_function_invocation' => false,
     'ordered_class_elements' => ['order' => [
         'use_trait',
         'constant_public',
