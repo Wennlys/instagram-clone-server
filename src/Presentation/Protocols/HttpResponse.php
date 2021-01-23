@@ -47,10 +47,10 @@ class HttpResponse implements JsonSerializable
             'statusCode' => $this->statusCode,
         ];
 
-        if ($this->body !== null) {
+        if (array_key_exists('data', $this->body)) {
             $response['data'] = $this->body['data'];
-        } elseif ($this->error !== null) {
-            $response['error'] = $this->body['error'];
+        } else {
+            $response['error'] = $this->body['error']->getMessage();
         }
 
         return $response;
