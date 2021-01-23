@@ -7,8 +7,8 @@ namespace Tests\Data\Usecases;
 use App\Data\Protocols\Db\Post\FindPostOfIdRepository;
 use App\Data\Usecases\DbLoadPostById;
 use App\Presentation\Errors\Post\PostNotFoundException;
-use Tests\BaseTestCase as TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Tests\BaseTestCase as TestCase;
 use Tests\Data\Mocks\FindPostOfIdRepositorySpy;
 
 class DbLoadPostByIdTest extends TestCase

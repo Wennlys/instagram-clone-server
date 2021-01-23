@@ -7,8 +7,8 @@ namespace Tests\Data\Usecases;
 use App\Data\Protocols\Db\User\FindUserOfIdRepository;
 use App\Data\Usecases\DbLoadAccountById;
 use App\Presentation\Errors\User\UserNotFoundException;
-use Tests\BaseTestCase as TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Tests\BaseTestCase as TestCase;
 use Tests\Data\Mocks\FindUserOfIdRepositorySpy;
 
 class DbLoadAccountByIdTest extends TestCase
