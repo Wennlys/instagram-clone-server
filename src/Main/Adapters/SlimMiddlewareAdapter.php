@@ -15,15 +15,32 @@ use Psr\Http\Server\RequestHandlerInterface as Next;
 
 class SlimMiddlewareAdapter
 {
-    private Request $request;
     private Response $response;
-    private Next $next;
+    private Middleware $middleware;
 
-    public function __construct(Request $request, Response $response, Next $next)
+    public function __construct(Middleware $middleware, Response $response)
     {
-        $this->request = $request;
+        $this->middleware = $middleware;
         $this->response = $response;
-        $this->next = $next;
+    }
+
+    public function __invoke(Request $request, Next $next)
+    {
+        try {
+            $headers = $request->getHeaders();
+            $authToken = $headers['Authorization'][0] ?? [];
+            $httpRequest = new HttpRequest(['headers' => $headers, 'authToken' => $authToken]);
+            $response = $this->middleware->process($httpRequest);
+            if ($response->getStatusCode() !== 200) {
+                return $this->fail($response);
+            }
+
+            return $next->handle($request);
+        } catch (Exception $e) {
+            $response = new HttpResponse(500, ['error' => new HttpInternalServerErrorException()]);
+
+            return $this->fail($response);
+        }
     }
 
     private function fail(HttpResponse $response): Response
@@ -35,24 +52,5 @@ class SlimMiddlewareAdapter
             ->withHeader('Content-Type', 'application/json')
             ->withStatus($response->getStatusCode())
         ;
-    }
-
-    public function adapt(Middleware $middleware): Response
-    {
-        try {
-            $headers = $this->request->getHeaders();
-            $authToken = $headers['Authorization'][0] ?? [];
-            $request = new HttpRequest(['headers' => $headers, 'authToken' => $authToken]);
-            $response = $middleware->process($request);
-            if ($response->getStatusCode() !== 200) {
-                return $this->fail($response);
-            }
-
-            return $this->next->handle($this->request);
-        } catch (Exception $e) {
-            $response = new HttpResponse(500, ['error' => new HttpInternalServerErrorException()]);
-
-            return $this->fail($response);
-        }
     }
 }

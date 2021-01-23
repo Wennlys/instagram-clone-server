@@ -12,10 +12,8 @@ use App\Presentation\Actions\Post\ListUserFollowingsPostsAction;
 use App\Presentation\Actions\Post\ViewPostAction;
 use App\Presentation\Actions\Session\SessionCreateAction;
 use App\Presentation\Actions\User\ViewUserAction;
-use App\Presentation\Middleware\SessionMiddleware;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 use Slim\App;
 use Slim\Interfaces\RouteCollectorProxyInterface as Group;
 use Slim\Psr7\Response as Psr7Response;
@@ -60,21 +58,18 @@ return function (App $app) {
     $app->group('/posts', function (Group $group) {
         $group->post('', CreatePostAction::class);
         $group->get('', ListUserFollowingsPostsAction::class);
-    })->add(SessionMiddleware::class);
+    })->add(new SlimMiddlewareAdapter(SessionMiddlewareFactory::create(), $app->getResponseFactory()->createResponse()));
 
     $app->get('/posts/{post_id}', ViewPostAction::class);
 
-    $app->put('/users/{user_id}', function (Request $request, Response $response, array $args) {
-        $routeAdapter = new SlimRouteAdapter($request, $response, $args);
-        $action = UpdateUserActionFactory::create();
+    $app->group('/users', function (Group $group) {
+        $group->put('/{user_id}', function (Request $request, Response $response, array $args) {
+            $routeAdapter = new SlimRouteAdapter($request, $response, $args);
+            $action = UpdateUserActionFactory::create();
 
-        return $routeAdapter->adapt($action);
-    })->add(function (Request $request, RequestHandler $requestHandler) use ($app) {
-        $response = $app->getResponseFactory()->createResponse();
-        $slimAdapter = new SlimMiddlewareAdapter($request, $response, $requestHandler);
-
-        return $slimAdapter->adapt(SessionMiddlewareFactory::create());
-    });
+            return $routeAdapter->adapt($action);
+        });
+    })->add(new SlimMiddlewareAdapter(SessionMiddlewareFactory::create(), $app->getResponseFactory()->createResponse()));
 
     $app->get('/{username}', ViewUserAction::class);
 };
