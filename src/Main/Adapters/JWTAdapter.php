@@ -6,6 +6,8 @@ namespace App\Main\Adapters;
 
 use App\Data\Protocols\Token\CreateToken;
 use App\Data\Protocols\Token\GetTokenPayload;
+use Exception;
+use ReallySimpleJWT\Exception\ValidateException;
 use ReallySimpleJWT\Token;
 
 class JWTAdapter implements CreateToken, GetTokenPayload
@@ -28,8 +30,14 @@ class JWTAdapter implements CreateToken, GetTokenPayload
 
     public function get(string $token): array
     {
-        [, $token] = explode(' ', $token);
+        try {
+            [, $token] = explode(' ', $token);
 
-        return Token::getPayload($token, $this->secret);
+            return Token::getPayload($token, $this->secret);
+        } catch (ValidateException $e) {
+            return ['exp' => 0];
+        } catch (Exception $e) {
+            throw $e;
+        }
     }
 }
