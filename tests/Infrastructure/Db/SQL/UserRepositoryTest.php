@@ -39,12 +39,6 @@ class UserRepositoryTest extends TestCase
                 'email' => 'user1@mail.com',
                 'name' => 'User One',
             ],
-            'two' => [
-                'username' => 'user2',
-                'email' => 'user2@mail.com',
-                'name' => 'User Two',
-                'password' => 'newpassword',
-            ],
             'random' => [
                 'username' => $this->faker->userName,
                 'email' => $this->faker->email,
