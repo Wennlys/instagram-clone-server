@@ -16,13 +16,13 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\App;
 use Slim\Interfaces\RouteCollectorProxyInterface as Group;
-use Slim\Psr7\Response as Psr7Response;
 
 return function (App $app) {
-    $app->get('/tmp/{name}', function (Request $request) {
+    $responseFactory = $app->getResponseFactory()->createResponse();
+
+    $app->get('/tmp/{name}', function (Request $request, Response $response) {
         $name = $request->getAttribute('name');
         $image = file_get_contents(getcwd()."/public/tmp/{$name}");
-        $response = new Psr7Response();
         $response->getBody()->write($image);
 
         return $response->withStatus(200);
@@ -44,12 +44,7 @@ return function (App $app) {
         ;
     });
 
-    $app->post('/users', function (Request $request, Response $response, array $args) {
-        $routeAdapter = new SlimRouteAdapter($request, $response, $args);
-        $action = CreateUserActionFactory::create();
-
-        return $routeAdapter->adapt($action);
-    });
+    $app->post('/users', new SlimRouteAdapter(CreateUserActionFactory::create(), $responseFactory));
 
     $app->group('/sessions', function (Group $group) {
         $group->post('', SessionCreateAction::class);
@@ -58,18 +53,13 @@ return function (App $app) {
     $app->group('/posts', function (Group $group) {
         $group->post('', CreatePostAction::class);
         $group->get('', ListUserFollowingsPostsAction::class);
-    })->add(new SlimMiddlewareAdapter(SessionMiddlewareFactory::create(), $app->getResponseFactory()->createResponse()));
+    })->add(new SlimMiddlewareAdapter(SessionMiddlewareFactory::create(), $responseFactory));
 
     $app->get('/posts/{post_id}', ViewPostAction::class);
 
     $app->group('/users', function (Group $group) {
-        $group->put('/{user_id}', function (Request $request, Response $response, array $args) {
-            $routeAdapter = new SlimRouteAdapter($request, $response, $args);
-            $action = UpdateUserActionFactory::create();
-
-            return $routeAdapter->adapt($action);
-        });
-    })->add(new SlimMiddlewareAdapter(SessionMiddlewareFactory::create(), $app->getResponseFactory()->createResponse()));
+        $group->put('/{user_id}', new SlimRouteAdapter(UpdateUserActionFactory::create()));
+    })->add(new SlimMiddlewareAdapter(SessionMiddlewareFactory::create(), $responseFactory));
 
     $app->get('/{username}', ViewUserAction::class);
 };

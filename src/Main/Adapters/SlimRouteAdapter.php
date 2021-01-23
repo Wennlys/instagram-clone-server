@@ -10,42 +10,38 @@ use Slim\Psr7\Response as SlimResponse;
 
 class SlimRouteAdapter
 {
-    private SlimRequest $request;
-    private SlimResponse $response;
-    private array $args;
+    private Action $action;
 
-    public function __construct(SlimRequest $request, SlimResponse $response, array $args)
+    public function __construct(Action $action)
     {
-        $this->request = $request;
-        $this->response = $response;
-        $this->args = $args;
+        $this->action = $action;
     }
 
-    private function respond(HttpResponse $response): SlimResponse
+    public function __invoke(SlimRequest $request, SlimResponse $slimResponse, array $args)
     {
-        $json = json_encode($response, JSON_PRETTY_PRINT);
-        $this->response->getBody()->write($json);
-
-        return $this->response
-            ->withHeader('Content-Type', 'application/json')
-            ->withStatus($response->getStatusCode())
-        ;
-    }
-
-    public function adapt(Action $action)
-    {
-        $parsedBody = $this->request->getParsedBody();
-        $uploadedFiles = $this->request->getUploadedFiles();
-        $serverParams = $this->request->getServerParams();
-        $queryParams = $this->request->getQueryParams();
-        $cookieParams = $this->request->getCookieParams();
-        $attributes = $this->request->getAttributes();
-        $authToken['authToken'] = $this->request->getHeaderLine('Authorization') ?? [];
-        $headers = $this->request->getHeaders();
-        $requestBody = array_merge($parsedBody, $uploadedFiles, $serverParams, $queryParams, $cookieParams, $attributes, $headers, $authToken, $this->args);
+        $parsedBody = $request->getParsedBody();
+        $uploadedFiles = $request->getUploadedFiles();
+        $serverParams = $request->getServerParams();
+        $queryParams = $request->getQueryParams();
+        $cookieParams = $request->getCookieParams();
+        $attributes = $request->getAttributes();
+        $authToken['authToken'] = $request->getHeaderLine('Authorization') ?? [];
+        $headers = $request->getHeaders();
+        $requestBody = array_merge($parsedBody, $uploadedFiles, $serverParams, $queryParams, $cookieParams, $attributes, $headers, $authToken, $args);
         $request = new HttpRequest($requestBody);
-        $response = $action->handle($request);
+        $response = $this->action->handle($request);
 
-        return $this->respond($response);
+        return $this->respond($response, $slimResponse);
+    }
+
+    private function respond(HttpResponse $httpResponse, SlimResponse $slimResponse): SlimResponse
+    {
+        $json = json_encode($httpResponse, JSON_PRETTY_PRINT);
+        $slimResponse->getBody()->write($json);
+
+        return $slimResponse
+            ->withHeader('Content-Type', 'application/json')
+            ->withStatus($httpResponse->getStatusCode())
+        ;
     }
 }
