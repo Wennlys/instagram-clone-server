@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Tests;
 
-use App\Infrastructure\Db\SQL\Connection;
+use PDO;
 
-class DataBaseSetUp
+class DatabaseSetUp
 {
-    public static function up(): void
+    public static function up(PDO $pdoConnection): void
     {
         $password = password_hash('123456', PASSWORD_DEFAULT);
         $dateNow = now();
 
-        Connection::getInstance()->getConnection()->exec("
+        $pdoConnection->exec("
             DROP TABLE IF EXISTS users;
             CREATE TABLE users (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,

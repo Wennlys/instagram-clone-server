@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Tests\Infrastructure\Db\SQL;
 
 use App\Domain\Models\User;
+use App\Infrastructure\Db\SQL\Connection;
 use App\Infrastructure\Db\SQL\UserRepository;
 use App\Presentation\Errors\User\UserCouldNotBeCreatedException;
 use App\Presentation\Errors\User\UserCouldNotBeUpdatedException;
 use PDO;
-use ReflectionClass;
 use Tests\BaseTestCase as TestCase;
-use Tests\DataBaseSetUp;
+use Tests\DatabaseSetUp;
 
 class UserRepositoryTest extends TestCase
 {
@@ -20,8 +20,9 @@ class UserRepositoryTest extends TestCase
     public function __construct()
     {
         parent::__construct();
-        DataBaseSetUp::up();
-        $this->userRepository = new UserRepository();
+        $connection = Connection::getInstance()->getConnection();
+        DatabaseSetUp::up($connection);
+        $this->userRepository = new UserRepository($connection);
     }
 
     private function createUser(array $user): User
@@ -29,44 +30,28 @@ class UserRepositoryTest extends TestCase
         return new User($user['username'], $user['email'], $user['name'], $user['password'] ?? null);
     }
 
-    public function userProvider(): array
+    private function userProvider(string $index = 'one'): array
     {
         return [
-            'User One' => [
+            'one' => [
                 'id' => 1,
                 'username' => 'user1',
                 'email' => 'user1@mail.com',
                 'name' => 'User One',
             ],
-            'User Two' => [
+            'two' => [
                 'username' => 'user2',
                 'email' => 'user2@mail.com',
                 'name' => 'User Two',
                 'password' => 'newpassword',
             ],
-            'New User' => [
-                'username' => 'user99999999999999999',
-                'email' => 'user99999999999999999@mail.com',
-                'name' => 'New User',
-                'password' => 'newpassword',
+            'random' => [
+                'username' => $this->faker->userName,
+                'email' => $this->faker->email,
+                'name' => $this->faker->name,
+                'password' => $this->faker->password(),
             ],
-            'User to update' => [
-                'username' => 'updateduser',
-                'email' => 'updated@mail.com',
-                'name' => 'Updated User',
-            ],
-        ];
-    }
-
-    /** @test */
-    public function db_connection()
-    {
-        $reflection = new ReflectionClass(UserRepository::class);
-        $property = $reflection->getProperty('db');
-        $obj = new UserRepository();
-
-        $property->setAccessible(true);
-        $this->assertNotNull($property->getValue($obj));
+        ][$index];
     }
 
     /** @test */
@@ -79,7 +64,7 @@ class UserRepositoryTest extends TestCase
     public function find_user_of_id()
     {
         $userFound = $this->userRepository->findUserOfId(1);
-        $userArray = $this->userProvider()['User One'];
+        $userArray = $this->userProvider();
         unset($userArray['id'], $userFound['password']);
         $this->assertEquals($userArray, $userFound);
     }
@@ -88,7 +73,7 @@ class UserRepositoryTest extends TestCase
     public function find_user_of_username()
     {
         $userFound = $this->userRepository->findUserOfUsername('user1');
-        $userArray = $this->userProvider()['User One'];
+        $userArray = $this->userProvider();
         unset($userFound['password']);
         $this->assertEquals($userArray, $userFound);
     }
@@ -97,7 +82,7 @@ class UserRepositoryTest extends TestCase
     public function find_user_of_email()
     {
         $userFound = $this->userRepository->findUserOfEmail('user1@mail.com');
-        $userArray = $this->userProvider()['User One'];
+        $userArray = $this->userProvider();
         unset($userFound['password']);
         $this->assertEquals($userArray, $userFound);
     }
@@ -105,7 +90,7 @@ class UserRepositoryTest extends TestCase
     /** @test */
     public function store()
     {
-        $providedUser = $this->userProvider()['New User'];
+        $providedUser = $this->userProvider('random');
         $user = $this->createUser($providedUser);
         $userId = $this->userRepository->store($user);
 
@@ -115,44 +100,31 @@ class UserRepositoryTest extends TestCase
     /** @test */
     public function store_throws_user_could_not_be_created_exception()
     {
-        $providedUser = $this->userProvider()['New User'];
-        $user = $this->createUser($providedUser);
-        $class = new UserRepository();
-
         $this->expectException(UserCouldNotBeCreatedException::class);
-
-        $userRepository = new ReflectionClass($class);
-        $property = $userRepository->getProperty('db');
-        $property->setAccessible(true);
-        $property->setValue($class, new PDO('sqlite:', null, null, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]));
-        $userRepository->getMethod('store')->invokeArgs($class, [$user]);
+        $providedUser = $this->userProvider('random');
+        $user = $this->createUser($providedUser);
+        $userRepository = new UserRepository(new PDO('sqlite:', null, null, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]));
+        $userRepository->store($user);
     }
 
     /** @test */
     public function update()
     {
-        $providedUser = $this->userProvider()['User to update'];
-        ['username' => $username, 'email' => $email, 'name' => $name] = $providedUser;
-        $id = 1;
-        $user = new User($username, $email, $name);
+        $providedUser = $this->userProvider('random');
+        unset($providedUser['password']);
+        $user = $this->createUser($providedUser);
 
-        $isUpdated = $this->userRepository->update($user, $id);
+        $isUpdated = $this->userRepository->update($user, 3);
         $this->assertTrue($isUpdated);
     }
 
     /** @test */
     public function update_throws_user_could_not_be_updated_exception()
     {
-        $providedUser = $this->userProvider()['New User'];
-        $user = $this->createUser($providedUser);
-        $class = new UserRepository();
-
         $this->expectException(UserCouldNotBeUpdatedException::class);
-
-        $userRepository = new ReflectionClass($class);
-        $property = $userRepository->getProperty('db');
-        $property->setAccessible(true);
-        $property->setValue($class, new PDO('sqlite:', null, null, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]));
-        $userRepository->getMethod('update')->invokeArgs($class, [$user, 1]);
+        $providedUser = $this->userProvider('random');
+        $user = $this->createUser($providedUser);
+        $userRepository = new UserRepository(new PDO('sqlite:', null, null, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]));
+        $userRepository->update($user, 1);
     }
 }

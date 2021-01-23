@@ -18,9 +18,9 @@ class PostRepository implements FindPostOfIdRepository, ListPostsByIdRepository,
 
     private ?string $dateNow = null;
 
-    public function __construct()
+    public function __construct(PDO $pdoConnection)
     {
-        $this->db = Connection::getInstance()->getConnection();
+        $this->db = $pdoConnection;
         $this->dateNow = now();
     }
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Integration;
 
+use App\Infrastructure\Db\SQL\Connection;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\App;
 use Slim\Factory\AppFactory;
@@ -12,7 +13,7 @@ use Slim\Psr7\Headers;
 use Slim\Psr7\Request as SlimRequest;
 use Slim\Psr7\Uri;
 use Tests\BaseTestCase as TestCase;
-use Tests\DataBaseSetUp;
+use Tests\DatabaseSetUp;
 
 abstract class IntegrationTestCase extends TestCase
 {
@@ -20,7 +21,8 @@ abstract class IntegrationTestCase extends TestCase
 
     protected function setUp(): void
     {
-        DataBaseSetUp::up();
+        $connection = Connection::getInstance()->getConnection();
+        DatabaseSetUp::up($connection);
         $this->app = $this->getAppInstance();
     }
 

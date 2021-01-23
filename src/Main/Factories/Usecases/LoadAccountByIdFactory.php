@@ -6,14 +6,16 @@ namespace App\Main\Factories\Usecases;
 
 use App\Data\Usecases\DbLoadAccountById;
 use App\Domain\Usecases\LoadAccountById;
+use App\Infrastructure\Db\SQL\Connection;
 use App\Infrastructure\Db\SQL\UserRepository;
 
 class LoadAccountByIdFactory
 {
     public static function create(): LoadAccountById
     {
-        $userRespository = new UserRepository();
+        $pdoConnection = Connection::getInstance()->getConnection();
+        $userRepository = new UserRepository($pdoConnection);
 
-        return new DbLoadAccountById($userRespository);
+        return new DbLoadAccountById($userRepository);
     }
 }
