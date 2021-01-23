@@ -7,10 +7,10 @@
     <exclude>
       <file>./src/Infrastructure/Connection.php</file>
       <directory>./src/Domain</directory>
-      <directory>./src/Data</directory>
-      <directory>./src/Presentation</directory>
-      <directory>./src/Application/Handlers</directory>
-      <directory>./src/Application/ResponseEmitter</directory>
+      <directory>./src/Data/Protocols</directory>
+      <directory>./src/Presentation/Errors</directory>
+      <directory>./src/Presentation/Handlers</directory>
+      <directory>./src/Presentation/ResponseEmitter</directory>
     </exclude>
   </coverage>
   <testsuites>
