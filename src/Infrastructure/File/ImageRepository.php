@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\File;
 
-use App\Data\Protocols\Images\ImageDestroyRepository;
-use App\Data\Protocols\Images\ImageIndexRepository;
-use App\Data\Protocols\Images\ImageStoreRepository;
+use App\Data\Protocols\File\ImageDestroyRepository;
+use App\Data\Protocols\File\ImageIndexRepository;
+use App\Data\Protocols\File\ImageStoreRepository;
 
 class ImageRepository implements ImageIndexRepository, ImageStoreRepository, ImageDestroyRepository
 {

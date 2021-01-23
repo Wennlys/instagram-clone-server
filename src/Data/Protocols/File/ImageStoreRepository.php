@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Data\Protocols\Img;
+namespace App\Data\Protocols\File;
 
 interface ImageStoreRepository
 {
