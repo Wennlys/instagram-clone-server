@@ -23,7 +23,7 @@ class UpdateUserTest extends TestCase
     /** @test */
     public function returns_expected_array_when_correct_values_are_used(): void
     {
-        $userId = 1;
+        $userId = 4;
         $token = Token::create($userId, $_ENV['SECRET'], time() + 1000, $_ENV['ISSUER']);
         $request = $this->createRequest('PUT', "/users/{$userId}", ['Content-Type' => 'application/json', 'Authorization' => "Bearer {$token}"]);
         $requestBody = json_encode($this->userProvider());
