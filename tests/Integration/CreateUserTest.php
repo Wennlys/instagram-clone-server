@@ -9,16 +9,21 @@ use Tests\Integration\IntegrationTestCase as TestCase;
 /**  Route: POST /users  */
 class CreateUserTest extends TestCase
 {
+    private function userProvider(string $index = 'random'): array
+    {
+        return ['random' => ['user' => [
+            'username' => $this->faker->userName,
+            'email' => $this->faker->email,
+            'password' => $this->faker->password(8),
+            'name' => $this->faker->name,
+        ]]][$index];
+    }
+
     /** @test */
     public function returns_expected_array_when_correct_values_are_used()
     {
         $request = $this->createRequest('POST', '/users');
-        $requestBody = json_encode(['user' => [
-            'username' => 'username1',
-            'email' => 'email1@mail.com',
-            'password' => '12345678',
-            'name' => 'User Name',
-        ]]);
+        $requestBody = json_encode($this->userProvider());
         $request->getBody()->write($requestBody);
         $response = $this->app->handle($request);
         $responseBody = json_decode((string) $response->getBody(), true);
