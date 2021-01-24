@@ -22,7 +22,7 @@ class ViewPostAction implements Action
     public function handle(Request $request): Response
     {
         ['post_id' => $postId] = $request->getBody();
-        $post = $this->loadPostById->load($postId);
+        $post = $this->loadPostById->load((int) $postId);
         if ($post === []) {
             return new Response(404, ['error' => new PostNotFoundException()]);
         }
