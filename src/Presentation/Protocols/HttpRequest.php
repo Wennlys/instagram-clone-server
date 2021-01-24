@@ -6,7 +6,7 @@ namespace App\Presentation\Protocols;
 
 class HttpRequest
 {
-    public ?array $body;
+    private ?array $body;
 
     public function __construct(array $body = null)
     {
