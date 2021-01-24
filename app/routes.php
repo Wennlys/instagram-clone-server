@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 use App\Main\Adapters\SlimMiddlewareAdapter;
 use App\Main\Adapters\SlimRouteAdapter;
+use App\Main\Factories\Actions\Post\ViewPostActionFactory;
+use App\Main\Factories\Actions\Session\SessionCreateActionFactory;
 use App\Main\Factories\Actions\User\CreateUserActionFactory;
 use App\Main\Factories\Actions\User\UpdateUserActionFactory;
 use App\Main\Factories\Presentation\Middleware\SessionMiddlewareFactory;
-use App\Presentation\Actions\Post\CreatePostAction;
 use App\Presentation\Actions\Post\ListUserFollowingsPostsAction;
-use App\Presentation\Actions\Post\ViewPostAction;
-use App\Presentation\Actions\Session\SessionCreateAction;
 use App\Presentation\Actions\User\ViewUserAction;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -47,15 +46,14 @@ return function (App $app) {
     $app->post('/users', new SlimRouteAdapter(CreateUserActionFactory::create(), $responseFactory));
 
     $app->group('/sessions', function (Group $group) {
-        $group->post('', SessionCreateAction::class);
+        $group->post('', new SlimRouteAdapter(SessionCreateActionFactory::create()));
     });
 
     $app->group('/posts', function (Group $group) {
-        $group->post('', CreatePostAction::class);
         $group->get('', ListUserFollowingsPostsAction::class);
     })->add(new SlimMiddlewareAdapter(SessionMiddlewareFactory::create(), $responseFactory));
 
-    $app->get('/posts/{post_id}', ViewPostAction::class);
+    $app->get('/posts/{post_id}', new SlimRouteAdapter(ViewPostActionFactory::create(), $responseFactory));
 
     $app->group('/users', function (Group $group) {
         $group->put('/{user_id}', new SlimRouteAdapter(UpdateUserActionFactory::create()));
