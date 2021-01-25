@@ -13,7 +13,6 @@ class ViewPostTest extends TestCase
     public function returns_expected_array_when_correct_values_are_used()
     {
         $request = $this->createRequest('GET', '/posts/1');
-        $request->getBody()->write('[]');
         $response = $this->app->handle($request);
         $responseBody = json_decode((string) $response->getBody(), true);
         $this->assertEquals(200, $responseBody['statusCode']);

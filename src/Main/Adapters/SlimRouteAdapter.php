@@ -19,7 +19,7 @@ class SlimRouteAdapter
 
     public function __invoke(SlimRequest $request, SlimResponse $slimResponse, array $args)
     {
-        $parsedBody = $request->getParsedBody();
+        $parsedBody = $request->getParsedBody() ?? [];
         $uploadedFiles = $request->getUploadedFiles();
         $serverParams = $request->getServerParams();
         $queryParams = $request->getQueryParams();
